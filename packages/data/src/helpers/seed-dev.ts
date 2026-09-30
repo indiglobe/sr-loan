@@ -54,12 +54,13 @@ async function seedUser() {
 
     return {
       fullName,
-      email: `${fullName.toLowerCase()}-${idx}@email.com`,
+      email: `${fullName.split(" ").join("-").toLowerCase()}-${idx}@email.com`,
       employeeId: `SA_SA${randomInt(1000, 9000)}`,
       id: `SA_SA${randomInt(1000, 9000)}`,
       name: fullName,
-      password: bcrypt.hashSync("1234", env.SALT_ROUND),
+      password: bcrypt.hashSync("12341234", env.SALT_ROUND),
       phoneNumber: `${randomInt(9000000000, 9999999999)}`,
+      role: Math.random() > 0.7 ? "AGENT" : "ADMIN",
     };
   });
 

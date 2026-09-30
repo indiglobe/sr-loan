@@ -1,4 +1,4 @@
-name: Deploy Dockerized Web App (Campus) to VPS
+name: Deploy Dockerized Web App (Dashboard) to VPS
 
 on:
   push:
@@ -7,6 +7,8 @@ on:
     paths:
       - "apps/dashboard/**"
 
+  workflow_dispatch:
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -14,52 +16,38 @@ jobs:
     steps:
       # 1. Checkout the repository
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # 2. Log in to Docker Hub using PAT
       - name: Log in to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
 
       # 3. Build and push Docker image with build-time environment variables
       - name: Build and push Docker image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sr-loan/dashboard:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/sr-loan-dashboard:latest
           file: ./apps/dashboard/Dockerfile
           build-args: |
+            VITE_WEB_APP_HOST=${{ secrets.VITE_WEB_APP_HOST }}
+            VITE_DASHBOARD_APP_HOST=${{ secrets.VITE_DASHBOARD_APP_HOST }}
             DATABASE_URL=${{ secrets.DATABASE_URL }}
+            BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}
+            BETTER_AUTH_URL=${{ secrets.BETTER_AUTH_URL }}
+            GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+            GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+            TOKEN_SECRET=${{ secrets.TOKEN_SECRET }}
+            SALT_ROUND=${{ secrets.SALT_ROUND }}
+            WEB_APP_HOST=${{ secrets.WEB_APP_HOST }}
+            DASHBOARD_APP_HOST=${{ secrets.DASHBOARD_APP_HOST }}
 
-      # 4. SSH into VPS and deploy
-      # - name: Deploy to VPS
-      #   uses: appleboy/ssh-action@v0.1.6
-      #   with:
-      #     host: ${{ secrets.VPS_HOST }}
-      #     username: ${{ secrets.VPS_USER }}
-      #     key: ${{ secrets.VPS_SSH_KEY }}
-      #     port: ${{ secrets.VPS_PORT }}
-      #     script: |
-      #       # --------Pull the latest image--------
-      #       docker pull ${{ secrets.DOCKERHUB_USERNAME }}/sr-loan/dashboard:latest
-      #       # --------Stop and remove any existing container--------
-      #       docker rm -f sr-loan-dashboard || true
-      #       # --------Run the container with environment variables--------
-      #       docker run -d \
-      #         --name sr-loan-dashboard \
-      #         -p 3000:3000 \
-      #         -e BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }} \
-      #         -e CAMPUS_BETTER_AUTH_URL=${{ secrets.CAMPUS_BETTER_AUTH_URL }} \
-      #         -e STORAGE_BETTER_AUTH_URL=${{ secrets.STORAGE_BETTER_AUTH_URL }} \
-      #         -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
-      #         -e GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} \
-      #         -e GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} \
-      #         -e RAZOR_PAY_KEY=${{ secrets.RAZOR_PAY_KEY }} \
-      #         -e RAZOR_PAY_SECRET=${{ secrets.RAZOR_PAY_SECRET }} \
-      #         -e VITE_CAMPUS_APP_HOST=${{ secrets.VITE_CAMPUS_APP_HOST }} \
-      #         -e VITE_STORAGE_APP_HOST=${{ secrets.VITE_STORAGE_APP_HOST }} \
-      #         -e VITE_RAZOR_PAY_KEY=${{ secrets.VITE_RAZOR_PAY_KEY }} \
-      #         ${{ secrets.DOCKERHUB_USERNAME }}/sr-loan/dashboard:latest
+      - name: Trigger Dockploy deployment
+        run: |
+          curl --fail-with-body \
+            -X POST \
+            "${{ secrets.DOCKPLOY_WEBHOOK_URL }}"

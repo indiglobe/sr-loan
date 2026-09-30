@@ -8,7 +8,7 @@ WORKDIR /app
 # Copy package files first for caching
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-COPY apps/campus/package.json ./apps/campus/package.json
+COPY apps/dashboard/package.json ./apps/dashboard/package.json
 
 COPY configs/tsup-config/package.json ./configs/tsup-config/package.json
 COPY configs/vitest-config/package.json ./configs/vitest-config/package.json
@@ -21,6 +21,7 @@ COPY packages/utils/package.json ./packages/utils/package.json
 COPY packages/data/package.json ./packages/data/package.json
 COPY packages/styles/package.json ./packages/styles/package.json
 COPY packages/env/package.json ./packages/env/package.json
+COPY packages/types/package.json ./packages/types/package.json
 
 # Install pnpm and all dependencies (dev + prod)
 RUN corepack enable
@@ -30,62 +31,46 @@ RUN pnpm install --ignore-scripts --frozen-lockfile
 COPY . .
 
 # Declare build args (secrets for prerender)
+
+ARG VITE_WEB_APP_HOST
+ARG VITE_DASHBOARD_APP_HOST
 ARG BETTER_AUTH_SECRET
 ARG BETTER_AUTH_URL
 ARG DATABASE_URL
 ARG GOOGLE_CLIENT_ID
 ARG GOOGLE_CLIENT_SECRET
-ARG RAZOR_PAY_KEY
-ARG RAZOR_PAY_SECRET
-ARG CAMPUS_APP_HOST
-ARG STORAGE_APP_HOST
-ARG SOCKET_APP_HOST
-ARG LIVE_APP_HOST
-
-ARG VITE_CAMPUS_APP_HOST
-ARG VITE_STORAGE_APP_HOST
-ARG VITE_RAZOR_PAY_KEY
-ARG VITE_SOCKET_APP_HOST
-ARG VITE_LIVE_APP_HOST
-
+ARG TOKEN_SECRET
+ARG SALT_ROUND
+ARG WEB_APP_HOST
+ARG DASHBOARD_APP_HOST
 
 # Set temporary ENV for build (not persisted in final image)
 ENV \
+  VITE_WEB_APP_HOST=$VITE_WEB_APP_HOST \
+  VITE_DASHBOARD_APP_HOST=$VITE_DASHBOARD_APP_HOST \
   BETTER_AUTH_SECRET=$BETTER_AUTH_SECRET \
   BETTER_AUTH_URL=$BETTER_AUTH_URL \
   DATABASE_URL=$DATABASE_URL \
   GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID \
   GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET \
-  RAZOR_PAY_KEY=$RAZOR_PAY_KEY \
-  RAZOR_PAY_SECRET=$RAZOR_PAY_SECRET \
-  CAMPUS_APP_HOST=$CAMPUS_APP_HOST \
-  STORAGE_APP_HOST=$STORAGE_APP_HOST \
-  SOCKET_APP_HOST=$SOCKET_APP_HOST \
-  LIVE_APP_HOST=$LIVE_APP_HOST \
-  VITE_CAMPUS_APP_HOST=$VITE_CAMPUS_APP_HOST \
-  VITE_STORAGE_APP_HOST=$VITE_STORAGE_APP_HOST \
-  VITE_RAZOR_PAY_KEY=$VITE_RAZOR_PAY_KEY \
-  VITE_SOCKET_APP_HOST=$VITE_SOCKET_APP_HOST \
-  VITE_LIVE_APP_HOST=$VITE_LIVE_APP_HOST
+  TOKEN_SECRET=$TOKEN_SECRET \
+  SALT_ROUND=$SALT_ROUND \
+  WEB_APP_HOST=$WEB_APP_HOST \
+  DASHBOARD_APP_HOST=$DASHBOARD_APP_HOST 
 
 # Create a env file at the root of the proj
 RUN cat > .env.production <<EOF
+VITE_WEB_APP_HOST=$VITE_WEB_APP_HOST
+VITE_DASHBOARD_APP_HOST=$VITE_DASHBOARD_APP_HOST
 BETTER_AUTH_SECRET=$BETTER_AUTH_SECRET
 BETTER_AUTH_URL=$BETTER_AUTH_URL
 DATABASE_URL=$DATABASE_URL
 GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
 GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
-RAZOR_PAY_KEY=$RAZOR_PAY_KEY
-RAZOR_PAY_SECRET=$RAZOR_PAY_SECRET
-CAMPUS_APP_HOST=$CAMPUS_APP_HOST
-STORAGE_APP_HOST=$STORAGE_APP_HOST
-SOCKET_APP_HOST=$SOCKET_APP_HOST
-LIVE_APP_HOST=$LIVE_APP_HOST
-VITE_CAMPUS_APP_HOST=$VITE_CAMPUS_APP_HOST
-VITE_STORAGE_APP_HOST=$VITE_STORAGE_APP_HOST
-VITE_RAZOR_PAY_KEY=$VITE_RAZOR_PAY_KEY
-VITE_SOCKET_APP_HOST=$VITE_SOCKET_APP_HOST
-VITE_LIVE_APP_HOST=$VITE_LIVE_APP_HOST
+TOKEN_SECRET=$TOKEN_SECRET
+SALT_ROUND=$SALT_ROUND
+WEB_APP_HOST=$WEB_APP_HOST
+DASHBOARD_APP_HOST=$DASHBOARD_APP_HOST
 EOF
 
 # build local workspace dependencies first
@@ -102,7 +87,7 @@ RUN pnpm build \
   --filter @repo/env
 
 # Build app (uses build-time ENV)
-RUN pnpm build --filter campus
+RUN pnpm build --filter dashboard
 
 
 
@@ -119,7 +104,7 @@ RUN corepack enable
 # Copy only package.json
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-COPY apps/campus/package.json ./apps/campus/package.json
+COPY apps/dashboard/package.json ./apps/dashboard/package.json
 
 COPY packages/ui/package.json ./packages/ui/package.json
 COPY packages/utils/package.json ./packages/utils/package.json
@@ -128,17 +113,18 @@ COPY packages/styles/package.json ./packages/styles/package.json
 COPY packages/env/package.json ./packages/env/package.json
 
 # Copy built output from builder
-COPY --from=builder /app/apps/campus/dist ./apps/campus/dist
+COPY --from=builder /app/apps/dashboard/dist ./apps/dashboard/dist
 
 COPY --from=builder /app/packages/ui/dist ./packages/ui/dist
 COPY --from=builder /app/packages/utils/dist ./packages/utils/dist
 COPY --from=builder /app/packages/data/dist ./packages/data/dist
 COPY --from=builder /app/packages/styles/dist ./packages/styles/dist
 COPY --from=builder /app/packages/env/dist ./packages/env/dist
+COPY --from=builder /app/packages/types/dist ./packages/types/dist
 
 # install prod deps
 RUN pnpm install --prod --frozen-lockfile
 
 EXPOSE 3000
 
-ENTRYPOINT ["node","apps/campus/dist/server/index.mjs"]
+ENTRYPOINT ["node","apps/dashboard/dist/server/index.mjs"]

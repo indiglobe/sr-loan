@@ -1,1 +1,1 @@
-export {ICON,ROLE} from '@/schema'
+export { ICON, ROLE } from "@/schema";

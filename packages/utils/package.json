@@ -20,16 +20,6 @@
         "default": "./dist/jwt/index.mjs"
       }
     },
-    "./socket-connections": {
-      "require": {
-        "types": "./dist/socket-connections/index.d.cts",
-        "default": "./dist/socket-connections/index.cjs"
-      },
-      "import": {
-        "types": "./dist/socket-connections/index.d.mts",
-        "default": "./dist/socket-connections/index.mjs"
-      }
-    },
     "./try-catch": {
       "require": {
         "types": "./dist/try-catch/index.d.cts",
@@ -48,6 +38,16 @@
       "import": {
         "types": "./dist/id/index.d.mts",
         "default": "./dist/id/index.mjs"
+      }
+    },
+    "./utility/*": {
+      "require": {
+        "types": "./dist/utility/*.d.cts",
+        "default": "./dist/utility/*.cjs"
+      },
+      "import": {
+        "types": "./dist/utility/*.d.mts",
+        "default": "./dist/utility/*.mjs"
       }
     },
     "./utility": {
@@ -93,6 +93,7 @@
   },
   "dependencies": {
     "@repo/env": "workspace:*",
+    "bcryptjs": "^3.0.3",
     "jose": "^6.2.3",
     "uid": "^2.0.2",
     "zod": "^4.3.6"

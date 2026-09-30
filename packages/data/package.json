@@ -33,14 +33,24 @@
     "db:prod:studio": "tf run db:prod:studio"
   },
   "exports": {
-    ".": {
+    "./*": {
       "require": {
-        "types": "./dist/exports/**/*.d.cts",
-        "default": "./dist/exports/**/*.cjs"
+        "types": "./dist/exports/*.d.cts",
+        "default": "./dist/exports/*.cjs"
       },
       "import": {
-        "types": "./dist/exports/**/*.d.mts",
-        "default": "./dist/exports/**/*.mjs"
+        "types": "./dist/exports/*.d.mts",
+        "default": "./dist/exports/*.mjs"
+      }
+    },
+    "./utils/*": {
+      "require": {
+        "types": "./dist/exports/utils/*.d.cts",
+        "default": "./dist/exports/utils/*.cjs"
+      },
+      "import": {
+        "types": "./dist/exports/utils/*.d.mts",
+        "default": "./dist/exports/utils/*.mjs"
       }
     },
     "./querries/*": {

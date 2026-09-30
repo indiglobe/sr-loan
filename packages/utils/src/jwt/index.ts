@@ -9,11 +9,9 @@ const secret = new TextEncoder().encode(env.TOKEN_SECRET);
 export interface JwtPayload extends jose.JWTPayload {
   userId: string;
   email: string;
-  fullName: string;
-  avatarUrl: string;
-  age: number;
-  role: "basic" | "admin";
+  name: string;
   phone: string;
+  role: "ADMIN" | "AGENT";
 }
 
 /**

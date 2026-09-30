@@ -10,115 +10,146 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminIndexRouteImport } from './routes/admin/index'
-import { Route as AgentIndexRouteImport } from './routes/agent/index'
-import { Route as LoginIndexRouteImport } from './routes/login/index'
-import { Route as AdminDashboardIndexRouteImport } from './routes/admin/dashboard/index'
-import { Route as AgentDashboardIndexRouteImport } from './routes/agent/dashboard/index'
+import { Route as authenticatedRoutesRouteRouteImport } from './routes/(authenticated-routes)/route'
+import { Route as unauthenticatedRoutesRouteRouteImport } from './routes/(unauthenticated-routes)/route'
+import { Route as authenticatedRoutesAdminIndexRouteImport } from './routes/(authenticated-routes)/admin/index'
+import { Route as authenticatedRoutesAgentIndexRouteImport } from './routes/(authenticated-routes)/agent/index'
+import { Route as unauthenticatedRoutesLoginIndexRouteImport } from './routes/(unauthenticated-routes)/login/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as authenticatedRoutesAdminAgreementIndexRouteImport } from './routes/(authenticated-routes)/admin/agreement/index'
+import { Route as authenticatedRoutesAdminDashboardIndexRouteImport } from './routes/(authenticated-routes)/admin/dashboard/index'
+import { Route as authenticatedRoutesAgentDashboardIndexRouteImport } from './routes/(authenticated-routes)/agent/dashboard/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgentIndexRoute = AgentIndexRouteImport.update({
-  id: '/agent/',
-  path: '/agent/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginIndexRoute = LoginIndexRouteImport.update({
-  id: '/login/',
-  path: '/login/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminDashboardIndexRoute = AdminDashboardIndexRouteImport.update({
-  id: '/admin/dashboard/',
-  path: '/admin/dashboard/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgentDashboardIndexRoute = AgentDashboardIndexRouteImport.update({
-  id: '/agent/dashboard/',
-  path: '/agent/dashboard/',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const authenticatedRoutesRouteRoute =
+  authenticatedRoutesRouteRouteImport.update({
+    id: '/(authenticated-routes)',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const unauthenticatedRoutesRouteRoute =
+  unauthenticatedRoutesRouteRouteImport.update({
+    id: '/(unauthenticated-routes)',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const authenticatedRoutesAdminIndexRoute =
+  authenticatedRoutesAdminIndexRouteImport.update({
+    id: '/admin/',
+    path: '/admin/',
+    getParentRoute: () => authenticatedRoutesRouteRoute,
+  } as any)
+const authenticatedRoutesAgentIndexRoute =
+  authenticatedRoutesAgentIndexRouteImport.update({
+    id: '/agent/',
+    path: '/agent/',
+    getParentRoute: () => authenticatedRoutesRouteRoute,
+  } as any)
+const unauthenticatedRoutesLoginIndexRoute =
+  unauthenticatedRoutesLoginIndexRouteImport.update({
+    id: '/login/',
+    path: '/login/',
+    getParentRoute: () => unauthenticatedRoutesRouteRoute,
+  } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const authenticatedRoutesAdminAgreementIndexRoute =
+  authenticatedRoutesAdminAgreementIndexRouteImport.update({
+    id: '/admin/agreement/',
+    path: '/admin/agreement/',
+    getParentRoute: () => authenticatedRoutesRouteRoute,
+  } as any)
+const authenticatedRoutesAdminDashboardIndexRoute =
+  authenticatedRoutesAdminDashboardIndexRouteImport.update({
+    id: '/admin/dashboard/',
+    path: '/admin/dashboard/',
+    getParentRoute: () => authenticatedRoutesRouteRoute,
+  } as any)
+const authenticatedRoutesAgentDashboardIndexRoute =
+  authenticatedRoutesAgentDashboardIndexRouteImport.update({
+    id: '/agent/dashboard/',
+    path: '/agent/dashboard/',
+    getParentRoute: () => authenticatedRoutesRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin/': typeof AdminIndexRoute
-  '/agent/': typeof AgentIndexRoute
-  '/login/': typeof LoginIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/admin/dashboard/': typeof AdminDashboardIndexRoute
-  '/agent/dashboard/': typeof AgentDashboardIndexRoute
+  '/admin/': typeof authenticatedRoutesAdminIndexRoute
+  '/agent/': typeof authenticatedRoutesAgentIndexRoute
+  '/login/': typeof unauthenticatedRoutesLoginIndexRoute
+  '/admin/agreement/': typeof authenticatedRoutesAdminAgreementIndexRoute
+  '/admin/dashboard/': typeof authenticatedRoutesAdminDashboardIndexRoute
+  '/agent/dashboard/': typeof authenticatedRoutesAgentDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminIndexRoute
-  '/agent': typeof AgentIndexRoute
-  '/login': typeof LoginIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/admin/dashboard': typeof AdminDashboardIndexRoute
-  '/agent/dashboard': typeof AgentDashboardIndexRoute
+  '/admin': typeof authenticatedRoutesAdminIndexRoute
+  '/agent': typeof authenticatedRoutesAgentIndexRoute
+  '/login': typeof unauthenticatedRoutesLoginIndexRoute
+  '/admin/agreement': typeof authenticatedRoutesAdminAgreementIndexRoute
+  '/admin/dashboard': typeof authenticatedRoutesAdminDashboardIndexRoute
+  '/agent/dashboard': typeof authenticatedRoutesAgentDashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin/': typeof AdminIndexRoute
-  '/agent/': typeof AgentIndexRoute
-  '/login/': typeof LoginIndexRoute
+  '/(authenticated-routes)': typeof authenticatedRoutesRouteRouteWithChildren
+  '/(unauthenticated-routes)': typeof unauthenticatedRoutesRouteRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/admin/dashboard/': typeof AdminDashboardIndexRoute
-  '/agent/dashboard/': typeof AgentDashboardIndexRoute
+  '/(authenticated-routes)/admin/': typeof authenticatedRoutesAdminIndexRoute
+  '/(authenticated-routes)/agent/': typeof authenticatedRoutesAgentIndexRoute
+  '/(unauthenticated-routes)/login/': typeof unauthenticatedRoutesLoginIndexRoute
+  '/(authenticated-routes)/admin/agreement/': typeof authenticatedRoutesAdminAgreementIndexRoute
+  '/(authenticated-routes)/admin/dashboard/': typeof authenticatedRoutesAdminDashboardIndexRoute
+  '/(authenticated-routes)/agent/dashboard/': typeof authenticatedRoutesAgentDashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/api/auth/$'
     | '/admin/'
     | '/agent/'
     | '/login/'
-    | '/api/auth/$'
+    | '/admin/agreement/'
     | '/admin/dashboard/'
     | '/agent/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/api/auth/$'
     | '/admin'
     | '/agent'
     | '/login'
-    | '/api/auth/$'
+    | '/admin/agreement'
     | '/admin/dashboard'
     | '/agent/dashboard'
   id:
     | '__root__'
     | '/'
-    | '/admin/'
-    | '/agent/'
-    | '/login/'
+    | '/(authenticated-routes)'
+    | '/(unauthenticated-routes)'
     | '/api/auth/$'
-    | '/admin/dashboard/'
-    | '/agent/dashboard/'
+    | '/(authenticated-routes)/admin/'
+    | '/(authenticated-routes)/agent/'
+    | '/(unauthenticated-routes)/login/'
+    | '/(authenticated-routes)/admin/agreement/'
+    | '/(authenticated-routes)/admin/dashboard/'
+    | '/(authenticated-routes)/agent/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminIndexRoute: typeof AdminIndexRoute
-  AgentIndexRoute: typeof AgentIndexRoute
-  LoginIndexRoute: typeof LoginIndexRoute
+  authenticatedRoutesRouteRoute: typeof authenticatedRoutesRouteRouteWithChildren
+  unauthenticatedRoutesRouteRoute: typeof unauthenticatedRoutesRouteRouteWithChildren
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  AdminDashboardIndexRoute: typeof AdminDashboardIndexRoute
-  AgentDashboardIndexRoute: typeof AgentDashboardIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -130,40 +161,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/': {
-      id: '/admin/'
+    '/(authenticated-routes)': {
+      id: '/(authenticated-routes)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof authenticatedRoutesRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(unauthenticated-routes)': {
+      id: '/(unauthenticated-routes)'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof unauthenticatedRoutesRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(authenticated-routes)/admin/': {
+      id: '/(authenticated-routes)/admin/'
       path: '/admin'
       fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof authenticatedRoutesAdminIndexRouteImport
+      parentRoute: typeof authenticatedRoutesRouteRoute
     }
-    '/agent/': {
-      id: '/agent/'
+    '/(authenticated-routes)/agent/': {
+      id: '/(authenticated-routes)/agent/'
       path: '/agent'
       fullPath: '/agent/'
-      preLoaderRoute: typeof AgentIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof authenticatedRoutesAgentIndexRouteImport
+      parentRoute: typeof authenticatedRoutesRouteRoute
     }
-    '/login/': {
-      id: '/login/'
+    '/(unauthenticated-routes)/login/': {
+      id: '/(unauthenticated-routes)/login/'
       path: '/login'
       fullPath: '/login/'
-      preLoaderRoute: typeof LoginIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/dashboard/': {
-      id: '/admin/dashboard/'
-      path: '/admin/dashboard'
-      fullPath: '/admin/dashboard/'
-      preLoaderRoute: typeof AdminDashboardIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agent/dashboard/': {
-      id: '/agent/dashboard/'
-      path: '/agent/dashboard'
-      fullPath: '/agent/dashboard/'
-      preLoaderRoute: typeof AgentDashboardIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof unauthenticatedRoutesLoginIndexRouteImport
+      parentRoute: typeof unauthenticatedRoutesRouteRoute
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -172,17 +203,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(authenticated-routes)/admin/agreement/': {
+      id: '/(authenticated-routes)/admin/agreement/'
+      path: '/admin/agreement'
+      fullPath: '/admin/agreement/'
+      preLoaderRoute: typeof authenticatedRoutesAdminAgreementIndexRouteImport
+      parentRoute: typeof authenticatedRoutesRouteRoute
+    }
+    '/(authenticated-routes)/admin/dashboard/': {
+      id: '/(authenticated-routes)/admin/dashboard/'
+      path: '/admin/dashboard'
+      fullPath: '/admin/dashboard/'
+      preLoaderRoute: typeof authenticatedRoutesAdminDashboardIndexRouteImport
+      parentRoute: typeof authenticatedRoutesRouteRoute
+    }
+    '/(authenticated-routes)/agent/dashboard/': {
+      id: '/(authenticated-routes)/agent/dashboard/'
+      path: '/agent/dashboard'
+      fullPath: '/agent/dashboard/'
+      preLoaderRoute: typeof authenticatedRoutesAgentDashboardIndexRouteImport
+      parentRoute: typeof authenticatedRoutesRouteRoute
+    }
   }
 }
 
+interface authenticatedRoutesRouteRouteChildren {
+  authenticatedRoutesAdminIndexRoute: typeof authenticatedRoutesAdminIndexRoute
+  authenticatedRoutesAgentIndexRoute: typeof authenticatedRoutesAgentIndexRoute
+  authenticatedRoutesAdminAgreementIndexRoute: typeof authenticatedRoutesAdminAgreementIndexRoute
+  authenticatedRoutesAdminDashboardIndexRoute: typeof authenticatedRoutesAdminDashboardIndexRoute
+  authenticatedRoutesAgentDashboardIndexRoute: typeof authenticatedRoutesAgentDashboardIndexRoute
+}
+
+const authenticatedRoutesRouteRouteChildren: authenticatedRoutesRouteRouteChildren =
+  {
+    authenticatedRoutesAdminIndexRoute: authenticatedRoutesAdminIndexRoute,
+    authenticatedRoutesAgentIndexRoute: authenticatedRoutesAgentIndexRoute,
+    authenticatedRoutesAdminAgreementIndexRoute:
+      authenticatedRoutesAdminAgreementIndexRoute,
+    authenticatedRoutesAdminDashboardIndexRoute:
+      authenticatedRoutesAdminDashboardIndexRoute,
+    authenticatedRoutesAgentDashboardIndexRoute:
+      authenticatedRoutesAgentDashboardIndexRoute,
+  }
+
+const authenticatedRoutesRouteRouteWithChildren =
+  authenticatedRoutesRouteRoute._addFileChildren(
+    authenticatedRoutesRouteRouteChildren,
+  )
+
+interface unauthenticatedRoutesRouteRouteChildren {
+  unauthenticatedRoutesLoginIndexRoute: typeof unauthenticatedRoutesLoginIndexRoute
+}
+
+const unauthenticatedRoutesRouteRouteChildren: unauthenticatedRoutesRouteRouteChildren =
+  {
+    unauthenticatedRoutesLoginIndexRoute: unauthenticatedRoutesLoginIndexRoute,
+  }
+
+const unauthenticatedRoutesRouteRouteWithChildren =
+  unauthenticatedRoutesRouteRoute._addFileChildren(
+    unauthenticatedRoutesRouteRouteChildren,
+  )
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminIndexRoute: AdminIndexRoute,
-  AgentIndexRoute: AgentIndexRoute,
-  LoginIndexRoute: LoginIndexRoute,
+  authenticatedRoutesRouteRoute: authenticatedRoutesRouteRouteWithChildren,
+  unauthenticatedRoutesRouteRoute: unauthenticatedRoutesRouteRouteWithChildren,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  AdminDashboardIndexRoute: AdminDashboardIndexRoute,
-  AgentDashboardIndexRoute: AgentDashboardIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

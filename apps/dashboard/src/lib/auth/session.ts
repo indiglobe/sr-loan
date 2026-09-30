@@ -29,9 +29,9 @@ export const fetchUserDetailsCookie = createServerFn().handler(async () => {
 
   if (err) return null;
 
-  const { age, avatarUrl, email, fullName, phone, role, userId } = data;
+  const { email, name, phone, role, userId } = data;
 
-  return { age, avatarUrl, email, fullName, phone, role, userId };
+  return { email, name, phone, role, userId };
 });
 
 export const setUserDetailsCookie = createServerFn()
