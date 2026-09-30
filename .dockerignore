@@ -1,0 +1,12 @@
+**/node_modules
+.devcontainer
+**/dist
+.docker
+.env*
+.pnpm-store
+.vscode
+.github
+*.log
+apps/storage/assets
+s3
+!.turbo

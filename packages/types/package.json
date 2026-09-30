@@ -1,0 +1,52 @@
+{
+  "name": "@repo/types",
+  "scripts": {
+    "dev": "pkgroll --watch",
+    "prebuild": "rimraf ./dist",
+    "build": "pkgroll",
+    "lint": "eslint",
+    "format": "prettier --write **/* ",
+    "lint:staged": "lint-staged"
+  },
+  "exports": {
+    "./namespaces/*": {
+      "require": {
+        "types": "./dist/namespaces/*.d.cts",
+        "default": "./dist/namespaces/*.cjs"
+      },
+      "import": {
+        "types": "./dist/namespaces/*.d.mts",
+        "default": "./dist/namespaces/*.mjs"
+      }
+    }
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^22.19.15",
+    "eslint": "^10.4.0",
+    "lint-staged": "^16.2.7",
+    "mediasoup": "^3.20.10",
+    "mediasoup-client": "^3.21.0",
+    "pkgroll": "^2.27.0",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.1.3",
+    "typescript": "^5.7.2"
+  },
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "pnpm format"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.27.0"
+}

@@ -1,0 +1,126 @@
+{
+  "name": "@repo/utils",
+  "scripts": {
+    "dev": "pkgroll --watch",
+    "prebuild": "rimraf ./dist",
+    "build": "pkgroll",
+    "lint": "eslint",
+    "format": "prettier --write **/* ",
+    "lint:staged": "lint-staged",
+    "test": "vitest"
+  },
+  "exports": {
+    "./jwt": {
+      "require": {
+        "types": "./dist/jwt/index.d.cts",
+        "default": "./dist/jwt/index.cjs"
+      },
+      "import": {
+        "types": "./dist/jwt/index.d.mts",
+        "default": "./dist/jwt/index.mjs"
+      }
+    },
+    "./socket-connections": {
+      "require": {
+        "types": "./dist/socket-connections/index.d.cts",
+        "default": "./dist/socket-connections/index.cjs"
+      },
+      "import": {
+        "types": "./dist/socket-connections/index.d.mts",
+        "default": "./dist/socket-connections/index.mjs"
+      }
+    },
+    "./try-catch": {
+      "require": {
+        "types": "./dist/try-catch/index.d.cts",
+        "default": "./dist/try-catch/index.cjs"
+      },
+      "import": {
+        "types": "./dist/try-catch/index.d.mts",
+        "default": "./dist/try-catch/index.mjs"
+      }
+    },
+    "./id": {
+      "require": {
+        "types": "./dist/id/index.d.cts",
+        "default": "./dist/id/index.cjs"
+      },
+      "import": {
+        "types": "./dist/id/index.d.mts",
+        "default": "./dist/id/index.mjs"
+      }
+    },
+    "./utility": {
+      "require": {
+        "types": "./dist/utility/index.d.cts",
+        "default": "./dist/utility/index.cjs"
+      },
+      "import": {
+        "types": "./dist/utility/index.d.mts",
+        "default": "./dist/utility/index.mjs"
+      }
+    },
+    "./zod-schema/*": {
+      "require": {
+        "types": "./dist/zod-schema/*.d.cts",
+        "default": "./dist/zod-schema/*.cjs"
+      },
+      "import": {
+        "types": "./dist/zod-schema/*.d.mts",
+        "default": "./dist/zod-schema/*.mjs"
+      }
+    },
+    "./const/*": {
+      "require": {
+        "types": "./dist/const/*.d.cts",
+        "default": "./dist/const/*.cjs"
+      },
+      "import": {
+        "types": "./dist/const/*.d.mts",
+        "default": "./dist/const/*.mjs"
+      }
+    },
+    ".": {
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      },
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      }
+    }
+  },
+  "dependencies": {
+    "@repo/env": "workspace:*",
+    "jose": "^6.2.3",
+    "uid": "^2.0.2",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@repo/vitest-config": "workspace:*",
+    "@types/node": "^22.19.15",
+    "eslint": "^10.4.0",
+    "lint-staged": "^16.2.7",
+    "pkgroll": "^2.27.0",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.1.3",
+    "typescript": "^5.7.2",
+    "vitest": "^3.2.4"
+  },
+  "version": "0.0.0",
+  "description": "",
+  "type": "module",
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "pnpm format"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.27.0"
+}

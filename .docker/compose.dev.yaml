@@ -1,0 +1,75 @@
+name: sr-loan-dev
+
+networks:
+  sr-loan-dev:
+    driver: bridge
+
+services:
+  sr-loan-dev-database:
+    container_name: sr-loan-dev-database
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - 13648:3306
+    networks:
+      - sr-loan-dev
+    volumes:
+      - database:/var/lib/mysql
+    restart: unless-stopped
+
+  sr-loan-dev-phpmyadmin:
+    container_name: sr-loan-dev-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "17922:80"
+    environment:
+      PMA_HOST: sr-loan-dev-database
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: password
+    depends_on:
+      - sr-loan-dev-database
+    networks:
+      - sr-loan-dev
+
+  sr-loan-dev-nginx:
+    container_name: sr-loan-dev-nginx
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - sr-loan-dev
+    volumes:
+      - ../nginx.dev.secure.conf:/etc/nginx/nginx.conf:ro
+      - ../localhost-cert.pem:/etc/nginx/certs/localhost-cert.pem:ro
+      - ../localhost-key.pem:/etc/nginx/certs/localhost-key.pem:ro
+
+  # sr-loan-dev-hoppscotch:
+  #   container_name: sr-loan-dev-hoppscotch
+  #   image: hoppscotch/hoppscotch-frontend:latest
+  #   restart: unless-stopped
+  #   ports:
+  #     - "19477:3000"
+  #   networks:
+  #     - sr-loan-dev
+
+  # sr-loan-dev-floci:
+  #   container_name: sr-loan-dev-floci
+  #   image: floci/floci:nightly
+  #   ports:
+  #     - "16785:4566"
+  #   volumes:
+  #     - floci-data:/var/lib/floci
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   environment:
+  #     - FLOCI_LOG_LEVEL=info
+  #     - FLOCI_DATA_DIR=/var/lib/floci
+  #   networks:
+  #     - sr-loan-dev
+  #   restart: unless-stopped
+
+volumes:
+  database:
+  # floci-data:
