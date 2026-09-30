@@ -12,46 +12,10 @@ export function AdminDashboard() {
   return (
     <main
       className={cn(
-        "min-h-svh bg-background px-4 py-5 text-foreground sm:px-6 sm:py-6 lg:px-8",
+        "bg-background px-4 py-5 text-foreground sm:px-6 sm:py-6 lg:px-8",
       )}
     >
       <div className={cn("mx-auto w-full max-w-7xl")}>
-        {/* Dashboard Top Bar */}
-        <div className={cn("flex w-full items-start justify-between gap-4")}>
-          {/* Left */}
-          <div>
-            <div
-              className={cn(
-                "mb-2 inline-flex rounded-md bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-700 dark:bg-primary-950 dark:text-primary-300",
-              )}
-            >
-              Admin Panel
-            </div>
-
-            <h1
-              className={cn(
-                "font-brand-secondary text-2xl font-bold tracking-tight text-accent-950 sm:text-3xl dark:text-accent-50",
-              )}
-            >
-              Admin Dashboard
-            </h1>
-
-            <p
-              className={cn(
-                "mt-1 max-w-xl text-sm leading-6 text-accent-600 dark:text-accent-300",
-              )}
-            >
-              Manage agents and administration from one place.
-            </p>
-          </div>
-
-          {/* Top Right */}
-          <div className={cn("shrink-0")}>
-            <CreateAgent />
-          </div>
-        </div>
-
-        {/* Agent Table */}
         <AgentTable />
       </div>
     </main>
@@ -833,36 +797,50 @@ function AgentTable() {
   return (
     <section className={cn("mt-8 w-full")}>
       {/* Table Header */}
-      <div
-        className={cn(
-          "mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between",
-        )}
-      >
-        <div>
-          <h2
-            className={cn(
-              "font-brand-secondary text-xl font-bold text-accent-950 sm:text-2xl dark:text-accent-50",
-            )}
-          >
-            Agents
-          </h2>
 
-          <p
-            className={cn("mt-1 text-sm text-accent-600 dark:text-accent-300")}
-          >
-            View all registered agents and their contact information.
-          </p>
+      <div className={cn(`flex w-full justify-between items-center`)}>
+        <div
+          className={cn(
+            "mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between",
+          )}
+        >
+          <div>
+            <div className={cn(`flex  items-center gap-4`)}>
+              <h2
+                className={cn(
+                  "font-brand-secondary text-xl font-bold text-accent-950 sm:text-2xl dark:text-accent-50",
+                )}
+              >
+                Agents
+              </h2>
+
+              <div>
+                {!agentsIsPending && !agentsIsError && (
+                  <div
+                    className={cn(
+                      "inline-flex w-fit rounded-md bg-accent-100 px-3 py-1.5 text-xs font-semibold text-accent-700 dark:bg-accent-900 dark:text-accent-300",
+                    )}
+                  >
+                    {agentsData.length}{" "}
+                    {agentsData.length === 1 ? "Agent" : "Agents"}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <p
+              className={cn(
+                "mt-1 text-sm text-accent-600 dark:text-accent-300",
+              )}
+            >
+              View all registered agents and their contact information.
+            </p>
+          </div>
         </div>
 
-        {!agentsIsPending && !agentsIsError && (
-          <div
-            className={cn(
-              "inline-flex w-fit rounded-md bg-accent-100 px-3 py-1.5 text-xs font-semibold text-accent-700 dark:bg-accent-900 dark:text-accent-300",
-            )}
-          >
-            {agentsData.length} {agentsData.length === 1 ? "Agent" : "Agents"}
-          </div>
-        )}
+        <div>
+          <CreateAgent />
+        </div>
       </div>
 
       {/* 3 States */}

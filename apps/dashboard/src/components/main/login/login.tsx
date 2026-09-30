@@ -2,6 +2,7 @@ import { serverFn__login } from "@/integrations/form-actions/log-in";
 import { cn } from "@repo/styles/cn";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -33,81 +34,43 @@ export default function LoginForm() {
     },
 
     onSubmit: async ({ value }) => {
-      try {
-        const loginData = {
-          role,
-          email: value.email.trim().toLowerCase(),
-          password: value.password,
-        };
+      const response = await loginMutation.mutateAsync({
+        data: { email: value.email, password: value.password, role: role },
+      });
 
-        const response = await loginMutation.mutateAsync({
-          data: loginData,
+      if (response.status === "error") {
+        toast.error("Login failed", {
+          description: response.message ?? "Invalid email or password.",
         });
 
-        if (response.status === "error") {
-          toast.error("Login failed", {
-            description: response.message ?? "Invalid email or password.",
-          });
-
-          return;
-        }
-
-        toast.success("Login successful", {
-          description: `Welcome back! You are logged in as ${
-            response.user?.role === "ADMIN" ? "Admin" : "Agent"
-          }.`,
-        });
-
-        /*
-         * Navigate after successful authentication.
-         *
-         * Example:
-         *
-         * if (response.user.role === "ADMIN") {
-         *   navigate({ to: "/admin" });
-         * } else {
-         *   navigate({ to: "/agent" });
-         * }
-         */
-      } catch (error) {
-        console.error("Login Error:", error);
-
-        toast.error("Something went wrong", {
-          description:
-            "We couldn't complete your login request. Please try again.",
-        });
+        return;
       }
+
+      toast.success("Login successful", {
+        description: `Welcome back! You are logged in as ${
+          response.user?.role === "ADMIN" ? "Admin" : "Agent"
+        }.`,
+      });
     },
   });
 
   return (
     <main
       className={cn(
-        "flex min-h-svh items-center justify-center",
-        "bg-background px-4 py-8 text-foreground",
-        "sm:px-6",
+        "flex min-h-svh items-center justify-center bg-background px-4 py-8 text-foreground sm:px-6",
       )}
     >
       <div className={cn("w-full max-w-md")}>
         <div
           className={cn(
-            "overflow-hidden rounded-3xl",
-            "border border-accent-200",
-            "bg-white",
-            "shadow-[0_20px_60px_rgba(63,23,9,0.08)]",
-            "dark:border-accent-800",
-            "dark:bg-accent-950",
+            "overflow-hidden rounded-3xl border border-accent-200 bg-white shadow-[0_20px_60px_rgba(63,23,9,0.08)] dark:border-accent-800 dark:bg-accent-950",
           )}
         >
           {/* Header */}
           <div className={cn("px-5 pt-7 sm:px-8 sm:pt-9")}>
             <div
               className={cn(
-                "mb-2 inline-flex rounded-md",
-                "bg-primary-50 px-3 py-1",
-                "text-xs font-semibold text-primary-700",
-                "dark:bg-primary-950",
-                "dark:text-primary-300",
+                "mb-2 inline-flex rounded-md bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-700 dark:bg-primary-950 dark:text-primary-300",
               )}
             >
               Secure Login
@@ -115,11 +78,7 @@ export default function LoginForm() {
 
             <h1
               className={cn(
-                "font-brand-secondary",
-                "text-2xl font-bold tracking-tight",
-                "text-accent-950",
-                "sm:text-3xl",
-                "dark:text-accent-50",
+                "font-brand-secondary text-2xl font-bold tracking-tight text-accent-950 sm:text-3xl dark:text-accent-50",
               )}
             >
               Welcome Back
@@ -127,9 +86,7 @@ export default function LoginForm() {
 
             <p
               className={cn(
-                "mt-2 text-sm leading-6",
-                "text-accent-600",
-                "dark:text-accent-300",
+                "mt-2 text-sm leading-6 text-accent-600 dark:text-accent-300",
               )}
             >
               Select your account type and enter your login credentials.
@@ -140,10 +97,7 @@ export default function LoginForm() {
             {/* Admin / Agent Toggle */}
             <div
               className={cn(
-                "mb-7 grid grid-cols-2",
-                "rounded-md",
-                "bg-accent-100 p-1",
-                "dark:bg-accent-900",
+                "mb-7 grid grid-cols-2 rounded-md bg-accent-100 p-1 dark:bg-accent-900",
               )}
             >
               <button
@@ -151,23 +105,13 @@ export default function LoginForm() {
                 onClick={() => setRole("ADMIN")}
                 disabled={loginMutation.isPending}
                 className={cn(
-                  "rounded-md px-4 py-2.5",
-                  "text-sm font-semibold",
-                  "transition-all duration-200",
+                  "rounded-md px-4 py-2.5 text-sm font-semibold transition-all duration-200",
                   role === "ADMIN"
                     ? cn(
-                        "bg-primary-500",
-                        "text-white",
-                        "shadow-sm",
-                        "hover:bg-primary-600",
+                        "bg-primary-500 text-white shadow-sm hover:bg-primary-600",
                       )
                     : cn(
-                        "text-accent-600",
-                        "hover:bg-white/60",
-                        "hover:text-accent-950",
-                        "dark:text-accent-300",
-                        "dark:hover:bg-accent-800",
-                        "dark:hover:text-white",
+                        "text-accent-600 hover:bg-white/60 hover:text-accent-950 dark:text-accent-300 dark:hover:bg-accent-800 dark:hover:text-white",
                       ),
                 )}
               >
@@ -179,23 +123,13 @@ export default function LoginForm() {
                 onClick={() => setRole("AGENT")}
                 disabled={loginMutation.isPending}
                 className={cn(
-                  "rounded-md px-4 py-2.5",
-                  "text-sm font-semibold",
-                  "transition-all duration-200",
+                  "rounded-md px-4 py-2.5 text-sm font-semibold transition-all duration-200",
                   role === "AGENT"
                     ? cn(
-                        "bg-primary-500",
-                        "text-white",
-                        "shadow-sm",
-                        "hover:bg-primary-600",
+                        "bg-primary-500 text-white shadow-sm hover:bg-primary-600",
                       )
                     : cn(
-                        "text-accent-600",
-                        "hover:bg-white/60",
-                        "hover:text-accent-950",
-                        "dark:text-accent-300",
-                        "dark:hover:bg-accent-800",
-                        "dark:hover:text-white",
+                        "text-accent-600 hover:bg-white/60 hover:text-accent-950 dark:text-accent-300 dark:hover:bg-accent-800 dark:hover:text-white",
                       ),
                 )}
               >
@@ -235,9 +169,7 @@ export default function LoginForm() {
                     <label
                       htmlFor={field.name}
                       className={cn(
-                        "block text-sm font-semibold",
-                        "text-accent-800",
-                        "dark:text-accent-100",
+                        "block text-sm font-semibold text-accent-800 dark:text-accent-100",
                       )}
                     >
                       Email
@@ -259,17 +191,7 @@ export default function LoginForm() {
                         field.handleChange(event.target.value)
                       }
                       className={cn(
-                        "h-12 w-full rounded-md border",
-                        "bg-white px-4",
-                        "text-sm text-accent-950",
-                        "outline-none",
-                        "transition-all duration-200",
-                        "placeholder:text-accent-400",
-                        "focus:border-primary-500",
-                        "focus:ring-4 focus:ring-primary-500/10",
-                        "dark:bg-accent-900",
-                        "dark:text-accent-50",
-                        "dark:placeholder:text-accent-500",
+                        "h-12 w-full rounded-md border bg-white px-4 text-sm text-accent-950 outline-none transition-all duration-200 placeholder:text-accent-400 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 dark:bg-accent-900 dark:text-accent-50 dark:placeholder:text-accent-500",
                         field.state.meta.isTouched &&
                           field.state.meta.errors.length > 0
                           ? cn(
@@ -315,9 +237,7 @@ export default function LoginForm() {
                     <label
                       htmlFor={field.name}
                       className={cn(
-                        "block text-sm font-semibold",
-                        "text-accent-800",
-                        "dark:text-accent-100",
+                        "block text-sm font-semibold text-accent-800 dark:text-accent-100",
                       )}
                     >
                       Password
@@ -335,17 +255,7 @@ export default function LoginForm() {
                         field.handleChange(event.target.value)
                       }
                       className={cn(
-                        "h-12 w-full rounded-md border",
-                        "bg-white px-4",
-                        "text-sm text-accent-950",
-                        "outline-none",
-                        "transition-all duration-200",
-                        "placeholder:text-accent-400",
-                        "focus:border-primary-500",
-                        "focus:ring-4 focus:ring-primary-500/10",
-                        "dark:bg-accent-900",
-                        "dark:text-accent-50",
-                        "dark:placeholder:text-accent-500",
+                        "h-12 w-full rounded-md border bg-white px-4 text-sm text-accent-950 outline-none transition-all duration-200 placeholder:text-accent-400 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 dark:bg-accent-900 dark:text-accent-50 dark:placeholder:text-accent-500",
                         field.state.meta.isTouched &&
                           field.state.meta.errors.length > 0
                           ? cn(
@@ -381,21 +291,7 @@ export default function LoginForm() {
                       type="submit"
                       disabled={!canSubmit || loading}
                       className={cn(
-                        "mt-2 flex h-12 w-full",
-                        "items-center justify-center",
-                        "rounded-md",
-                        "bg-primary-500 px-5",
-                        "text-sm font-bold text-white",
-                        "transition-all duration-200",
-                        "hover:bg-primary-600",
-                        "active:scale-[0.99]",
-                        "focus:ring-4",
-                        "focus:ring-primary-500/20",
-                        "focus:outline-none",
-                        "disabled:cursor-not-allowed",
-                        "disabled:opacity-60",
-                        "dark:bg-primary-500",
-                        "dark:hover:bg-primary-400",
+                        "mt-2 flex h-12 w-full items-center justify-center rounded-md bg-primary-500 px-5 text-sm font-bold text-white transition-all duration-200 hover:bg-primary-600 active:scale-[0.99] focus:ring-4 focus:ring-primary-500/20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60 dark:bg-primary-500 dark:hover:bg-primary-400",
                       )}
                     >
                       {loading
@@ -411,11 +307,7 @@ export default function LoginForm() {
           {/* Bottom Accent */}
           <div
             className={cn(
-              "h-1.5 w-full",
-              "bg-linear-to-r",
-              "from-primary-500",
-              "via-primary-400",
-              "to-secondary-400",
+              "h-1.5 w-full bg-linear-to-r from-primary-500 via-primary-400 to-secondary-400",
             )}
           />
         </div>
@@ -426,8 +318,21 @@ export default function LoginForm() {
 
 export function useLogin() {
   const login = useServerFn(serverFn__login);
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: login,
+
+    onSuccess: ({ user, status }) => {
+      if (status === "success") {
+        const { role } = user;
+
+        if (role === "ADMIN") {
+          navigate({ to: "/admin/dashboard" });
+        } else {
+          navigate({ to: "/agent/dashboard" });
+        }
+      }
+    },
   });
 }

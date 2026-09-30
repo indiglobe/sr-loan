@@ -30,7 +30,8 @@
     "db:prod:setup": "tf run db:prod:setup",
     "db:prod:push": "tf run db:prod:push",
     "db:prod:seed": "tf run db:prod:seed",
-    "db:prod:studio": "tf run db:prod:studio"
+    "db:prod:studio": "tf run db:prod:studio",
+    "db:export": "tf run db:export"
   },
   "exports": {
     "./*": {

@@ -61,6 +61,8 @@ async function seedUser() {
       password: bcrypt.hashSync("12341234", env.SALT_ROUND),
       phoneNumber: `${randomInt(9000000000, 9999999999)}`,
       role: Math.random() > 0.7 ? "AGENT" : "ADMIN",
+      location: faker.location.city(),
+      pin: faker.finance.pin({ length: 6 }),
     };
   });
 
@@ -83,7 +85,7 @@ async function seedBank() {
   const __dummyBanks = fullNames.map<typeof Table__Bank.$inferInsert>(
     (name) => ({
       bankName: name,
-      id: name.split(" ").join("-").toLowerCase(),
+      bankId: name.split(" ").join("-").toLowerCase(),
     }),
   );
 
@@ -106,7 +108,7 @@ async function seedLoanType() {
   const __dummyLoanTypes = fullNames.map<typeof Table__LoanType.$inferInsert>(
     (name) => ({
       bankLoanType: name,
-      id: name.split(" ").join("-").toLowerCase(),
+      loanTypeId: name.split(" ").join("-").toLowerCase(),
     }),
   );
 

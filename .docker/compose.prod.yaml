@@ -17,6 +17,8 @@ services:
       PMA_PASSWORD: ${PMA_PASSWORD}
     networks:
       - sr-loan-prod
+    env_file:
+      - ../.env.production
 
 volumes:
   database:

@@ -4,6 +4,7 @@ import {
   getCookie,
   getRequestHeaders,
   setCookie,
+  deleteCookie,
 } from "@tanstack/react-start/server";
 import { USER_DETAILS } from "@repo/utils/const/cookie-name";
 import { tryCatch } from "@repo/utils/try-catch";
@@ -41,3 +42,7 @@ export const setUserDetailsCookie = createServerFn()
 
     setCookie(USER_DETAILS, generatedTokenToStoreToClientCookie);
   });
+
+export const deleteUserDetailsCookie = createServerFn().handler(async () => {
+  deleteCookie(USER_DETAILS);
+});

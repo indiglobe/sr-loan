@@ -1,4 +1,5 @@
 import { fetchUserDetailsCookie } from "@/lib/auth/session";
+import { cn } from "@repo/styles/cn";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(authenticated-routes)")({
@@ -17,8 +18,8 @@ export const Route = createFileRoute("/(authenticated-routes)")({
 
 function RouteComponent() {
   return (
-    <>
+    <main className={cn(`py-4`)} >
       <Outlet />
-    </>
+    </main>
   );
 }

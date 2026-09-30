@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as authenticatedRoutesRouteRouteImport } from './routes/(authenticated-routes)/route'
 import { Route as unauthenticatedRoutesRouteRouteImport } from './routes/(unauthenticated-routes)/route'
+import { Route as authenticatedRoutesAdminRouteRouteImport } from './routes/(authenticated-routes)/admin/route'
+import { Route as authenticatedRoutesAgentRouteRouteImport } from './routes/(authenticated-routes)/agent/route'
 import { Route as authenticatedRoutesAdminIndexRouteImport } from './routes/(authenticated-routes)/admin/index'
 import { Route as authenticatedRoutesAgentIndexRouteImport } from './routes/(authenticated-routes)/agent/index'
 import { Route as unauthenticatedRoutesLoginIndexRouteImport } from './routes/(unauthenticated-routes)/login/index'
@@ -35,17 +37,29 @@ const unauthenticatedRoutesRouteRoute =
     id: '/(unauthenticated-routes)',
     getParentRoute: () => rootRouteImport,
   } as any)
+const authenticatedRoutesAdminRouteRoute =
+  authenticatedRoutesAdminRouteRouteImport.update({
+    id: '/admin',
+    path: '/admin',
+    getParentRoute: () => authenticatedRoutesRouteRoute,
+  } as any)
+const authenticatedRoutesAgentRouteRoute =
+  authenticatedRoutesAgentRouteRouteImport.update({
+    id: '/agent',
+    path: '/agent',
+    getParentRoute: () => authenticatedRoutesRouteRoute,
+  } as any)
 const authenticatedRoutesAdminIndexRoute =
   authenticatedRoutesAdminIndexRouteImport.update({
-    id: '/admin/',
-    path: '/admin/',
-    getParentRoute: () => authenticatedRoutesRouteRoute,
+    id: '/',
+    path: '/',
+    getParentRoute: () => authenticatedRoutesAdminRouteRoute,
   } as any)
 const authenticatedRoutesAgentIndexRoute =
   authenticatedRoutesAgentIndexRouteImport.update({
-    id: '/agent/',
-    path: '/agent/',
-    getParentRoute: () => authenticatedRoutesRouteRoute,
+    id: '/',
+    path: '/',
+    getParentRoute: () => authenticatedRoutesAgentRouteRoute,
   } as any)
 const unauthenticatedRoutesLoginIndexRoute =
   unauthenticatedRoutesLoginIndexRouteImport.update({
@@ -60,25 +74,27 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 } as any)
 const authenticatedRoutesAdminAgreementIndexRoute =
   authenticatedRoutesAdminAgreementIndexRouteImport.update({
-    id: '/admin/agreement/',
-    path: '/admin/agreement/',
-    getParentRoute: () => authenticatedRoutesRouteRoute,
+    id: '/agreement/',
+    path: '/agreement/',
+    getParentRoute: () => authenticatedRoutesAdminRouteRoute,
   } as any)
 const authenticatedRoutesAdminDashboardIndexRoute =
   authenticatedRoutesAdminDashboardIndexRouteImport.update({
-    id: '/admin/dashboard/',
-    path: '/admin/dashboard/',
-    getParentRoute: () => authenticatedRoutesRouteRoute,
+    id: '/dashboard/',
+    path: '/dashboard/',
+    getParentRoute: () => authenticatedRoutesAdminRouteRoute,
   } as any)
 const authenticatedRoutesAgentDashboardIndexRoute =
   authenticatedRoutesAgentDashboardIndexRouteImport.update({
-    id: '/agent/dashboard/',
-    path: '/agent/dashboard/',
-    getParentRoute: () => authenticatedRoutesRouteRoute,
+    id: '/dashboard/',
+    path: '/dashboard/',
+    getParentRoute: () => authenticatedRoutesAgentRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof authenticatedRoutesAdminRouteRouteWithChildren
+  '/agent': typeof authenticatedRoutesAgentRouteRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/admin/': typeof authenticatedRoutesAdminIndexRoute
   '/agent/': typeof authenticatedRoutesAgentIndexRoute
@@ -102,6 +118,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/(authenticated-routes)': typeof authenticatedRoutesRouteRouteWithChildren
   '/(unauthenticated-routes)': typeof unauthenticatedRoutesRouteRouteWithChildren
+  '/(authenticated-routes)/admin': typeof authenticatedRoutesAdminRouteRouteWithChildren
+  '/(authenticated-routes)/agent': typeof authenticatedRoutesAgentRouteRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/(authenticated-routes)/admin/': typeof authenticatedRoutesAdminIndexRoute
   '/(authenticated-routes)/agent/': typeof authenticatedRoutesAgentIndexRoute
@@ -114,6 +132,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
+    | '/agent'
     | '/api/auth/$'
     | '/admin/'
     | '/agent/'
@@ -136,6 +156,8 @@ export interface FileRouteTypes {
     | '/'
     | '/(authenticated-routes)'
     | '/(unauthenticated-routes)'
+    | '/(authenticated-routes)/admin'
+    | '/(authenticated-routes)/agent'
     | '/api/auth/$'
     | '/(authenticated-routes)/admin/'
     | '/(authenticated-routes)/agent/'
@@ -175,19 +197,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof unauthenticatedRoutesRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(authenticated-routes)/admin': {
+      id: '/(authenticated-routes)/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof authenticatedRoutesAdminRouteRouteImport
+      parentRoute: typeof authenticatedRoutesRouteRoute
+    }
+    '/(authenticated-routes)/agent': {
+      id: '/(authenticated-routes)/agent'
+      path: '/agent'
+      fullPath: '/agent'
+      preLoaderRoute: typeof authenticatedRoutesAgentRouteRouteImport
+      parentRoute: typeof authenticatedRoutesRouteRoute
+    }
     '/(authenticated-routes)/admin/': {
       id: '/(authenticated-routes)/admin/'
-      path: '/admin'
+      path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof authenticatedRoutesAdminIndexRouteImport
-      parentRoute: typeof authenticatedRoutesRouteRoute
+      parentRoute: typeof authenticatedRoutesAdminRouteRoute
     }
     '/(authenticated-routes)/agent/': {
       id: '/(authenticated-routes)/agent/'
-      path: '/agent'
+      path: '/'
       fullPath: '/agent/'
       preLoaderRoute: typeof authenticatedRoutesAgentIndexRouteImport
-      parentRoute: typeof authenticatedRoutesRouteRoute
+      parentRoute: typeof authenticatedRoutesAgentRouteRoute
     }
     '/(unauthenticated-routes)/login/': {
       id: '/(unauthenticated-routes)/login/'
@@ -205,46 +241,76 @@ declare module '@tanstack/react-router' {
     }
     '/(authenticated-routes)/admin/agreement/': {
       id: '/(authenticated-routes)/admin/agreement/'
-      path: '/admin/agreement'
+      path: '/agreement'
       fullPath: '/admin/agreement/'
       preLoaderRoute: typeof authenticatedRoutesAdminAgreementIndexRouteImport
-      parentRoute: typeof authenticatedRoutesRouteRoute
+      parentRoute: typeof authenticatedRoutesAdminRouteRoute
     }
     '/(authenticated-routes)/admin/dashboard/': {
       id: '/(authenticated-routes)/admin/dashboard/'
-      path: '/admin/dashboard'
+      path: '/dashboard'
       fullPath: '/admin/dashboard/'
       preLoaderRoute: typeof authenticatedRoutesAdminDashboardIndexRouteImport
-      parentRoute: typeof authenticatedRoutesRouteRoute
+      parentRoute: typeof authenticatedRoutesAdminRouteRoute
     }
     '/(authenticated-routes)/agent/dashboard/': {
       id: '/(authenticated-routes)/agent/dashboard/'
-      path: '/agent/dashboard'
+      path: '/dashboard'
       fullPath: '/agent/dashboard/'
       preLoaderRoute: typeof authenticatedRoutesAgentDashboardIndexRouteImport
-      parentRoute: typeof authenticatedRoutesRouteRoute
+      parentRoute: typeof authenticatedRoutesAgentRouteRoute
     }
   }
 }
 
-interface authenticatedRoutesRouteRouteChildren {
+interface authenticatedRoutesAdminRouteRouteChildren {
   authenticatedRoutesAdminIndexRoute: typeof authenticatedRoutesAdminIndexRoute
-  authenticatedRoutesAgentIndexRoute: typeof authenticatedRoutesAgentIndexRoute
   authenticatedRoutesAdminAgreementIndexRoute: typeof authenticatedRoutesAdminAgreementIndexRoute
   authenticatedRoutesAdminDashboardIndexRoute: typeof authenticatedRoutesAdminDashboardIndexRoute
-  authenticatedRoutesAgentDashboardIndexRoute: typeof authenticatedRoutesAgentDashboardIndexRoute
 }
 
-const authenticatedRoutesRouteRouteChildren: authenticatedRoutesRouteRouteChildren =
+const authenticatedRoutesAdminRouteRouteChildren: authenticatedRoutesAdminRouteRouteChildren =
   {
     authenticatedRoutesAdminIndexRoute: authenticatedRoutesAdminIndexRoute,
-    authenticatedRoutesAgentIndexRoute: authenticatedRoutesAgentIndexRoute,
     authenticatedRoutesAdminAgreementIndexRoute:
       authenticatedRoutesAdminAgreementIndexRoute,
     authenticatedRoutesAdminDashboardIndexRoute:
       authenticatedRoutesAdminDashboardIndexRoute,
+  }
+
+const authenticatedRoutesAdminRouteRouteWithChildren =
+  authenticatedRoutesAdminRouteRoute._addFileChildren(
+    authenticatedRoutesAdminRouteRouteChildren,
+  )
+
+interface authenticatedRoutesAgentRouteRouteChildren {
+  authenticatedRoutesAgentIndexRoute: typeof authenticatedRoutesAgentIndexRoute
+  authenticatedRoutesAgentDashboardIndexRoute: typeof authenticatedRoutesAgentDashboardIndexRoute
+}
+
+const authenticatedRoutesAgentRouteRouteChildren: authenticatedRoutesAgentRouteRouteChildren =
+  {
+    authenticatedRoutesAgentIndexRoute: authenticatedRoutesAgentIndexRoute,
     authenticatedRoutesAgentDashboardIndexRoute:
       authenticatedRoutesAgentDashboardIndexRoute,
+  }
+
+const authenticatedRoutesAgentRouteRouteWithChildren =
+  authenticatedRoutesAgentRouteRoute._addFileChildren(
+    authenticatedRoutesAgentRouteRouteChildren,
+  )
+
+interface authenticatedRoutesRouteRouteChildren {
+  authenticatedRoutesAdminRouteRoute: typeof authenticatedRoutesAdminRouteRouteWithChildren
+  authenticatedRoutesAgentRouteRoute: typeof authenticatedRoutesAgentRouteRouteWithChildren
+}
+
+const authenticatedRoutesRouteRouteChildren: authenticatedRoutesRouteRouteChildren =
+  {
+    authenticatedRoutesAdminRouteRoute:
+      authenticatedRoutesAdminRouteRouteWithChildren,
+    authenticatedRoutesAgentRouteRoute:
+      authenticatedRoutesAgentRouteRouteWithChildren,
   }
 
 const authenticatedRoutesRouteRouteWithChildren =

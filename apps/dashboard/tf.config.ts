@@ -30,5 +30,59 @@ export default defineConfig({
       execute: "storybook build",
       envFile: ".env.production",
     },
+     // ===================================
+    // DATABASE
+    // ===================================
+    "db:test:query": {
+      execute: "tsx watch ./src/database/helpers/test-query.ts",
+      envFile: ".env.development",
+    },
+    "db:dev": {
+      execute: "pnpm db:dev:setup && pnpm db:dev:push && pnpm db:dev:seed",
+      envValues: {
+        STRICT: false,
+        VERBOSE: false,
+      },
+    },
+    "db:dev:seed": {
+      execute: "tsx ./src/database/helpers/seed.ts",
+      envFile: ".env.development",
+    },
+    "db:dev:setup": {
+      execute: "tsx ./src/database/helpers/setup-db.ts",
+      envFile: ".env.development",
+    },
+    "db:dev:push": {
+      execute: "drizzle-kit push",
+      envFile: ".env.development",
+    },
+    "db:dev:studio": {
+      execute: "drizzle-kit studio",
+      envFile: ".env.development",
+    },
+    "db:generate": {
+      execute: "drizzle-kit generate",
+      envFile: ".env.production",
+    },
+    "db:migrate": {
+      execute: "drizzle-kit migrate",
+      envFile: ".env.production",
+    },
+    "db:pull": {
+      execute: "drizzle-kit pull",
+      envFile: ".env.production",
+    },
+    "db:export": {
+      execute: "drizzle-kit export",
+      envFile: ".env.production",
+    },
+    // ===================================
+    // DOCKER
+    // ===================================
+    "docker:compose:prod": {
+      execute: "docker compose -f ./.docker/compose.prod.yaml up -d",
+      envFile: ".env.production",
+    },
+
   },
 });

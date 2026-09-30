@@ -1,4 +1,5 @@
 import { FullAgreementContent } from "@/ui/agreement";
+import { cn } from "@repo/styles/cn";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(authenticated-routes)/admin/agreement/")({
@@ -7,8 +8,8 @@ export const Route = createFileRoute("/(authenticated-routes)/admin/agreement/")
 
 function RouteComponent() {
   return (
-    <main>
+    <div className={cn(`py-6`)} >
       <FullAgreementContent/>
-    </main>
+    </div>
   );
 }

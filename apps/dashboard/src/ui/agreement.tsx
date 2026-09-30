@@ -472,7 +472,9 @@ export function FullAgreementContent({
             </div>
           </div>
           <div className="text-right">
-            <p className="font-bold mb-12">APURBA DAS</p>
+            <p className=" mb-12">
+              {name ? name : "_____________________________________"}
+            </p>
             <div className="border-t border-zinc-400 pt-2 text-xs">
               Referrer Signature
             </div>
