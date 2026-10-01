@@ -9,7 +9,7 @@
   ],
   "compilerOptions": {
     "target": "ES2022",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "module": "ESNext",
     "paths": {
       "@/*": ["./src/*"]
