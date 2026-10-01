@@ -7,6 +7,4 @@
 .vscode
 .github
 *.log
-apps/storage/assets
-s3
 !.turbo

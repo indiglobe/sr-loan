@@ -28,7 +28,10 @@ const config = defineConfig(({ mode }) => {
       tailwindcss(),
       tanstackStart(),
       viteReact(),
-      babel({ presets: [reactCompilerPreset()] }),
+      babel({
+        presets: [reactCompilerPreset()],
+        plugins: [["babel-plugin-react-compiler", { target: "19" }]],
+      }),
     ],
   };
 });

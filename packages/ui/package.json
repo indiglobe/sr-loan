@@ -17,10 +17,6 @@
       "require": "./dist/components/*.cjs"
     }
   },
-  "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  },
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@radix-ui/react-slot": "^1.2.4",

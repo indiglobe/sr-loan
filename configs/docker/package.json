@@ -1,8 +1,8 @@
 {
   "name": "compose",
   "scripts": {
-    "build:dashboard": "docker compose --env-file ../../.env.production -f ./compose.yaml build --no-cache dashboard 2>&1 | tee docker-build.dashboard.log",
+    "build:dashboard": "docker compose --env-file ../../.env.production -f ./compose.yaml build dashboard 2>&1 | tee docker-build.dashboard.log",
+    "build:dashboard:nocache": "docker compose --env-file ../../.env.production -f ./compose.yaml build --no-cache dashboard 2>&1 | tee docker-build.dashboard.log",
     "run:dashboard:local": "docker compose --env-file ../../.env.production.local -f ./compose.yaml up -d --force-recreate dashboard"
-  
   }
 }
