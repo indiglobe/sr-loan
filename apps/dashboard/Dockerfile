@@ -5,6 +5,8 @@ FROM node:lts-alpine3.22 AS builder
 
 WORKDIR /app
 
+RUN corepack enable
+
 # Copy package files first for caching
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
@@ -24,7 +26,6 @@ COPY packages/env/package.json ./packages/env/package.json
 COPY packages/types/package.json ./packages/types/package.json
 
 # Install pnpm and all dependencies (dev + prod)
-RUN corepack enable
 RUN pnpm install --ignore-scripts --frozen-lockfile
 
 # Copy source code
@@ -32,61 +33,31 @@ COPY . .
 
 # Declare build args (secrets for prerender)
 
-ARG VITE_WEB_APP_HOST
 ARG VITE_DASHBOARD_APP_HOST
-ARG BETTER_AUTH_SECRET
-ARG BETTER_AUTH_URL
 ARG DATABASE_URL
-ARG GOOGLE_CLIENT_ID
-ARG GOOGLE_CLIENT_SECRET
 ARG TOKEN_SECRET
 ARG SALT_ROUND
-ARG WEB_APP_HOST
 ARG DASHBOARD_APP_HOST
 
 # Set temporary ENV for build (not persisted in final image)
 ENV \
-  VITE_WEB_APP_HOST=$VITE_WEB_APP_HOST \
   VITE_DASHBOARD_APP_HOST=$VITE_DASHBOARD_APP_HOST \
-  BETTER_AUTH_SECRET=$BETTER_AUTH_SECRET \
-  BETTER_AUTH_URL=$BETTER_AUTH_URL \
   DATABASE_URL=$DATABASE_URL \
-  GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID \
-  GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET \
   TOKEN_SECRET=$TOKEN_SECRET \
   SALT_ROUND=$SALT_ROUND \
-  WEB_APP_HOST=$WEB_APP_HOST \
   DASHBOARD_APP_HOST=$DASHBOARD_APP_HOST 
 
 # Create a env file at the root of the proj
 RUN cat > .env.production <<EOF
-VITE_WEB_APP_HOST=$VITE_WEB_APP_HOST
 VITE_DASHBOARD_APP_HOST=$VITE_DASHBOARD_APP_HOST
-BETTER_AUTH_SECRET=$BETTER_AUTH_SECRET
-BETTER_AUTH_URL=$BETTER_AUTH_URL
 DATABASE_URL=$DATABASE_URL
-GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
 TOKEN_SECRET=$TOKEN_SECRET
 SALT_ROUND=$SALT_ROUND
-WEB_APP_HOST=$WEB_APP_HOST
 DASHBOARD_APP_HOST=$DASHBOARD_APP_HOST
 EOF
 
-# build local workspace dependencies first
-RUN pnpm build \
-  --filter @repo/tsup-config \
-  --filter @repo/vitest-config \
-  --filter @repo/eslint-config \
-  --filter @repo/typescript-config \
-  --filter @repo/prettier-config \
-  --filter @repo/ui \
-  --filter @repo/utils \
-  --filter @repo/data \
-  --filter @repo/styles \
-  --filter @repo/env
-
 # Build app (uses build-time ENV)
+ENV NODE_ENV=production
 RUN pnpm build --filter dashboard
 
 
@@ -111,6 +82,10 @@ COPY packages/utils/package.json ./packages/utils/package.json
 COPY packages/data/package.json ./packages/data/package.json
 COPY packages/styles/package.json ./packages/styles/package.json
 COPY packages/env/package.json ./packages/env/package.json
+COPY packages/types/package.json ./packages/types/package.json
+
+# install prod deps
+RUN pnpm install --prod --frozen-lockfile
 
 # Copy built output from builder
 COPY --from=builder /app/apps/dashboard/dist ./apps/dashboard/dist
@@ -122,9 +97,7 @@ COPY --from=builder /app/packages/styles/dist ./packages/styles/dist
 COPY --from=builder /app/packages/env/dist ./packages/env/dist
 COPY --from=builder /app/packages/types/dist ./packages/types/dist
 
-# install prod deps
-RUN pnpm install --prod --frozen-lockfile
-
+ENV NODE_ENV=production
 EXPOSE 3000
 
 ENTRYPOINT ["node","apps/dashboard/dist/server/index.mjs"]

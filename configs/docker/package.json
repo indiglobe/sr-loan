@@ -1,25 +1,8 @@
 {
   "name": "compose",
   "scripts": {
-    "build-run:campus": "docker compose --env-file ../../.env.production -f ./compose.yaml up -d --build campus",
-    "build-run:live": "docker compose --env-file ../../.env.production -f ./compose.yaml up -d --build live",
-    "build-run:socket": "docker compose --env-file ../../.env.production -f ./compose.yaml up -d --build socket",
-    "build-run:storage": "docker compose --env-file ../../.env.production -f ./compose.yaml up -d --build storage",
-    "run:campus": "docker compose --env-file ../../.env.production -f ./compose.yaml up -d campus",
-    "run:live": "docker compose --env-file ../../.env.production -f ./compose.yaml up -d live",
-    "run:socket": "docker compose --env-file ../../.env.production -f ./compose.yaml up -d socket",
-    "run:storage": "docker compose --env-file ../../.env.production -f ./compose.yaml up -d storage",
-    "build:campus": "docker compose --env-file ../../.env.production -f ./compose.yaml build campus 2>&1 | tee docker-build.campus.log",
-    "build:live": "docker compose --env-file ../../.env.production -f ./compose.yaml build live 2>&1 | tee docker-build.live.log",
-    "build:socket": "docker compose --env-file ../../.env.production -f ./compose.yaml build socket 2>&1 | tee docker-build.socket.log",
-    "build:storage": "docker compose --env-file ../../.env.production -f ./compose.yaml build storage  2>&1 | tee docker-build.storage.log",
-    "run:live:local": "docker compose --env-file ../../.env.production.local -f ./compose.yaml up -d live",
-    "run:campus:local": "docker compose --env-file ../../.env.production.local -f ./compose.yaml up -d campus",
-    "run:socket:local": "docker compose --env-file ../../.env.production.local -f ./compose.yaml up -d socket",
-    "run:storage:local": "docker compose --env-file ../../.env.production.local -f ./compose.yaml up -d storage",
-    "build:campus:local": "docker compose --env-file ../../.env.production.local -f ./compose.yaml build campus 2>&1 | tee docker-build.campus.log",
-    "build:live:local": "docker compose --env-file ../../.env.production.local -f ./compose.yaml build live 2>&1 | tee docker-build.live.log",
-    "build:socket:local": "docker compose --env-file ../../.env.production.local -f ./compose.yaml build socket 2>&1 | tee docker-build.socket.log",
-    "build:storage:local": "docker compose --env-file ../../.env.production.local -f ./compose.yaml build storage  2>&1 | tee docker-build.storage.log"
+    "build:dashboard": "docker compose --env-file ../../.env.production -f ./compose.yaml build --no-cache dashboard 2>&1 | tee docker-build.dashboard.log",
+    "run:dashboard:local": "docker compose --env-file ../../.env.production.local -f ./compose.yaml up -d --force-recreate dashboard"
+  
   }
 }

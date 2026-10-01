@@ -17,7 +17,6 @@ import { Route as authenticatedRoutesAgentRouteRouteImport } from './routes/(aut
 import { Route as authenticatedRoutesAdminIndexRouteImport } from './routes/(authenticated-routes)/admin/index'
 import { Route as authenticatedRoutesAgentIndexRouteImport } from './routes/(authenticated-routes)/agent/index'
 import { Route as unauthenticatedRoutesLoginIndexRouteImport } from './routes/(unauthenticated-routes)/login/index'
-import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as authenticatedRoutesAdminAgreementIndexRouteImport } from './routes/(authenticated-routes)/admin/agreement/index'
 import { Route as authenticatedRoutesAdminDashboardIndexRouteImport } from './routes/(authenticated-routes)/admin/dashboard/index'
 import { Route as authenticatedRoutesAgentDashboardIndexRouteImport } from './routes/(authenticated-routes)/agent/dashboard/index'
@@ -67,11 +66,6 @@ const unauthenticatedRoutesLoginIndexRoute =
     path: '/login/',
     getParentRoute: () => unauthenticatedRoutesRouteRoute,
   } as any)
-const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
-  id: '/api/auth/$',
-  path: '/api/auth/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const authenticatedRoutesAdminAgreementIndexRoute =
   authenticatedRoutesAdminAgreementIndexRouteImport.update({
     id: '/agreement/',
@@ -95,7 +89,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof authenticatedRoutesAdminRouteRouteWithChildren
   '/agent': typeof authenticatedRoutesAgentRouteRouteWithChildren
-  '/api/auth/$': typeof ApiAuthSplatRoute
   '/admin/': typeof authenticatedRoutesAdminIndexRoute
   '/agent/': typeof authenticatedRoutesAgentIndexRoute
   '/login/': typeof unauthenticatedRoutesLoginIndexRoute
@@ -105,7 +98,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
   '/admin': typeof authenticatedRoutesAdminIndexRoute
   '/agent': typeof authenticatedRoutesAgentIndexRoute
   '/login': typeof unauthenticatedRoutesLoginIndexRoute
@@ -120,7 +112,6 @@ export interface FileRoutesById {
   '/(unauthenticated-routes)': typeof unauthenticatedRoutesRouteRouteWithChildren
   '/(authenticated-routes)/admin': typeof authenticatedRoutesAdminRouteRouteWithChildren
   '/(authenticated-routes)/agent': typeof authenticatedRoutesAgentRouteRouteWithChildren
-  '/api/auth/$': typeof ApiAuthSplatRoute
   '/(authenticated-routes)/admin/': typeof authenticatedRoutesAdminIndexRoute
   '/(authenticated-routes)/agent/': typeof authenticatedRoutesAgentIndexRoute
   '/(unauthenticated-routes)/login/': typeof unauthenticatedRoutesLoginIndexRoute
@@ -134,7 +125,6 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/agent'
-    | '/api/auth/$'
     | '/admin/'
     | '/agent/'
     | '/login/'
@@ -144,7 +134,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/api/auth/$'
     | '/admin'
     | '/agent'
     | '/login'
@@ -158,7 +147,6 @@ export interface FileRouteTypes {
     | '/(unauthenticated-routes)'
     | '/(authenticated-routes)/admin'
     | '/(authenticated-routes)/agent'
-    | '/api/auth/$'
     | '/(authenticated-routes)/admin/'
     | '/(authenticated-routes)/agent/'
     | '/(unauthenticated-routes)/login/'
@@ -171,7 +159,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   authenticatedRoutesRouteRoute: typeof authenticatedRoutesRouteRouteWithChildren
   unauthenticatedRoutesRouteRoute: typeof unauthenticatedRoutesRouteRouteWithChildren
-  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -231,13 +218,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/login/'
       preLoaderRoute: typeof unauthenticatedRoutesLoginIndexRouteImport
       parentRoute: typeof unauthenticatedRoutesRouteRoute
-    }
-    '/api/auth/$': {
-      id: '/api/auth/$'
-      path: '/api/auth/$'
-      fullPath: '/api/auth/$'
-      preLoaderRoute: typeof ApiAuthSplatRouteImport
-      parentRoute: typeof rootRouteImport
     }
     '/(authenticated-routes)/admin/agreement/': {
       id: '/(authenticated-routes)/admin/agreement/'
@@ -336,17 +316,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   authenticatedRoutesRouteRoute: authenticatedRoutesRouteRouteWithChildren,
   unauthenticatedRoutesRouteRoute: unauthenticatedRoutesRouteRouteWithChildren,
-  ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

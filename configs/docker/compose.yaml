@@ -1,134 +1,25 @@
-name: sanjib-academy
+name: sr-loan
 
 networks:
-  sanjib-academy-prod-local:
+  sr-laon-prod-local:
     driver: bridge
 
 services:
-  campus:
-    container_name: sanjib-academy-prod-local-campus
-    pull_policy: "always"
-    image: "nirvikpurkait/campus-app"
+  dashboard:
+    container_name: sr-laon-dashboard
+    image: "sr-laon-dashboard"
     build:
       context: ../../
-      dockerfile: apps/campus/Dockerfile
+      dockerfile: apps/dashboard/Dockerfile
       args:
-        BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
-        BETTER_AUTH_URL: ${BETTER_AUTH_URL}
+        VITE_DASHBOARD_APP_HOST: ${VITE_DASHBOARD_APP_HOST}
         DATABASE_URL: ${DATABASE_URL}
-        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-        GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-        RAZOR_PAY_KEY: ${RAZOR_PAY_KEY}
-        RAZOR_PAY_SECRET: ${RAZOR_PAY_SECRET}
-        CAMPUS_APP_HOST: ${CAMPUS_APP_HOST}
-        STORAGE_APP_HOST: ${STORAGE_APP_HOST}
-        SOCKET_APP_HOST: ${SOCKET_APP_HOST}
-        LIVE_APP_HOST: ${LIVE_APP_HOST}
-        VITE_CAMPUS_APP_HOST: ${VITE_CAMPUS_APP_HOST}
-        VITE_STORAGE_APP_HOST: ${VITE_STORAGE_APP_HOST}
-        VITE_RAZOR_PAY_KEY: ${VITE_RAZOR_PAY_KEY}
-        VITE_SOCKET_APP_HOST: ${VITE_SOCKET_APP_HOST}
-        VITE_LIVE_APP_HOST: ${VITE_LIVE_APP_HOST}
         TOKEN_SECRET: ${TOKEN_SECRET}
+        SALT_ROUND: ${SALT_ROUND}
+        DASHBOARD_APP_HOST: ${DASHBOARD_APP_HOST}
     ports:
       - 19100:3000
     env_file:
-      - ../../.env.production.local
+      - ../../.env.production
     networks:
-      - sanjib-academy-prod-local
-
-  live:
-    container_name: sanjib-academy-prod-local-live
-    pull_policy: "always"
-    image: "nirvikpurkait/live-app"
-    build:
-      context: ../../
-      dockerfile: apps/live/Dockerfile
-      args:
-        BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
-        BETTER_AUTH_URL: ${BETTER_AUTH_URL}
-        DATABASE_URL: ${DATABASE_URL}
-        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-        GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-        RAZOR_PAY_KEY: ${RAZOR_PAY_KEY}
-        RAZOR_PAY_SECRET: ${RAZOR_PAY_SECRET}
-        CAMPUS_APP_HOST: ${CAMPUS_APP_HOST}
-        STORAGE_APP_HOST: ${STORAGE_APP_HOST}
-        SOCKET_APP_HOST: ${SOCKET_APP_HOST}
-        LIVE_APP_HOST: ${LIVE_APP_HOST}
-        VITE_CAMPUS_APP_HOST: ${VITE_CAMPUS_APP_HOST}
-        VITE_STORAGE_APP_HOST: ${VITE_STORAGE_APP_HOST}
-        VITE_RAZOR_PAY_KEY: ${VITE_RAZOR_PAY_KEY}
-        VITE_SOCKET_APP_HOST: ${VITE_SOCKET_APP_HOST}
-        VITE_LIVE_APP_HOST: ${VITE_LIVE_APP_HOST}
-        TOKEN_SECRET: ${TOKEN_SECRET}
-    env_file:
-      - ../../.env.production.local
-    ports:
-      - 18532:3000
-    networks:
-      - sanjib-academy-prod-local
-
-  socket:
-    container_name: sanjib-academy-prod-local-socket
-    pull_policy: "always"
-    image: "nirvikpurkait/socket-app"
-    build:
-      context: ../../
-      dockerfile: apps/socket/Dockerfile
-      args:
-        BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
-        BETTER_AUTH_URL: ${BETTER_AUTH_URL}
-        DATABASE_URL: ${DATABASE_URL}
-        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-        GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-        RAZOR_PAY_KEY: ${RAZOR_PAY_KEY}
-        RAZOR_PAY_SECRET: ${RAZOR_PAY_SECRET}
-        CAMPUS_APP_HOST: ${CAMPUS_APP_HOST}
-        STORAGE_APP_HOST: ${STORAGE_APP_HOST}
-        SOCKET_APP_HOST: ${SOCKET_APP_HOST}
-        LIVE_APP_HOST: ${LIVE_APP_HOST}
-        VITE_CAMPUS_APP_HOST: ${VITE_CAMPUS_APP_HOST}
-        VITE_STORAGE_APP_HOST: ${VITE_STORAGE_APP_HOST}
-        VITE_RAZOR_PAY_KEY: ${VITE_RAZOR_PAY_KEY}
-        VITE_SOCKET_APP_HOST: ${VITE_SOCKET_APP_HOST}
-        VITE_LIVE_APP_HOST: ${VITE_LIVE_APP_HOST}
-        TOKEN_SECRET: ${TOKEN_SECRET}
-    ports:
-      - 14814:3000
-    env_file:
-      - ../../.env.production.local
-    networks:
-      - sanjib-academy-prod-local
-
-  storage:
-    container_name: sanjib-academy-prod-local-storage
-    pull_policy: "always"
-    image: "nirvikpurkait/storage-app"
-    build:
-      context: ../../
-      dockerfile: apps/storage/Dockerfile
-      args:
-        BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
-        BETTER_AUTH_URL: ${BETTER_AUTH_URL}
-        DATABASE_URL: ${DATABASE_URL}
-        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-        GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-        RAZOR_PAY_KEY: ${RAZOR_PAY_KEY}
-        RAZOR_PAY_SECRET: ${RAZOR_PAY_SECRET}
-        CAMPUS_APP_HOST: ${CAMPUS_APP_HOST}
-        STORAGE_APP_HOST: ${STORAGE_APP_HOST}
-        SOCKET_APP_HOST: ${SOCKET_APP_HOST}
-        LIVE_APP_HOST: ${LIVE_APP_HOST}
-        VITE_CAMPUS_APP_HOST: ${VITE_CAMPUS_APP_HOST}
-        VITE_STORAGE_APP_HOST: ${VITE_STORAGE_APP_HOST}
-        VITE_RAZOR_PAY_KEY: ${VITE_RAZOR_PAY_KEY}
-        VITE_SOCKET_APP_HOST: ${VITE_SOCKET_APP_HOST}
-        VITE_LIVE_APP_HOST: ${VITE_LIVE_APP_HOST}
-        TOKEN_SECRET: ${TOKEN_SECRET}
-    ports:
-      - 19607:3000
-    env_file:
-      - ../../.env.production.local
-    networks:
-      - sanjib-academy-prod-local
+      - sr-laon-prod-local

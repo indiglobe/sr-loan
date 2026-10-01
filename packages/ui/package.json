@@ -26,7 +26,6 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@repo/styles": "workspace:^",
     "@unpic/react": "^1.0.2",
-    "@videojs/react": "10.0.0-beta.23",
     "class-variance-authority": "^0.7.1",
     "embla-carousel-auto-scroll": "^8.6.0",
     "embla-carousel-autoplay": "^8.6.0",

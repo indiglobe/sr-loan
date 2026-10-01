@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
-import { auth } from "@/lib/auth/config";
+// import { auth } from "@/lib/auth/config";
 import {
   getCookie,
-  getRequestHeaders,
+  // getRequestHeaders,
   setCookie,
   deleteCookie,
 } from "@tanstack/react-start/server";
@@ -11,12 +11,12 @@ import { tryCatch } from "@repo/utils/try-catch";
 import { signJWT, verifyJWT } from "@repo/utils/jwt";
 import { userDetailsCookieSchema } from "@/utils/zod-schema/cookie-schema";
 
-export const fetchSession = createServerFn().handler(async () => {
-  const headers = getRequestHeaders();
-  const session = await auth.api.getSession({ headers });
+// export const fetchSession = createServerFn().handler(async () => {
+//   const headers = getRequestHeaders();
+//   const session = await auth.api.getSession({ headers });
 
-  return session;
-});
+//   return session;
+// });
 
 /**
  * Returns the `userDetailsFromCookie`

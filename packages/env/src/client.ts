@@ -13,7 +13,6 @@ export const env = createEnv({
   clientPrefix: "VITE_",
 
   client: {
-    VITE_WEB_APP_HOST: z.string(),
     VITE_DASHBOARD_APP_HOST: z.string(),
   },
 
