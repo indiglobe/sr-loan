@@ -30,30 +30,9 @@
     "db:prod:setup": "tf run db:prod:setup",
     "db:prod:push": "tf run db:prod:push",
     "db:prod:seed": "tf run db:prod:seed",
-    "db:prod:studio": "tf run db:prod:studio",
-    "db:export": "tf run db:export"
+    "db:prod:studio": "tf run db:prod:studio"
   },
   "exports": {
-    "./*": {
-      "require": {
-        "types": "./dist/exports/*.d.cts",
-        "default": "./dist/exports/*.cjs"
-      },
-      "import": {
-        "types": "./dist/exports/*.d.mts",
-        "default": "./dist/exports/*.mjs"
-      }
-    },
-    "./utils/*": {
-      "require": {
-        "types": "./dist/exports/utils/*.d.cts",
-        "default": "./dist/exports/utils/*.cjs"
-      },
-      "import": {
-        "types": "./dist/exports/utils/*.d.mts",
-        "default": "./dist/exports/utils/*.mjs"
-      }
-    },
     "./querries/*": {
       "require": {
         "types": "./dist/querries/*.d.cts",
@@ -92,7 +71,6 @@
     "@types/node": "^22.19.15",
     "@vitest/coverage-v8": "^4.1.6",
     "@vitest/ui": "4.1.6",
-    "bcryptjs": "^3.0.3",
     "drizzle-kit": "^0.30.6",
     "eslint": "^10.4.0",
     "http-server": "^14.1.1",

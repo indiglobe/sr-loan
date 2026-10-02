@@ -1,19 +1,10 @@
 import { withThemeByClassName } from "@storybook/addon-themes";
-import type { ReactRenderer } from "@storybook/tanstack-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
+import type { ReactRenderer } from "@storybook/react-vite";
 
 export const ThemeDecorator = withThemeByClassName<ReactRenderer>({
   themes: {
     light: "",
     dark: "dark",
   },
-  defaultTheme: "dark",
+  defaultTheme: "light",
 });
-
-export const QueryProviderDecorator = (Story: React.ComponentType) => (
-  <QueryClientProvider client={queryClient}>
-    <Story />
-  </QueryClientProvider>
-);

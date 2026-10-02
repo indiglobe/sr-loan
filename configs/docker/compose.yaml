@@ -1,25 +1,28 @@
 name: sr-loan
 
 networks:
-  sr-laon-prod-local:
+  sr-loan-prod-local:
     driver: bridge
 
 services:
   dashboard:
-    container_name: sr-laon-dashboard
-    image: "sr-laon-dashboard"
+    container_name: sr-loan-prod-local-live
+    # pull_policy: "always"
+    image: "nirvikpurkait/sr-loan-dashboard"
     build:
       context: ../../
       dockerfile: apps/dashboard/Dockerfile
       args:
-        VITE_DASHBOARD_APP_HOST: ${VITE_DASHBOARD_APP_HOST}
         DATABASE_URL: ${DATABASE_URL}
+        DASHBOARD_APP_HOST: ${DASHBOARD_APP_HOST}
+        VITE_DASHBOARD_APP_HOST: ${VITE_DASHBOARD_APP_HOST}
         TOKEN_SECRET: ${TOKEN_SECRET}
         SALT_ROUND: ${SALT_ROUND}
-        DASHBOARD_APP_HOST: ${DASHBOARD_APP_HOST}
-    ports:
-      - 19100:3000
+        TURBO_TOKEN: ${TURBO_TOKEN}
+        TURBO_TEAM: ${TURBO_TEAM}
     env_file:
       - ../../.env.production
+    ports:
+      - 18532:3000
     networks:
-      - sr-laon-prod-local
+      - sr-loan-prod-local

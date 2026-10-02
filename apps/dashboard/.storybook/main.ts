@@ -1,5 +1,5 @@
 // .storybook/main.ts
-import type { StorybookConfig } from "@storybook/tanstack-react";
+import type { StorybookConfig } from "@storybook/react-vite";
 import type { InlineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -12,23 +12,22 @@ const config: StorybookConfig = {
     "@storybook/addon-themes",
   ],
 
-  framework: "@storybook/tanstack-react",
+  framework: "@storybook/react-vite",
 
   core: {
     enableCrashReports: false,
     disableWhatsNewNotifications: true,
-    disableTelemetry: true,
   },
 
-  async viteFinal(inlineConfig: InlineConfig) {
+  async viteFinal(config: InlineConfig) {
     /**
      * Keep only Storybook's own plugins, then add back the safe ones we need
      */
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const storybookPlugins = (inlineConfig.plugins ?? [])
+    const storybookPlugins = (config.plugins ?? [])
       .flat(Infinity)
-
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .filter((plugin: any) => {
         if (!plugin?.name) return false;
         return (
@@ -39,9 +38,9 @@ const config: StorybookConfig = {
         );
       });
 
-    inlineConfig.plugins = [...storybookPlugins, tailwindcss()];
+    config.plugins = [...storybookPlugins, tailwindcss()];
 
-    return inlineConfig;
+    return config;
   },
 };
 

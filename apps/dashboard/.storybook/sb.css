@@ -1,13 +1,5 @@
-/* IF YOU HAVE SOME FONT, THAT IS USED IN YOUR APP,
-  PLACE THOSE FONTS SOURCE/LINK HERE AS WELL AS, 
-  STORYBOOK IS COMPLETE SEPARATE SERVICE FROM YOUR MAIN APP.
-  IT WOULD NOT FETCH THOSE FONT SOURCE. AND YOU MAY SEE
-  SOME BROKEN TEXT STYLE UI.
- */
-
-@import url("https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Shadows+Into+Light&display=swap");
-@import "tailwindcss";
 @import "../src/styles.css";
+@import "tailwindcss";
 
 .sbdocs-wrapper {
   background-color: hsl(0, 0%, 11%) !important;

@@ -1,18 +1,22 @@
 import { env } from "@repo/env/server";
 import * as jose from "jose";
+import z from "zod";
 
 const secret = new TextEncoder().encode(env.TOKEN_SECRET);
 
-/**
- * JWT Payload
- */
-export interface JwtPayload extends jose.JWTPayload {
-  userId: string;
-  email: string;
-  name: string;
-  phone: string;
-  role: "ADMIN" | "AGENT";
-}
+export const ROLE_ENUM = z.enum(["ADMIN", "CUSTOMER", "AGENT"]);
+
+export const jwtPayloadSchema = z.object({
+  userId: z.string(),
+  email: z.email(),
+  fullName: z.string(),
+  avatarUrl: z.string(),
+  age: z.number(),
+  role: ROLE_ENUM,
+  phone: z.string(),
+});
+
+export type JwtPayload = z.infer<typeof jwtPayloadSchema> & jose.JWTPayload;
 
 /**
  * Sign JWT

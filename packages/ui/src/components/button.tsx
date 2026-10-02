@@ -52,7 +52,7 @@ function Button({
   className,
   variant = "default",
   size = "default",
-  corner = "rounded",
+  corner = "sharp",
   asChild = false,
   ...props
 }: React.ComponentProps<"button"> &

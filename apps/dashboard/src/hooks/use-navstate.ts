@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 /**
  * useNavbarState (Zustand store hook)
@@ -30,9 +31,14 @@ interface NavbarState {
   toggleNavBar: () => void;
 }
 
-export const useNavbarState = create<NavbarState>()((set) => ({
-  isNavOpen: false,
-  openNavBar: () => set({ isNavOpen: true }),
-  closeNavBar: () => set({ isNavOpen: false }),
-  toggleNavBar: () => set((prev) => ({ isNavOpen: !prev.isNavOpen })),
-}));
+export const useNavbarState = create<NavbarState>()(
+  devtools(
+    (set) => ({
+      isNavOpen: false,
+      openNavBar: () => set({ isNavOpen: true }),
+      closeNavBar: () => set({ isNavOpen: false }),
+      toggleNavBar: () => set((prev) => ({ isNavOpen: !prev.isNavOpen })),
+    }),
+    { name: "nav-state" },
+  ),
+);

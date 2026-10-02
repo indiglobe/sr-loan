@@ -9,14 +9,14 @@
     "lint:staged": "lint-staged"
   },
   "exports": {
-    "./namespaces/*": {
+    "*": {
       "require": {
-        "types": "./dist/namespaces/*.d.cts",
-        "default": "./dist/namespaces/*.cjs"
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
       },
       "import": {
-        "types": "./dist/namespaces/*.d.mts",
-        "default": "./dist/namespaces/*.mjs"
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
       }
     }
   },
@@ -30,8 +30,6 @@
     "@types/node": "^22.19.15",
     "eslint": "^10.4.0",
     "lint-staged": "^16.2.7",
-    "mediasoup": "^3.20.10",
-    "mediasoup-client": "^3.21.0",
     "pkgroll": "^2.27.0",
     "prettier": "^3.5.3",
     "rimraf": "^6.1.3",

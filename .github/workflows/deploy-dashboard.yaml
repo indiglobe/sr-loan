@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - develop
     paths:
       - "apps/dashboard/**"
 
@@ -34,16 +35,10 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/sr-loan-dashboard:latest
           file: ./apps/dashboard/Dockerfile
           build-args: |
-            VITE_WEB_APP_HOST=${{ secrets.VITE_WEB_APP_HOST }}
             VITE_DASHBOARD_APP_HOST=${{ secrets.VITE_DASHBOARD_APP_HOST }}
             DATABASE_URL=${{ secrets.DATABASE_URL }}
-            BETTER_AUTH_SECRET=${{ secrets.BETTER_AUTH_SECRET }}
-            BETTER_AUTH_URL=${{ secrets.BETTER_AUTH_URL }}
-            GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
-            GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
             TOKEN_SECRET=${{ secrets.TOKEN_SECRET }}
             SALT_ROUND=${{ secrets.SALT_ROUND }}
-            WEB_APP_HOST=${{ secrets.WEB_APP_HOST }}
             DASHBOARD_APP_HOST=${{ secrets.DASHBOARD_APP_HOST }}
 
       - name: Trigger Dockploy deployment

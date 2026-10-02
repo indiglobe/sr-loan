@@ -1,7 +1,8 @@
 import type { Preview } from "@storybook/react-vite";
 import { INITIAL_VIEWPORTS } from "storybook/viewport";
-import { QueryProviderDecorator, ThemeDecorator } from "./decorator";
+import { ThemeDecorator } from "./decorator";
 /* eslint-disable */
+// @ts-ignore
 import "./sb.css";
 // @ts-ignore
 import "@repo/styles/css";
@@ -44,7 +45,7 @@ const preview: Preview & TypedGlobalPreview = {
     },
   },
 
-  decorators: [ThemeDecorator, QueryProviderDecorator],
+  decorators: [ThemeDecorator],
 };
 
 export default preview;

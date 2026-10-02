@@ -4,13 +4,4 @@
 @import "@repo/styles/css";
 @plugin "@tailwindcss/typography";
 
-@source "../src/**/*.{ts,tsx}";
 @source "../../../packages/ui/src/**/*.{ts,tsx}";
-
-@utility default-padding {
-  @apply px-4 md:px-10 lg:px-14 xl:px-18;
-}
-
-@utility fs-* {
-  font-size: calc(var(--spacing) * --value(number));
-}

@@ -17,9 +17,7 @@
  * }
  * ```
  */
-export type TryCatchResult<T> =
-  | readonly [Error, null]
-  | readonly [null, T];
+export type TryCatchResult<T> = readonly [Error, null] | readonly [null, T];
 
 /**
  * Executes or resolves a value and captures errors without throwing them.
@@ -31,10 +29,10 @@ export type TryCatchResult<T> =
  * If an error occurs, the result is returned as `[error, null]`.
  *
  * @typeParam T - The type of the input or resolved value.
- *
- * @param value - A function that produces a synchronous value.
- *
+ * @param value - A synchronous value, promise-like value, or function
+ * that produces a value.
  * @returns A tuple containing either the error or the successful result.
+ * Asynchronous inputs produce a `Promise` resolving to the result tuple.
  *
  * @example
  * ```ts
@@ -46,27 +44,10 @@ export type TryCatchResult<T> =
  *   console.log(data);
  * }
  * ```
- */
-export function tryCatch<T>(
-  value: () => T,
-): TryCatchResult<T>;
-
-/**
- * Executes or resolves an asynchronous function and captures errors
- * without throwing them.
- *
- * @typeParam T - The type of the asynchronously resolved value.
- *
- * @param value - A function that produces a promise or promise-like value.
- *
- * @returns A promise resolving to a tuple containing either the error
- * or the successfully resolved result.
  *
  * @example
  * ```ts
- * const [error, data] = await tryCatch(() =>
- *   fetch("/api/users").then((response) => response.json()),
- * );
+ * const [error, data] = await tryCatch(fetch("/api/users"));
  *
  * if (error) {
  *   console.error("Request failed:", error);
@@ -74,47 +55,6 @@ export function tryCatch<T>(
  *   console.log(data);
  * }
  * ```
- */
-export function tryCatch<T>(
-  value: () => PromiseLike<T>,
-): Promise<TryCatchResult<Awaited<T>>>;
-
-/**
- * Resolves a promise or promise-like value and captures errors without
- * throwing them.
- *
- * @typeParam T - The type of the asynchronously resolved value.
- *
- * @param value - A promise or promise-like value to resolve.
- *
- * @returns A promise resolving to a tuple containing either the error
- * or the successfully resolved result.
- *
- * @example
- * ```ts
- * const [error, data] = await tryCatch(
- *   fetch("/api/users").then((response) => response.json()),
- * );
- *
- * if (error) {
- *   console.error("Request failed:", error);
- * } else {
- *   console.log(data);
- * }
- * ```
- */
-export function tryCatch<T>(
-  value: PromiseLike<T>,
-): Promise<TryCatchResult<Awaited<T>>>;
-
-/**
- * Returns a successful result for a synchronous value.
- *
- * @typeParam T - The type of the value.
- *
- * @param value - A synchronous value.
- *
- * @returns A tuple containing `null` and the provided value.
  *
  * @example
  * ```ts
@@ -126,51 +66,46 @@ export function tryCatch<T>(
  * ```
  */
 export function tryCatch<T>(
-  value: T,
-): TryCatchResult<T>;
+  value: PromiseLike<T>,
+): Promise<TryCatchResult<Awaited<T>>>;
 
-/**
- * Internal implementation of {@link tryCatch}.
- *
- * Detects functions and promise-like values at runtime, executes or resolves
- * them, and converts both synchronous and asynchronous errors into a
- * `TryCatchResult`.
- *
- * @param value - The value, promise-like value, or function to execute.
- *
- * @returns A synchronous `TryCatchResult` or a promise resolving to one.
- */
+export function tryCatch<T>(
+  value: () => T,
+): T extends PromiseLike<unknown>
+  ? Promise<TryCatchResult<Awaited<T>>>
+  : TryCatchResult<T>;
+
+export function tryCatch<T>(
+  value: T,
+): T extends PromiseLike<unknown>
+  ? Promise<TryCatchResult<Awaited<T>>>
+  : TryCatchResult<T>;
+
 export function tryCatch(value: unknown): unknown {
   if (typeof value === "function") {
     try {
       const result = (value as () => unknown)();
 
       if (
-        result !== null &&
+        result &&
         typeof result === "object" &&
-        "then" in result &&
-        typeof (result as { then?: unknown }).then === "function"
+        "then" in (result as object)
       ) {
         return Promise.resolve(result)
           .then((data) => [null, data] as const)
-          .catch((error) => [error as Error, null] as const);
+          .catch((err) => [err as Error, null] as const);
       }
 
       return [null, result] as const;
-    } catch (error) {
-      return [error as Error, null] as const;
+    } catch (err) {
+      return [err as Error, null] as const;
     }
   }
 
-  if (
-    value !== null &&
-    typeof value === "object" &&
-    "then" in value &&
-    typeof (value as { then?: unknown }).then === "function"
-  ) {
+  if (value && typeof value === "object" && "then" in (value as object)) {
     return Promise.resolve(value)
       .then((data) => [null, data] as const)
-      .catch((error) => [error as Error, null] as const);
+      .catch((err) => [err as Error, null] as const);
   }
 
   return [null, value] as const;

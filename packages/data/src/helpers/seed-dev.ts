@@ -129,8 +129,8 @@ async function seedBankLoanDetails() {
   const __dummyBankLoanDetails = banks.map<
     typeof Table__BankLoanDetails.$inferInsert
   >((b) => ({
-    bankId: b.id,
-    loanTypeId: faker.helpers.arrayElement(loans.map((l) => l.id)),
+    bankId: b.bankId,
+    loanTypeId: faker.helpers.arrayElement(loans.map((l) => l.loanTypeId)),
     maxTenureInMonth: randomInt(1, 10) * 6,
     processingTimeInDays: randomInt(1, 5),
     returnOnInvest: randomInt(6, 14),

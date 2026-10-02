@@ -1,5 +1,4 @@
 import type { DecoratorFunction } from "storybook/internal/csf";
-// import second from '@/'
 
 /**
  * Defines strongly typed Storybook meta configuration options.
@@ -31,14 +30,6 @@ type TypedMetaOptions = Partial<{
      * - `"padded"`: Adds Storybook default padding around the component.
      */
     layout: "centered" | "fullscreen" | "padded";
-
-    tanstack: Partial<{
-      router: Partial<{
-        route: any;
-        params: Record<string, any>;
-        query: Record<string, any>;
-      }>;
-    }>;
   }>;
 
   /**
@@ -52,19 +43,17 @@ type TypedMetaOptions = Partial<{
 }>;
 
 /**
- * Defines strongly typed Storybook meta configuration options.
+ * Defines strongly typed Storybook story configuration options.
  *
- * Intended for use with Storybook component metadata (`meta`) to provide
- * stricter typing for commonly used Storybook settings such as layout
- * and documentation tags.
+ * Intended for use with Storybook story rendering to provide
+ * stricter typing for commonly used Storybook settings such as layout.
  *
  * @example
  * ```ts
- * const meta: TypedStoryOptions = {
+ * const meta: TypedMetaOptions = {
  *   parameters: {
  *     layout: "centered",
- *   },
- *   tags: ["autodocs"],
+ *   }
  * };
  * ```
  */
@@ -82,15 +71,6 @@ type TypedStoryOptions = Partial<{
      */
     layout: "centered" | "fullscreen" | "padded";
   }>;
-
-  /**
-   * Storybook documentation tags.
-   *
-   * Common values:
-   * - `"autodocs"` Enables automatic documentation generation.
-   * - `"!autodocs"` Disables automatic documentation generation.
-   */
-  tags: Array<"autodocs" | "!autodocs">;
 }>;
 
 /**
@@ -162,14 +142,6 @@ type TypedGlobalPreview = Partial<{
      * Global layout applied to all stories.
      */
     layout: "fullscreen" | "centered" | "padded";
-
-    tanstack: Partial<{
-      router: Partial<{
-        route: any;
-        params: Record<string, any>;
-        query: Record<string, any>;
-      }>;
-    }>;
   }>;
 
   /**
@@ -240,6 +212,6 @@ type Viewports = Record<
 export type {
   TypedGlobalPreview,
   TypedMetaOptions,
-  Viewports,
   TypedStoryOptions,
+  Viewports,
 };

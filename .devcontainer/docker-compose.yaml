@@ -22,10 +22,10 @@ services:
     image: mysql:8.4
     restart: unless-stopped
     volumes:
-      - sr-loan-mysql:/var/lib/mysql
+      - sanjib-academy-mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: sr-loan
+      MYSQL_DATABASE: sanjib-academy
 
   proxy:
     image: nginx:alpine
@@ -51,4 +51,4 @@ services:
       - db
 
 volumes:
-  sr-loan-mysql:
+  sanjib-academy-mysql:

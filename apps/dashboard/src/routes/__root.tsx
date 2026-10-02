@@ -8,9 +8,11 @@ import appCss from "../styles.css?url";
 import type { QueryClient } from "@tanstack/react-query";
 import { ThemeProvider } from "@/integrations/theme/theme-provider";
 import { cn } from "@repo/styles/cn";
-import { RootNotFound } from "@/components/main/root-not-found";
-import { RootError } from "@/components/main/root-error";
 import { Toaster } from "@repo/ui/sonner";
+import { Header } from "@/components/header/header";
+import { Footer } from "@/components/footer/footer";
+import { RootErrorComponent } from "@/components/main/root-error";
+import { RootNotFoundComponent } from "@/components/main/root-not-found";
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -27,22 +29,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: "SR Loan",
-      },
-      {
-        name: "twitter:image",
-        content: "/SEO-card.png",
-      },
-      {
-        property: "og:image",
-        content: "/SEO-card.png",
+        title: "SR Loan Services",
       },
     ],
     links: [
-      {
-        rel: "icon",
-        href: "/favicon.ico",
-      },
       {
         rel: "stylesheet",
         href: appCss,
@@ -61,9 +51,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
   shellComponent: RootDocument,
 
-  notFoundComponent: RootNotFound,
-
-  errorComponent: RootError,
+  errorComponent: () => <RootErrorComponent />,
+  notFoundComponent: () => <RootNotFoundComponent />,
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -74,11 +63,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body
         className={cn(
-          `flex max-w-svw flex-col overflow-x-clip overflow-y-auto`,
+          `flex max-w-svw flex-col min-h-dvh overflow-x-clip overflow-y-auto`,
         )}
       >
         <ThemeProvider>
-          {children}
+          <Header />
+          <main className={cn(``)}>{children}</main>
+          <Footer />
           <Toaster />
         </ThemeProvider>
         <DevTools />

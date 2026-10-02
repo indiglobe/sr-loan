@@ -1,8 +1,9 @@
 {
   "extends": "@repo/typescript-config/base",
   "compilerOptions": {
-    "rootDir": ".",
-    "ignoreDeprecations": "6.0"
+    "rootDir": "."
   },
-  "include": ["./src"]
+  "include": [
+    "./src"
+  ]
 }

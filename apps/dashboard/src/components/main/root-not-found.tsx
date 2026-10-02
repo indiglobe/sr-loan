@@ -1,76 +1,74 @@
-import { Button } from "@repo/ui/button";
 import { cn } from "@repo/styles/cn";
 import { Link } from "@tanstack/react-router";
+import { FileQuestion, Home, ArrowLeft } from "lucide-react";
 
-export function RootNotFound() {
+export function RootNotFoundComponent() {
   return (
-    <section className={cn(`w-full`)} data-slot={`root-not-found`}>
+    <section
+      className={cn(
+        "@container max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-32 grow flex flex-col items-center justify-center text-center",
+      )}
+    >
       <div
         className={cn(
-          `relative mx-auto flex min-h-screen max-w-7xl items-center justify-center px-4 py-16 sm:px-6 lg:px-8 lg:py-24`,
+          "w-full p-8 sm:p-12 rounded-xl bg-accent-50/50 dark:bg-accent-900/30 border border-accent-200 dark:border-accent-800 shadow-xl flex flex-col items-center gap-6 relative overflow-hidden",
         )}
       >
-        {/* Background Glow */}
         <div
           className={cn(
-            `from-primary-500/20 via-accent-500/10 to-secondary-500/20 absolute inset-0 -z-10 bg-linear-to-br opacity-60 blur-2xl`,
+            "absolute -right-20 -top-20 w-64 h-64 bg-primary-500/10 rounded-full blur-3xl pointer-events-none",
           )}
-        />
+        ></div>
 
         <div
           className={cn(
-            `relative w-full max-w-2xl rounded-lg border border-primary-300/40 bg-background p-6 dark:border-primary-700/40 sm:p-8 lg:p-10`,
+            "w-14 h-14 rounded-lg bg-primary-500/10 border border-primary-500/20 flex items-center justify-center text-primary-500 shadow-inner",
           )}
         >
+          <FileQuestion className={cn("w-7 h-7")} />
+        </div>
+
+        <div className={cn("space-y-2 max-w-lg")}>
           <div
             className={cn(
-              `from-primary-500/5 via-transparent to-accent-500/5 absolute inset-0 -z-10 rounded-lg bg-linear-to-br`,
+              "inline-flex items-center gap-2 px-3 py-1 rounded-md bg-primary-500/10 text-primary-600 dark:text-primary-400 text-xs font-semibold",
             )}
-          />
-
-          <div className={cn(`flex flex-col gap-6`)}>
-            {/* Label */}
-            <p
-              className={cn(
-                `text-primary-600 dark:text-primary-400 text-sm font-medium tracking-wide`,
-              )}
-            >
-              404 — Page Not Found
-            </p>
-
-            {/* Heading */}
-            <div className={cn(`flex flex-col gap-3`)}>
-              <h1
-                className={cn(
-                  `text-foreground text-2xl font-semibold tracking-tight sm:text-3xl lg:text-4xl`,
-                )}
-              >
-                Page not found ⚠️
-              </h1>
-
-              <p
-                className={cn(
-                  `text-foreground/70 max-w-xl text-sm leading-relaxed sm:text-base`,
-                )}
-              >
-                The page you're looking for doesn't exist, may have been moved,
-                or the link might be incorrect. You can return to the homepage
-                and continue exploring.
-              </p>
-            </div>
-
-            {/* Action */}
-            <div className={cn(`flex w-full justify-end pt-2`)}>
-              <Button variant="primary" asChild>
-                <Link to="/">Go to Home</Link>
-              </Button>
-            </div>
-
-            {/* Extra Hint */}
-            <p className={cn(`text-foreground/50 text-xs`)}>
-              If you followed a link to get here, it may no longer be available.
-            </p>
+          >
+            Error 404 • Page Not Found
           </div>
+          <h1
+            className={cn(
+              "text-2xl sm:text-3xl font-bold font-brand-accent tracking-tight",
+            )}
+          >
+            Page could not be found
+          </h1>
+          <p className={cn("text-sm text-accent-600 dark:text-accent-400")}>
+            The page you are looking for might have been removed, had its name changed, or is temporarily unavailable in the SR Loan Services portal.
+          </p>
+        </div>
+
+        <div
+          className={cn(
+            "flex flex-col sm:flex-row items-center gap-3 w-full max-w-sm pt-4",
+          )}
+        >
+          <Link
+            to="/"
+            className={cn(
+              "w-full py-3 rounded-lg bg-primary-500 hover:bg-primary-600 text-white font-medium shadow-lg shadow-primary-500/25 transition-all flex items-center justify-center gap-2",
+            )}
+          >
+            <Home className={cn("w-4 h-4")} /> Return Home
+          </Link>
+          <button
+            onClick={() => window.history.back()}
+            className={cn(
+              "w-full py-3 rounded-lg border border-accent-300 dark:border-accent-700 hover:bg-accent-100 dark:hover:bg-accent-800 font-medium text-sm transition-all flex items-center justify-center gap-2 cursor-pointer",
+            )}
+          >
+            <ArrowLeft className={cn("w-4 h-4")} /> Go Back
+          </button>
         </div>
       </div>
     </section>
