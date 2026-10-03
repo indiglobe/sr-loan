@@ -1,4 +1,5 @@
 import z from "zod";
+import { ROLE } from "@/exports/utils/enums";
 
 export const create__OneUserSchema = z.object({
   dataToUpload: z.object({
@@ -8,21 +9,38 @@ export const create__OneUserSchema = z.object({
     password: z.string(),
     phoneNumber: z.string(),
     emergencyPhoneNumber: z.string().nullish(),
-    role: z.union([z.literal("ADMIN"), z.literal("AGENT")]).optional(),
+    location: z.string(),
+    pin: z.string(),
+    role: z.enum(ROLE()).optional(),
+    referrerEmployeeId: z.string().nullish(),
   }),
 });
 
 export const read__OneUserSchema = z.object({
-  identifier: z.object({
-    email: z.string(),
-  }),
+  identifier: z.union([
+    z.object({
+      email: z.string(),
+    }),
+    z.object({
+      id: z.string(),
+    }),
+    z.object({
+      employeeId: z.string(),
+    }),
+  ]),
+
+  intentionalFields: z
+    .object({
+      password: z.boolean(),
+    })
+    .optional(),
 });
 
 export const read__AllUsersSchema = z
   .object({
     identifier: z
       .object({
-        role: z.enum(["ADMIN", "AGENT"]),
+        role: z.enum(ROLE()),
       })
       .optional(),
   })

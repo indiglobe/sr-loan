@@ -40,6 +40,8 @@ jobs:
             TOKEN_SECRET=${{ secrets.TOKEN_SECRET }}
             SALT_ROUND=${{ secrets.SALT_ROUND }}
             DASHBOARD_APP_HOST=${{ secrets.DASHBOARD_APP_HOST }}
+            TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
+            TURBO_TEAM=${{ secrets.TURBO_TEAM }}
 
       - name: Trigger Dockploy deployment
         run: |

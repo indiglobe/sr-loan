@@ -7,13 +7,11 @@ const secret = new TextEncoder().encode(env.TOKEN_SECRET);
 export const ROLE_ENUM = z.enum(["ADMIN", "CUSTOMER", "AGENT"]);
 
 export const jwtPayloadSchema = z.object({
-  userId: z.string(),
   email: z.email(),
-  fullName: z.string(),
-  avatarUrl: z.string(),
-  age: z.number(),
+  name: z.string(),
   role: ROLE_ENUM,
-  phone: z.string(),
+  userId: z.string(),
+  employeeId: z.string(),
 });
 
 export type JwtPayload = z.infer<typeof jwtPayloadSchema> & jose.JWTPayload;

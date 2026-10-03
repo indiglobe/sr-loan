@@ -9,7 +9,6 @@ import type { QueryClient } from "@tanstack/react-query";
 import { ThemeProvider } from "@/integrations/theme/theme-provider";
 import { cn } from "@repo/styles/cn";
 import { Toaster } from "@repo/ui/sonner";
-import { Header } from "@/components/header/header";
 import { Footer } from "@/components/footer/footer";
 import { RootErrorComponent } from "@/components/main/root-error";
 import { RootNotFoundComponent } from "@/components/main/root-not-found";
@@ -67,8 +66,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         )}
       >
         <ThemeProvider>
-          <Header />
-          <main className={cn(``)}>{children}</main>
+          <>{children}</>
           <Footer />
           <Toaster />
         </ThemeProvider>

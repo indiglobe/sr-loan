@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   ShieldCheck,
   UserCheck,
@@ -7,10 +6,10 @@ import {
   LogIn,
 } from "lucide-react";
 import { cn } from "@repo/styles/cn";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouteContext } from "@tanstack/react-router";
 
 export function HomePage() {
-  const [isSignedIn] = useState({ userName: "", userEmail: "" });
+  const { userDetailsAsCookie } = useRouteContext({ from: "/(public)/" });
 
   return (
     <section
@@ -29,7 +28,7 @@ export function HomePage() {
           )}
         />
 
-        {isSignedIn ? (
+        {userDetailsAsCookie ? (
           /* ================= ALREADY LOGGED IN STATE ================= */
           <>
             <div
@@ -54,12 +53,12 @@ export function HomePage() {
                   "text-2xl sm:text-3xl font-bold font-brand-accent tracking-tight",
                 )}
               >
-                Welcome back, {isSignedIn.userName}
+                Welcome back, {userDetailsAsCookie.name}
               </h1>
               <p className={cn("text-sm text-accent-600 dark:text-accent-400")}>
                 You are already logged in as{" "}
                 <span className={cn("font-semibold text-foreground")}>
-                  {isSignedIn.userEmail}
+                  {userDetailsAsCookie.email}
                 </span>
                 . You can directly proceed to your institutional dashboard to
                 view loan portfolios and metrics.
@@ -72,7 +71,11 @@ export function HomePage() {
               )}
             >
               <Link
-                to="/dashboard"
+                to={
+                  userDetailsAsCookie.role === "ADMIN"
+                    ? "/admin/dashboard"
+                    : "/agent/dashboard"
+                }
                 className={cn(
                   "w-full py-3 rounded-lg bg-primary-500 hover:bg-primary-600 text-white font-medium shadow-lg shadow-primary-500/25 transition-all flex items-center justify-center gap-2",
                 )}
@@ -126,15 +129,7 @@ export function HomePage() {
                   "w-full py-3 rounded-lg bg-primary-500 hover:bg-primary-600 text-white font-medium shadow-lg shadow-primary-500/25 transition-all flex items-center justify-center gap-2",
                 )}
               >
-                <LogIn className={cn("w-4 h-4")} /> Login to Dashboard
-              </Link>
-              <Link
-                to="/"
-                className={cn(
-                  "w-full py-3 rounded-lg border border-accent-300 dark:border-accent-700 hover:bg-accent-100 dark:hover:bg-accent-800 font-medium text-sm transition-all flex items-center justify-center",
-                )}
-              >
-                Return Home
+                Login to Dashboard <LogIn className={cn("w-4 h-4")} />
               </Link>
             </div>
           </>

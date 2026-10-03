@@ -29,30 +29,42 @@ export function id(options?: { length: number }) {
 }
 
 /**
- * Generates a cryptographically secure unique identifier.
+ * Generates a unique employee ID based on the employee type.
  *
- * @param options - Optional configuration for the generated ID.
- * @param options.length - The length of the generated ID. Defaults to `10`.
- * @returns A cryptographically secure unique identifier.
+ * The generated ID follows the format:
+ * `SR_<EMPLOYEE_TYPE_PREFIX>_<UNIQUE_ID>`
+ *
+ * Employee type prefixes:
+ * - `ADMIN` → `AD`
+ * - `AGENT` → `AG`
+ * - `CUSTOMER` → `CU`
+ * - Any other value → `EM`
+ *
+ * @param options - Configuration options for the generated employee ID.
+ * @param options.length - The length of the unique ID portion. Defaults to `6`.
+ * @param options.employeeType - The employee type used to determine the ID prefix.
+ * @returns A unique employee ID containing the employee type prefix and a generated unique identifier.
  *
  * @example
  * ```ts
- * const id = generateId();
- * // "a8Kx92LmQp"
+ * const id = platformEmployeeId({ employeeType: "ADMIN" });
+ * // "SR_AD_A8KX92"
  * ```
  *
  * @example
  * ```ts
- * const id = generateId({ length: 16 });
- * // "x7Pq2Lm9Ks4Rt8Wz"
+ * const id = platformEmployeeId({
+ *   employeeType: "AGENT",
+ *   length: 10,
+ * });
+ * // "SR_AG_X7PQ2LM9KS"
  * ```
  */
 
-export function platformId(options: {
-  length?: number;
+export function platformEmployeeId(options: {
   employeeType: z.infer<typeof ROLE_ENUM>;
 }) {
-  const length = options.length ?? 6;
+  const length = 6;
 
   let employeeTypePrefix = "";
 

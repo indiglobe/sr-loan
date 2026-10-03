@@ -1,6 +1,5 @@
 import { faker } from "@faker-js/faker";
 import { db } from "..";
-
 import {
   Table__Bank,
   Table__BankLoanDetails,
@@ -11,6 +10,8 @@ import {
 } from "../schema";
 import bcrypt from "bcryptjs";
 import { env } from "@repo/env/server";
+import { eq } from "drizzle-orm";
+import { platformEmployeeId } from "@repo/utils/id";
 /* -------------------------------------------------------------------------- */
 /*                                   HELPERS                                  */
 /* -------------------------------------------------------------------------- */
@@ -52,21 +53,82 @@ async function seedUser() {
   >((_, idx) => {
     const fullName = faker.person.fullName();
 
+    // Make the distribution deterministic for seeding
+    let role: "ADMIN" | "AGENT" | "CUSTOMER";
+
+    if (idx < 2) {
+      role = "ADMIN";
+    } else if (idx < 6) {
+      role = "AGENT";
+    } else {
+      role = "CUSTOMER";
+    }
+
     return {
       fullName,
       email: `${fullName.split(" ").join("-").toLowerCase()}-${idx}@email.com`,
-      employeeId: `SA_SA${randomInt(1000, 9000)}`,
-      id: `SA_SA${randomInt(1000, 9000)}`,
+      employeeId: platformEmployeeId({
+        employeeType: role,
+      }),
       name: fullName,
       password: bcrypt.hashSync("12341234", env.SALT_ROUND),
       phoneNumber: `${randomInt(9000000000, 9999999999)}`,
-      role: Math.random() > 0.7 ? "AGENT" : "ADMIN",
+      role: role,
       location: faker.location.city(),
       pin: faker.finance.pin({ length: 6 }),
     };
   });
 
   await db.insert(Table__User).values([...__dummyUsers]);
+
+  // Fetch users
+  const users = await db
+    .select({
+      employeeId: Table__User.employeeId,
+      role: Table__User.role,
+    })
+    .from(Table__User);
+
+  // Separate by role
+  const admins = users.filter((user) => user.role === "ADMIN");
+  const agents = users.filter((user) => user.role === "AGENT");
+  const customers = users.filter((user) => user.role === "CUSTOMER");
+
+  // --------------------------------------------------
+  // AGENT -> ADMIN
+  // --------------------------------------------------
+
+  for (let i = 0; i < agents.length; i++) {
+    const agent = agents[i]!;
+
+    // Distribute agents between admins
+    const admin = admins[i % admins.length]!;
+
+    await db
+      .update(Table__User)
+      .set({
+        referrerEmployeeId: admin.employeeId,
+      })
+      .where(eq(Table__User.employeeId, agent.employeeId));
+  }
+
+  // --------------------------------------------------
+  // CUSTOMER -> AGENT
+  // --------------------------------------------------
+
+  for (let i = 0; i < customers.length; i++) {
+    const customer = customers[i]!;
+
+    // Distribute customers between agents
+    const agent = agents[i % agents.length]!;
+
+    await db
+      .update(Table__User)
+      .set({
+        referrerEmployeeId: agent.employeeId,
+      })
+      .where(eq(Table__User.employeeId, customer.employeeId));
+  }
 
   console.log("✅ Table__User seeded");
 }
