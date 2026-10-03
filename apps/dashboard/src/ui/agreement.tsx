@@ -1,10 +1,22 @@
+import { cn } from "@repo/styles/cn";
+import type { ComponentProps } from "react";
+
 export function FullAgreementContent({
   name,
   location,
   pin,
-}: Partial<{ name: string; location: string; pin: string }>) {
+  className,
+  ...props
+}: Partial<{ name: string; location: string; pin: string }> &
+  ComponentProps<"div">) {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xl rounded-2xl border border-zinc-200 dark:border-zinc-800">
+    <div
+      className={cn(
+        `max-w-4xl mx-auto px-6 py-12 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xl rounded-2xl border border-zinc-200 dark:border-zinc-800`,
+        className,
+      )}
+      {...props}
+    >
       <article className="prose dark:prose-invert max-w-none">
         <h1 className="text-3xl font-extrabold text-center mb-8 uppercase tracking-wide">
           Partnership Agreement

@@ -63,13 +63,12 @@ type TRead__OneUser = {
     | Pick<typeof Table__User.$inferSelect, "id">
     | Pick<typeof Table__User.$inferSelect, "employeeId">;
 
-  intentionalFields?: { password: boolean };
+  include?: {
+    password?: boolean;
+  };
 };
 
-export async function read__OneUser({
-  identifier,
-  intentionalFields,
-}: TRead__OneUser) {
+export async function read__OneUser({ identifier, include }: TRead__OneUser) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { tableIdentifierToken, createdAt, updatedAt, password, ...rest } =
     getTableColumns(Table__User);
@@ -77,7 +76,9 @@ export async function read__OneUser({
   const baseQuery = db
     .select({
       ...rest,
-      ...(intentionalFields?.password ? { password: password } : {}),
+      ...(include?.password && {
+        password,
+      }),
     })
     .from(Table__User);
 

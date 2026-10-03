@@ -10,11 +10,25 @@ import {
 } from "@repo/data/validators/user";
 import { createServerFn } from "@tanstack/react-start";
 import { tryCatch } from "@repo/utils/try-catch";
+import { hashPassword } from "@repo/utils/utility/password-hashing";
 
 export const serverFn__createOneUser = createServerFn()
   .validator(create__OneUserSchema)
   .handler(async ({ data }) => {
-    const [serverFnError, serverFnData] = await tryCatch(create__OneUser(data));
+    const [passwordHasingError, hashedPassword] = await tryCatch(
+      hashPassword(data.dataToUpload.password),
+    );
+
+    if (passwordHasingError) {
+      console.log(`Error in passwordHasingError in serverFn__createOneUser`);
+      throw passwordHasingError;
+    }
+
+    const [serverFnError, serverFnData] = await tryCatch(
+      create__OneUser({
+        dataToUpload: { ...data.dataToUpload, password: hashedPassword },
+      }),
+    );
 
     if (serverFnError) {
       console.log(`Error in serverFnError in serverFn__createOneUser`);

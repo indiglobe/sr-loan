@@ -29,7 +29,7 @@ export const read__OneUserSchema = z.object({
     }),
   ]),
 
-  intentionalFields: z
+  include: z
     .object({
       password: z.boolean(),
     })

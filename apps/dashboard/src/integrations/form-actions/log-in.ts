@@ -31,13 +31,13 @@ export const serverFn__login = createServerFn()
           identifier: {
             email,
           },
-          intentionalFields: { password: true },
+          include: { password: true },
         },
       }),
     );
 
     if (serverFnError) {
-      console.error("Error in serverFnError in serverFn__login:");
+      console.error("Error in serverFnError in serverFn__login");
 
       return {
         status: "error" as const,
@@ -63,7 +63,6 @@ export const serverFn__login = createServerFn()
 
     // Compare plaintext password with the stored bcrypt hash.
     const [passwordComparisonError, passwordValid] = await tryCatch(
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
       bcrypt.compare(password, user.password!),
     );
 
