@@ -1,0 +1,7 @@
+@import "@repo/styles/fonts";
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@repo/styles/css";
+@plugin "@tailwindcss/typography";
+
+@source "../../../packages/ui/src/**/*.{ts,tsx}";

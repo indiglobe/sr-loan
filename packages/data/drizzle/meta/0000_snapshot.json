@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "1e798911-7a14-4853-8860-87f4eb5326ff",
+  "id": "b223e32e-8eec-4455-a6d5-43e3c07455df",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "bank": {
@@ -78,8 +78,8 @@
       },
       "checkConstraint": {}
     },
-    "bank_loan_Details": {
-      "name": "bank_loan_Details",
+    "bank_loan_details": {
+      "name": "bank_loan_details",
       "columns": {
         "id": {
           "name": "id",
@@ -164,9 +164,9 @@
         }
       },
       "foreignKeys": {
-        "bank_loan_Details_bank_id_bank_bank_id_fk": {
-          "name": "bank_loan_Details_bank_id_bank_bank_id_fk",
-          "tableFrom": "bank_loan_Details",
+        "bank_loan_details_bank_id_bank_bank_id_fk": {
+          "name": "bank_loan_details_bank_id_bank_bank_id_fk",
+          "tableFrom": "bank_loan_details",
           "tableTo": "bank",
           "columnsFrom": [
             "bank_id"
@@ -177,9 +177,9 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "bank_loan_Details_loan_type_id_loan_type_loan_type_id_fk": {
-          "name": "bank_loan_Details_loan_type_id_loan_type_loan_type_id_fk",
-          "tableFrom": "bank_loan_Details",
+        "bank_loan_details_loan_type_id_loan_type_loan_type_id_fk": {
+          "name": "bank_loan_details_loan_type_id_loan_type_loan_type_id_fk",
+          "tableFrom": "bank_loan_details",
           "tableTo": "loan_type",
           "columnsFrom": [
             "loan_type_id"
@@ -192,8 +192,8 @@
         }
       },
       "compositePrimaryKeys": {
-        "bank_loan_Details_id": {
-          "name": "bank_loan_Details_id",
+        "bank_loan_details_id": {
+          "name": "bank_loan_details_id",
           "columns": [
             "id"
           ]
@@ -228,7 +228,7 @@
         },
         "icon": {
           "name": "icon",
-          "type": "enum('ShieldCheck','TrendingUp','CalendarDays','BadgeCheck','Clock')",
+          "type": "enum('ArrowLeft','Award','BadgeCheck','Building2','Calendar','CalendarDays','CheckCircle2','ChevronRight','Clock','DollarSign','FileCheck','FileText','Mail','MapPin','Percent','Phone','PhoneCall','Search','ShieldCheck','TrendingUp','UserCheck','X')",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -331,10 +331,10 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "loan_benefits_bank_loan_id_bank_loan_Details_id_fk": {
-          "name": "loan_benefits_bank_loan_id_bank_loan_Details_id_fk",
+        "loan_benefits_bank_loan_id_bank_loan_details_id_fk": {
+          "name": "loan_benefits_bank_loan_id_bank_loan_details_id_fk",
           "tableFrom": "loan_benefits",
-          "tableTo": "bank_loan_Details",
+          "tableTo": "bank_loan_details",
           "columnsFrom": [
             "bank_loan_id"
           ],

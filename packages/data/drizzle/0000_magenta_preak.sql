@@ -10,7 +10,7 @@ CREATE TABLE `bank` (
 	CONSTRAINT `bank_bank_id_unique` UNIQUE(`bank_id`)
 );
 --> statement-breakpoint
-CREATE TABLE `bank_loan_Details` (
+CREATE TABLE `bank_loan_details` (
 	`id` char(10) NOT NULL,
 	`bank_id` varchar(255) NOT NULL,
 	`loan_type_id` varchar(255) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE `bank_loan_Details` (
 	`created_at` timestamp(6) NOT NULL,
 	`updated_at` timestamp(6) NOT NULL,
 	`table_identifier_token` enum('USER','BANK','BLOA','BNFT','LBNF','LOAN') NOT NULL DEFAULT 'BLOA',
-	CONSTRAINT `bank_loan_Details_id` PRIMARY KEY(`id`),
+	CONSTRAINT `bank_loan_details_id` PRIMARY KEY(`id`),
 	CONSTRAINT `bank_loan_unique` UNIQUE(`bank_id`,`loan_type_id`)
 );
 --> statement-breakpoint
@@ -29,7 +29,7 @@ CREATE TABLE `benefits` (
 	`id` char(10) NOT NULL,
 	`title` varchar(255) NOT NULL,
 	`description` varchar(255) NOT NULL,
-	`icon` enum('ShieldCheck','TrendingUp','CalendarDays','BadgeCheck','Clock') NOT NULL,
+	`icon` enum('ArrowLeft','Award','BadgeCheck','Building2','Calendar','CalendarDays','CheckCircle2','ChevronRight','Clock','DollarSign','FileCheck','FileText','Mail','MapPin','Percent','Phone','PhoneCall','Search','ShieldCheck','TrendingUp','UserCheck','X') NOT NULL,
 	`created_at` timestamp(6) NOT NULL,
 	`updated_at` timestamp(6) NOT NULL,
 	`table_identifier_token` enum('USER','BANK','BLOA','BNFT','LBNF','LOAN') NOT NULL DEFAULT 'BNFT',
@@ -77,8 +77,8 @@ CREATE TABLE `user` (
 	CONSTRAINT `user_email_unique` UNIQUE(`email`)
 );
 --> statement-breakpoint
-ALTER TABLE `bank_loan_Details` ADD CONSTRAINT `bank_loan_Details_bank_id_bank_bank_id_fk` FOREIGN KEY (`bank_id`) REFERENCES `bank`(`bank_id`) ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
-ALTER TABLE `bank_loan_Details` ADD CONSTRAINT `bank_loan_Details_loan_type_id_loan_type_loan_type_id_fk` FOREIGN KEY (`loan_type_id`) REFERENCES `loan_type`(`loan_type_id`) ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
+ALTER TABLE `bank_loan_details` ADD CONSTRAINT `bank_loan_details_bank_id_bank_bank_id_fk` FOREIGN KEY (`bank_id`) REFERENCES `bank`(`bank_id`) ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
+ALTER TABLE `bank_loan_details` ADD CONSTRAINT `bank_loan_details_loan_type_id_loan_type_loan_type_id_fk` FOREIGN KEY (`loan_type_id`) REFERENCES `loan_type`(`loan_type_id`) ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
 ALTER TABLE `loan_benefits` ADD CONSTRAINT `loan_benefits_benefit_id_benefits_id_fk` FOREIGN KEY (`benefit_id`) REFERENCES `benefits`(`id`) ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
-ALTER TABLE `loan_benefits` ADD CONSTRAINT `loan_benefits_bank_loan_id_bank_loan_Details_id_fk` FOREIGN KEY (`bank_loan_id`) REFERENCES `bank_loan_Details`(`id`) ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
+ALTER TABLE `loan_benefits` ADD CONSTRAINT `loan_benefits_bank_loan_id_bank_loan_details_id_fk` FOREIGN KEY (`bank_loan_id`) REFERENCES `bank_loan_details`(`id`) ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
 ALTER TABLE `user` ADD CONSTRAINT `user_referrer_id_fk` FOREIGN KEY (`referrer_id`) REFERENCES `user`(`employee_id`) ON DELETE set null ON UPDATE cascade;
