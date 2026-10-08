@@ -5,9 +5,10 @@ export function FullAgreementContent({
   name,
   location,
   pin,
+  joinedAt,
   className,
   ...props
-}: Partial<{ name: string; location: string; pin: string }> &
+}: Partial<{ name: string; location: string; pin: string; joinedAt: Date }> &
   ComponentProps<"div">) {
   return (
     <div
@@ -23,7 +24,21 @@ export function FullAgreementContent({
         </h1>
 
         <p className="text-sm font-medium">
-          THIS ASSOCIATE'S CHANNEL AGREEMENT is made 5/21/2026 3:36:31 PM.
+          THIS ASSOCIATE'S CHANNEL AGREEMENT is made{" "}
+          {joinedAt
+            ? new Date(joinedAt)
+                .toLocaleString("en-US", {
+                  month: "numeric",
+                  day: "numeric",
+                  year: "numeric",
+                  hour: "numeric",
+                  minute: "2-digit",
+                  second: "2-digit",
+                  hour12: true,
+                })
+                .replace(",", "")
+            : "__________________________"}
+          .
         </p>
 
         <p>
@@ -46,10 +61,11 @@ export function FullAgreementContent({
 
         <p>
           <strong>M/S SRLOANSERVICE LOANS</strong> SRLOANSERVICE company
-          registered office at _______________ hereinafter referred to as{" "}
-          <strong>"SRLOANSERVICE LOANS"</strong> which expression, unless it be
-          repugnant to the context or meaning thereof shall deem to include its
-          successors and assigns of the <strong>Other Part</strong>.
+          registered office at <strong>Murshidabad </strong>
+          hereinafter referred to as <strong>"SRLOANSERVICE LOANS"</strong>{" "}
+          which expression, unless it be repugnant to the context or meaning
+          thereof shall deem to include its successors and assigns of the{" "}
+          <strong>Other Part</strong>.
         </p>
 
         <p>
@@ -469,7 +485,20 @@ export function FullAgreementContent({
 
         <div className="mt-8">
           <p>
-            <strong>Date:</strong> 5/21/2026 3:36:31 PM
+            <strong>Date:</strong>{" "}
+            {joinedAt
+              ? new Date(joinedAt)
+                  .toLocaleString("en-US", {
+                    month: "numeric",
+                    day: "numeric",
+                    year: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: true,
+                  })
+                  .replace(",", "")
+              : "__________________________"}
           </p>
           <p>
             <strong>Place:</strong> ___________________

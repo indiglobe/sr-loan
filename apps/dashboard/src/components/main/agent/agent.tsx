@@ -8,7 +8,7 @@ export function AgentHeader() {
   const navigate = useNavigate();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-primary-100 backdrop-blur-lg py-4 px-4 sm:px-6 lg:px-8 dark:border-primary-900">
+    <header className="sticky top-0 z-50 border-b border-primary-100 backdrop-blur-lg dark:border-primary-900">
       <div className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-6">
         {/* Brand / Dashboard identity */}
         <div className="flex min-w-0 items-center gap-4">
@@ -34,7 +34,7 @@ export function AgentHeader() {
                 "hidden text-xs leading-5 sm:block text-primary-600 dark:text-primary-300",
               )}
             >
-              Manage customers from one place.
+              Manage customers and administration from one place.
             </p>
           </div>
         </div>

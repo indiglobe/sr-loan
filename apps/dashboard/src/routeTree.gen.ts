@@ -22,6 +22,9 @@ import { Route as authenticatedRoutesAdminAgreementIndexRouteImport } from './ro
 import { Route as authenticatedRoutesAdminDashboardIndexRouteImport } from './routes/(authenticated-routes)/admin/dashboard/index'
 import { Route as authenticatedRoutesAgentAgreementIndexRouteImport } from './routes/(authenticated-routes)/agent/agreement/index'
 import { Route as authenticatedRoutesAgentDashboardIndexRouteImport } from './routes/(authenticated-routes)/agent/dashboard/index'
+import { Route as authenticatedRoutesAdminDashboardAgentIdIndexRouteImport } from './routes/(authenticated-routes)/admin/dashboard/$agentId/index'
+import { Route as authenticatedRoutesAdminDashboardAgentIdIdCardIndexRouteImport } from './routes/(authenticated-routes)/admin/dashboard/$agentId/id-card/index'
+import { Route as authenticatedRoutesAgentDashboardCustomerIdIdCardIndexRouteImport } from './routes/(authenticated-routes)/agent/dashboard/$customerId/id-card/index'
 
 const authenticatedRoutesRouteRoute =
   authenticatedRoutesRouteRouteImport.update({
@@ -96,6 +99,24 @@ const authenticatedRoutesAgentDashboardIndexRoute =
     path: '/dashboard/',
     getParentRoute: () => authenticatedRoutesAgentRouteRoute,
   } as any)
+const authenticatedRoutesAdminDashboardAgentIdIndexRoute =
+  authenticatedRoutesAdminDashboardAgentIdIndexRouteImport.update({
+    id: '/dashboard/$agentId/',
+    path: '/dashboard/$agentId/',
+    getParentRoute: () => authenticatedRoutesAdminRouteRoute,
+  } as any)
+const authenticatedRoutesAdminDashboardAgentIdIdCardIndexRoute =
+  authenticatedRoutesAdminDashboardAgentIdIdCardIndexRouteImport.update({
+    id: '/dashboard/$agentId/id-card/',
+    path: '/dashboard/$agentId/id-card/',
+    getParentRoute: () => authenticatedRoutesAdminRouteRoute,
+  } as any)
+const authenticatedRoutesAgentDashboardCustomerIdIdCardIndexRoute =
+  authenticatedRoutesAgentDashboardCustomerIdIdCardIndexRouteImport.update({
+    id: '/dashboard/$customerId/id-card/',
+    path: '/dashboard/$customerId/id-card/',
+    getParentRoute: () => authenticatedRoutesAgentRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/admin': typeof authenticatedRoutesAdminRouteRouteWithChildren
@@ -108,6 +129,9 @@ export interface FileRoutesByFullPath {
   '/admin/dashboard/': typeof authenticatedRoutesAdminDashboardIndexRoute
   '/agent/agreement/': typeof authenticatedRoutesAgentAgreementIndexRoute
   '/agent/dashboard/': typeof authenticatedRoutesAgentDashboardIndexRoute
+  '/admin/dashboard/$agentId/': typeof authenticatedRoutesAdminDashboardAgentIdIndexRoute
+  '/admin/dashboard/$agentId/id-card/': typeof authenticatedRoutesAdminDashboardAgentIdIdCardIndexRoute
+  '/agent/dashboard/$customerId/id-card/': typeof authenticatedRoutesAgentDashboardCustomerIdIdCardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof publicIndexRoute
@@ -118,6 +142,9 @@ export interface FileRoutesByTo {
   '/admin/dashboard': typeof authenticatedRoutesAdminDashboardIndexRoute
   '/agent/agreement': typeof authenticatedRoutesAgentAgreementIndexRoute
   '/agent/dashboard': typeof authenticatedRoutesAgentDashboardIndexRoute
+  '/admin/dashboard/$agentId': typeof authenticatedRoutesAdminDashboardAgentIdIndexRoute
+  '/admin/dashboard/$agentId/id-card': typeof authenticatedRoutesAdminDashboardAgentIdIdCardIndexRoute
+  '/agent/dashboard/$customerId/id-card': typeof authenticatedRoutesAgentDashboardCustomerIdIdCardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -134,6 +161,9 @@ export interface FileRoutesById {
   '/(authenticated-routes)/admin/dashboard/': typeof authenticatedRoutesAdminDashboardIndexRoute
   '/(authenticated-routes)/agent/agreement/': typeof authenticatedRoutesAgentAgreementIndexRoute
   '/(authenticated-routes)/agent/dashboard/': typeof authenticatedRoutesAgentDashboardIndexRoute
+  '/(authenticated-routes)/admin/dashboard/$agentId/': typeof authenticatedRoutesAdminDashboardAgentIdIndexRoute
+  '/(authenticated-routes)/admin/dashboard/$agentId/id-card/': typeof authenticatedRoutesAdminDashboardAgentIdIdCardIndexRoute
+  '/(authenticated-routes)/agent/dashboard/$customerId/id-card/': typeof authenticatedRoutesAgentDashboardCustomerIdIdCardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -148,6 +178,9 @@ export interface FileRouteTypes {
     | '/admin/dashboard/'
     | '/agent/agreement/'
     | '/agent/dashboard/'
+    | '/admin/dashboard/$agentId/'
+    | '/admin/dashboard/$agentId/id-card/'
+    | '/agent/dashboard/$customerId/id-card/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -158,6 +191,9 @@ export interface FileRouteTypes {
     | '/admin/dashboard'
     | '/agent/agreement'
     | '/agent/dashboard'
+    | '/admin/dashboard/$agentId'
+    | '/admin/dashboard/$agentId/id-card'
+    | '/agent/dashboard/$customerId/id-card'
   id:
     | '__root__'
     | '/(authenticated-routes)'
@@ -173,6 +209,9 @@ export interface FileRouteTypes {
     | '/(authenticated-routes)/admin/dashboard/'
     | '/(authenticated-routes)/agent/agreement/'
     | '/(authenticated-routes)/agent/dashboard/'
+    | '/(authenticated-routes)/admin/dashboard/$agentId/'
+    | '/(authenticated-routes)/admin/dashboard/$agentId/id-card/'
+    | '/(authenticated-routes)/agent/dashboard/$customerId/id-card/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -274,6 +313,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authenticatedRoutesAgentDashboardIndexRouteImport
       parentRoute: typeof authenticatedRoutesAgentRouteRoute
     }
+    '/(authenticated-routes)/admin/dashboard/$agentId/': {
+      id: '/(authenticated-routes)/admin/dashboard/$agentId/'
+      path: '/dashboard/$agentId'
+      fullPath: '/admin/dashboard/$agentId/'
+      preLoaderRoute: typeof authenticatedRoutesAdminDashboardAgentIdIndexRouteImport
+      parentRoute: typeof authenticatedRoutesAdminRouteRoute
+    }
+    '/(authenticated-routes)/admin/dashboard/$agentId/id-card/': {
+      id: '/(authenticated-routes)/admin/dashboard/$agentId/id-card/'
+      path: '/dashboard/$agentId/id-card'
+      fullPath: '/admin/dashboard/$agentId/id-card/'
+      preLoaderRoute: typeof authenticatedRoutesAdminDashboardAgentIdIdCardIndexRouteImport
+      parentRoute: typeof authenticatedRoutesAdminRouteRoute
+    }
+    '/(authenticated-routes)/agent/dashboard/$customerId/id-card/': {
+      id: '/(authenticated-routes)/agent/dashboard/$customerId/id-card/'
+      path: '/dashboard/$customerId/id-card'
+      fullPath: '/agent/dashboard/$customerId/id-card/'
+      preLoaderRoute: typeof authenticatedRoutesAgentDashboardCustomerIdIdCardIndexRouteImport
+      parentRoute: typeof authenticatedRoutesAgentRouteRoute
+    }
   }
 }
 
@@ -281,6 +341,8 @@ interface authenticatedRoutesAdminRouteRouteChildren {
   authenticatedRoutesAdminIndexRoute: typeof authenticatedRoutesAdminIndexRoute
   authenticatedRoutesAdminAgreementIndexRoute: typeof authenticatedRoutesAdminAgreementIndexRoute
   authenticatedRoutesAdminDashboardIndexRoute: typeof authenticatedRoutesAdminDashboardIndexRoute
+  authenticatedRoutesAdminDashboardAgentIdIndexRoute: typeof authenticatedRoutesAdminDashboardAgentIdIndexRoute
+  authenticatedRoutesAdminDashboardAgentIdIdCardIndexRoute: typeof authenticatedRoutesAdminDashboardAgentIdIdCardIndexRoute
 }
 
 const authenticatedRoutesAdminRouteRouteChildren: authenticatedRoutesAdminRouteRouteChildren =
@@ -290,6 +352,10 @@ const authenticatedRoutesAdminRouteRouteChildren: authenticatedRoutesAdminRouteR
       authenticatedRoutesAdminAgreementIndexRoute,
     authenticatedRoutesAdminDashboardIndexRoute:
       authenticatedRoutesAdminDashboardIndexRoute,
+    authenticatedRoutesAdminDashboardAgentIdIndexRoute:
+      authenticatedRoutesAdminDashboardAgentIdIndexRoute,
+    authenticatedRoutesAdminDashboardAgentIdIdCardIndexRoute:
+      authenticatedRoutesAdminDashboardAgentIdIdCardIndexRoute,
   }
 
 const authenticatedRoutesAdminRouteRouteWithChildren =
@@ -301,6 +367,7 @@ interface authenticatedRoutesAgentRouteRouteChildren {
   authenticatedRoutesAgentIndexRoute: typeof authenticatedRoutesAgentIndexRoute
   authenticatedRoutesAgentAgreementIndexRoute: typeof authenticatedRoutesAgentAgreementIndexRoute
   authenticatedRoutesAgentDashboardIndexRoute: typeof authenticatedRoutesAgentDashboardIndexRoute
+  authenticatedRoutesAgentDashboardCustomerIdIdCardIndexRoute: typeof authenticatedRoutesAgentDashboardCustomerIdIdCardIndexRoute
 }
 
 const authenticatedRoutesAgentRouteRouteChildren: authenticatedRoutesAgentRouteRouteChildren =
@@ -310,6 +377,8 @@ const authenticatedRoutesAgentRouteRouteChildren: authenticatedRoutesAgentRouteR
       authenticatedRoutesAgentAgreementIndexRoute,
     authenticatedRoutesAgentDashboardIndexRoute:
       authenticatedRoutesAgentDashboardIndexRoute,
+    authenticatedRoutesAgentDashboardCustomerIdIdCardIndexRoute:
+      authenticatedRoutesAgentDashboardCustomerIdIdCardIndexRoute,
   }
 
 const authenticatedRoutesAgentRouteRouteWithChildren =

@@ -191,6 +191,7 @@ function AgreementGenerator() {
         name={userDetails.name}
         pin={userDetails.pin}
         ref={agreementRef}
+        joinedAt={userDetails.createdAt}
       />
       <Button
         className={cn(`fixed right-10 top-30`)}

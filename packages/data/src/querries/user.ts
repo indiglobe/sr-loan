@@ -68,17 +68,12 @@ type TRead__OneUser = {
   };
 };
 
-export async function read__OneUser({ identifier, include }: TRead__OneUser) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { tableIdentifierToken, createdAt, updatedAt, password, ...rest } =
-    getTableColumns(Table__User);
+export async function read__OneUser({ identifier }: TRead__OneUser) {
+  const { ...rest } = getTableColumns(Table__User);
 
   const baseQuery = db
     .select({
       ...rest,
-      ...(include?.password && {
-        password,
-      }),
     })
     .from(Table__User);
 

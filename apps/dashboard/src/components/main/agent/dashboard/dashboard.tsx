@@ -11,7 +11,8 @@ import { useRouteContext } from "@tanstack/react-router";
 import { platformEmployeeId } from "@repo/utils/id";
 import z from "zod";
 import { Button } from "@repo/ui/button";
-import { ArrowRight } from "lucide-react";
+import { User } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
 export function AgentDashboard() {
   return (
@@ -911,15 +912,15 @@ function CustomersTableData() {
                   "px-5 py-4 text-left text-xs font-bold uppercase tracking-wide text-accent-600 dark:text-accent-300",
                 )}
               >
-                Actions
+                ID card
               </th>
             </tr>
           </thead>
 
           <tbody>
-            {data.map((agent) => (
+            {data.map((employee) => (
               <tr
-                key={agent.employeeId}
+                key={employee.employeeId}
                 className={cn(
                   "border-b border-accent-100 transition-colors duration-200 last:border-b-0 hover:bg-primary-50/50 dark:border-accent-800 dark:hover:bg-primary-950/30",
                 )}
@@ -929,7 +930,7 @@ function CustomersTableData() {
                     "px-5 py-4 text-sm font-semibold text-primary-700 dark:text-primary-300",
                   )}
                 >
-                  {agent.employeeId}
+                  {employee.employeeId}
                 </td>
 
                 <td
@@ -937,7 +938,7 @@ function CustomersTableData() {
                     "px-5 py-4 text-sm font-semibold text-accent-950 dark:text-accent-50",
                   )}
                 >
-                  {agent.name}
+                  {employee.name}
                 </td>
 
                 <td
@@ -945,7 +946,7 @@ function CustomersTableData() {
                     "px-5 py-4 text-sm text-accent-700 dark:text-accent-300",
                   )}
                 >
-                  {agent.email}
+                  {employee.email}
                 </td>
 
                 <td
@@ -953,7 +954,7 @@ function CustomersTableData() {
                     "px-5 py-4 text-sm text-accent-700 dark:text-accent-300",
                   )}
                 >
-                  {agent.phoneNumber}
+                  {employee.phoneNumber}
                 </td>
 
                 <td
@@ -961,8 +962,13 @@ function CustomersTableData() {
                     "px-5 py-4 text-sm text-accent-700 dark:text-accent-300 flex gap-1",
                   )}
                 >
-                  <Button>
-                    <ArrowRight />
+                  <Button asChild>
+                    <Link
+                      to="/agent/dashboard/$customerId/id-card"
+                      params={{ customerId: employee.employeeId }}
+                    >
+                      <User />
+                    </Link>
                   </Button>
                 </td>
               </tr>

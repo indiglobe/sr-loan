@@ -7,11 +7,11 @@ import {
   useCreateOneUser,
   useReadAllUsers,
 } from "@/integrations/tanstack/react-query/user.rq";
-import { useRouteContext } from "@tanstack/react-router";
+import { Link, useRouteContext } from "@tanstack/react-router";
 import { platformEmployeeId } from "@repo/utils/id";
 import z from "zod";
 import { Button } from "@repo/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, User } from "lucide-react";
 
 export function AdminDashboard() {
   return (
@@ -961,8 +961,13 @@ function AgentTableData() {
                     "px-5 py-4 text-sm text-accent-700 dark:text-accent-300 flex gap-1",
                   )}
                 >
-                  <Button>
-                    <ArrowRight />
+                  <Button asChild>
+                    <Link
+                      to="/admin/dashboard/$agentId/id-card"
+                      params={{ agentId: agent.employeeId }}
+                    >
+                      <User />
+                    </Link>
                   </Button>
                 </td>
               </tr>
