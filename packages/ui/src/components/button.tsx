@@ -67,7 +67,7 @@ function Button({
       data-variant={variant}
       data-size={size}
       data-corner={corner}
-      className={cn(buttonVariants({ variant, size, className, corner }))}
+      className={cn(buttonVariants({ variant, size, corner, className }))}
       {...props}
     />
   );

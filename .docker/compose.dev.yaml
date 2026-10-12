@@ -32,6 +32,7 @@ services:
       - sr-loan-dev-database
     networks:
       - sr-loan-dev
+    restart: unless-stopped
 
   sr-loan-dev-nginx:
     container_name: sr-loan-dev-nginx

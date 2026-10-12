@@ -1,5 +1,5 @@
+import { ROLE_ENUM } from "@repo/utils/enums/db-enums";
 import z from "zod";
-import { ROLE } from "@/exports/utils/enums";
 
 export const create__OneUserSchema = z.object({
   dataToUpload: z.object({
@@ -11,7 +11,7 @@ export const create__OneUserSchema = z.object({
     emergencyPhoneNumber: z.string().nullish(),
     location: z.string(),
     pin: z.string(),
-    role: z.enum(ROLE()).optional(),
+    role: z.enum(ROLE_ENUM).optional(),
     referrerEmployeeId: z.string().nullish(),
   }),
 });
@@ -40,7 +40,7 @@ export const read__AllUsersSchema = z
   .object({
     identifier: z
       .object({
-        role: z.enum(ROLE()),
+        role: z.enum(ROLE_ENUM),
       })
       .optional(),
   })

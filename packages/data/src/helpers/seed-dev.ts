@@ -12,6 +12,7 @@ import bcrypt from "bcryptjs";
 import { env } from "@repo/env/server";
 import { eq } from "drizzle-orm";
 import { platformEmployeeId } from "@repo/utils/id";
+import { ICON_ENUM } from "@repo/utils/enums/db-enums";
 /* -------------------------------------------------------------------------- */
 /*                                   HELPERS                                  */
 /* -------------------------------------------------------------------------- */
@@ -171,6 +172,8 @@ async function seedLoanType() {
     (name) => ({
       bankLoanType: name,
       loanTypeId: name.split(" ").join("-").toLowerCase(),
+      description: faker.lorem.paragraph({ min: 2, max: 10 }).slice(0, 1000),
+      icon: faker.helpers.arrayElement(ICON_ENUM),
     }),
   );
 

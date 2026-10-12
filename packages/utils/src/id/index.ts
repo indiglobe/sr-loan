@@ -1,4 +1,4 @@
-import { ROLE_ENUM } from "@/jwt";
+import { ROLE_ENUM } from "@/enums/db-enums";
 import { uid } from "uid/secure";
 import z from "zod";
 
