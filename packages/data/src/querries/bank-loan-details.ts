@@ -1,15 +1,9 @@
-import { Table__BankLoanDetails, Table__LoanType } from "@/schema";
+import { Table__Bank, Table__BankLoanDetails, Table__LoanType } from "@/schema";
 import { eq, getTableColumns, sql } from "drizzle-orm";
 import { db } from "@/index";
 import { tryCatch } from "@repo/utils/try-catch";
 
-type TRead__AllLoansDetails = {
-  identifier?: {
-    loanTypeId?: string;
-  };
-};
-
-export async function read__AllLoansDetails(options?: TRead__AllLoansDetails) {
+export async function read__AllLoansDetails() {
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const {
     createdAt: createdAtLoanType,
@@ -23,6 +17,7 @@ export async function read__AllLoansDetails(options?: TRead__AllLoansDetails) {
     tableIdentifierToken: tableIdentifierTokenBankLoanDetails,
     ...restBankLoanDetails
   } = getTableColumns(Table__BankLoanDetails);
+  const { bankName, tagline } = getTableColumns(Table__Bank);
   /* eslint-enable @typescript-eslint/no-unused-vars */
 
   const jsonObjectFields = Object.entries(restBankLoanDetails).flatMap(
@@ -33,15 +28,17 @@ export async function read__AllLoansDetails(options?: TRead__AllLoansDetails) {
     .select({
       ...restLoanType,
       banks: sql<
-        Omit<
+        (Omit<
           typeof Table__BankLoanDetails.$inferSelect,
           "createdAt" | "updatedAt" | "tableIdentifierToken"
-        >[]
+        > & { bankName: string; tagline: string })[]
       >`
         COALESCE(
           JSON_ARRAYAGG(
             JSON_OBJECT(
-              ${sql.join(jsonObjectFields, sql`, `)}
+              ${sql.join(jsonObjectFields, sql`, `)},
+              "bankName", ${bankName},
+              "tagline", ${tagline}
             )
           ),
           JSON_ARRAY()
@@ -53,11 +50,8 @@ export async function read__AllLoansDetails(options?: TRead__AllLoansDetails) {
       Table__LoanType,
       eq(Table__LoanType.loanTypeId, Table__BankLoanDetails.loanTypeId),
     )
+    .innerJoin(Table__Bank, eq(Table__Bank.id, Table__BankLoanDetails.bankId))
     .groupBy(Table__LoanType.loanTypeId);
-
-    if(options?.identifier?.loanTypeId){
-      baseQuery.where(eq(Table__LoanType.loanTypeId,options.identifier.loanTypeId))
-    }
 
   const [baseQueryError, baseQueryData] = await tryCatch(baseQuery);
 
@@ -69,4 +63,81 @@ export async function read__AllLoansDetails(options?: TRead__AllLoansDetails) {
   const loanDetails = baseQueryData;
 
   return loanDetails;
+}
+
+type TRead__OneLoansDetails = {
+  identifier: {
+    loanTypeId: string;
+  };
+};
+
+export async function read__OneLoansDetails(options: TRead__OneLoansDetails) {
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  const {
+    createdAt: createdAtLoanType,
+    updatedAt: updatedAtLoanType,
+    tableIdentifierToken: tableIdentifierTokenLoanType,
+    ...restLoanType
+  } = getTableColumns(Table__LoanType);
+  const {
+    createdAt: createdAtBankLoanDetails,
+    updatedAt: updatedAtBankLoanDetails,
+    tableIdentifierToken: tableIdentifierTokenBankLoanDetails,
+    ...restBankLoanDetails
+  } = getTableColumns(Table__BankLoanDetails);
+  const { bankName, tagline } = getTableColumns(Table__Bank);
+  /* eslint-enable @typescript-eslint/no-unused-vars */
+
+  const jsonObjectFields = Object.entries(restBankLoanDetails).flatMap(
+    ([key, column]) => [sql`${key}`, sql`${column}`],
+  );
+
+  const baseQuery = db
+    .select({
+      ...restLoanType,
+      banks: sql<
+        (Omit<
+          typeof Table__BankLoanDetails.$inferSelect,
+          "createdAt" | "updatedAt" | "tableIdentifierToken"
+        > & { bankName: string; tagline: string })[]
+      >`
+        COALESCE(
+          JSON_ARRAYAGG(
+            JSON_OBJECT(
+              ${sql.join(jsonObjectFields, sql`, `)},
+              "bankName", ${bankName},
+              "tagline", ${tagline}
+            )
+          ),
+          JSON_ARRAY()
+        )
+      `.as("banks"),
+    })
+    .from(Table__BankLoanDetails)
+    .innerJoin(
+      Table__LoanType,
+      eq(Table__LoanType.loanTypeId, Table__BankLoanDetails.loanTypeId),
+    )
+    .innerJoin(
+      Table__Bank,
+      eq(Table__Bank.bankId, Table__BankLoanDetails.bankId),
+    )
+    .groupBy(Table__LoanType.loanTypeId);
+
+  if (options.identifier.loanTypeId) {
+    baseQuery.where(
+      eq(Table__LoanType.loanTypeId, options.identifier.loanTypeId),
+    );
+  }
+
+  const [baseQueryError, baseQueryData] = await tryCatch(baseQuery);
+
+  if (baseQueryError) {
+    console.log(`Error in baseQueryError in read__OneLoansDetails`);
+    throw baseQueryError;
+  }
+
+  const [loanDetails] = baseQueryData;
+
+  return loanDetails ? loanDetails : null;
 }

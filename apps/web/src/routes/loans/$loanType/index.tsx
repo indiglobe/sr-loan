@@ -1,25 +1,29 @@
-import { read__AllLoansDetails } from "@repo/data/querries/bank-loan-details";
-import { createFileRoute } from "@tanstack/react-router";
-import z from "zod";
-
-const personalLoanRouteQueryParamsSchema = z.object({
-  "bank-name": z.string().optional(),
-});
+import { IndividualLoanType } from "@/components/main/loans/loan-type";
+import { serverFn__readOneLoansDetails } from "@/integrations/tanstack/server-functions/bank-loan-details.sfn";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/loans/$loanType/")({
   component: RouteComponent,
 
   loader: async ({ params: { loanType } }) => {
-    const [allLoansDetails] = await Promise.all([
-      read__AllLoansDetails({ identifier: { loanTypeId: loanType } }),
+    console.log(loanType);
+
+    const [oneLoansDetails] = await Promise.all([
+      serverFn__readOneLoansDetails({
+        data: { identifier: { loanTypeId: loanType } },
+      }),
     ]);
 
-    return { allLoansDetails };
-  },
+    if (!oneLoansDetails) throw notFound();
 
-  validateSearch: personalLoanRouteQueryParamsSchema,
+    return { oneLoansDetails };
+  },
 });
 
 function RouteComponent() {
-  return <div>Hello "/loans/$loan_type/"!</div>;
+  return (
+    <>
+      <IndividualLoanType />
+    </>
+  );
 }

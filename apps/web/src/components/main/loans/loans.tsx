@@ -38,6 +38,7 @@ import {
 } from "@/components/main/loans/loans.ui";
 import { cn } from "@repo/styles/cn";
 import { Button } from "@repo/ui/button";
+import { Icon } from "@repo/ui/icon";
 
 export default function Loans() {
   return (
@@ -205,80 +206,6 @@ function LoanOverviewCard({ className, ...props }: ComponentProps<"div">) {
   );
 }
 
-// const loanProducts = [
-//   {
-//     icon: Zap,
-//     title: "Instant Loan",
-//     description:
-//       "Quick financing for urgent requirements with a fast and simplified application experience.",
-//     amount: "₹10K - ₹5L",
-//     tenure: "3 - 36 Months",
-//     productLink: "/loans/instant-loan",
-//   },
-//   {
-//     icon: BadgeIndianRupee,
-//     title: "Personal Loan",
-//     description:
-//       "Get financial support for medical needs, travel, weddings and other personal expenses.",
-//     amount: "₹50K - ₹20L",
-//     tenure: "6 - 60 Months",
-//     productLink: "/loans/personal-loan",
-//   },
-//   {
-//     icon: CarFront,
-//     title: "Car Loan",
-//     description:
-//       "Finance your new or used car with flexible repayment options and simple application support.",
-//     amount: "₹1L - ₹50L",
-//     tenure: "12 - 84 Months",
-//     productLink: "/loans/car-loan",
-//   },
-//   {
-//     icon: House,
-//     title: "Home Loan",
-//     description:
-//       "Get financing support for purchasing, constructing or renovating your dream home.",
-//     amount: "₹5L - ₹2Cr",
-//     tenure: "Up to 30 Years",
-//     productLink: "/loans/home-loan",
-//   },
-//   {
-//     icon: BriefcaseBusiness,
-//     title: "Business Loan",
-//     description:
-//       "Access funds for business growth, working capital, inventory and expansion.",
-//     amount: "₹1L - ₹50L",
-//     tenure: "12 - 84 Months",
-//     productLink: "/loans/business-loan",
-//   },
-//   {
-//     icon: IdCard,
-//     title: "KYC Loan",
-//     description:
-//       "Explore loan options with a streamlined KYC-based verification and documentation process.",
-//     amount: "Based on Eligibility",
-//     tenure: "Flexible",
-//     productLink: "/loans/kyc-loan",
-//   },
-
-//   {
-//     icon: Building2,
-//     title: "Loan Against Property",
-//     description:
-//       "Unlock funds by leveraging your property as collateral while continuing to retain ownership.",
-//     amount: "₹5L - ₹5Cr",
-//     tenure: "Up to 15 Years",
-//     productLink: "/loans/loan-against-property",
-//   },
-// ] satisfies {
-//   icon: ElementType;
-//   title: string;
-//   description: string;
-//   amount: string;
-//   tenure: string;
-//   productLink: LinkProps["to"];
-// }[];
-
 function LoanProducts({ className, ...props }: ComponentProps<"section">) {
   const { loanTypes } = useLoaderData({ from: "/loans/" });
 
@@ -316,10 +243,12 @@ function LoanProducts({ className, ...props }: ComponentProps<"section">) {
                         idx % 3 === 2,
                     })}
                   >
-                    {/* <Icon icon={loan.icon as any} className="size-5" /> */}
+                    <Icon icon={loan.icon} className="size-5" />
                   </LoanProductCardIcon>
 
-                  <LoanProductCardHeading>{loan.bankLoanType}</LoanProductCardHeading>
+                  <LoanProductCardHeading>
+                    {loan.bankLoanType}
+                  </LoanProductCardHeading>
 
                   <LoanProductCardDescription>
                     {loan.description}
@@ -471,6 +400,7 @@ function EligibilitySection({
 
         <div className="grid gap-4 sm:grid-cols-2">
           {eligibilityPoints.map((item) => {
+            // eslint-disable-next-line no-shadow
             const Icon = item.icon;
             return (
               <EligibilityCard key={item.title}>
@@ -674,6 +604,7 @@ function SectionHeader({
 }
 
 function DocumentCard({
+  // eslint-disable-next-line no-shadow
   icon: Icon,
   title,
   description,
@@ -706,6 +637,7 @@ function DocumentCard({
 
 function ProcessStep({
   number,
+  // eslint-disable-next-line no-shadow
   icon: Icon,
   title,
   description,
@@ -737,6 +669,7 @@ function ProcessStep({
 }
 
 function SupportRow({
+  // eslint-disable-next-line no-shadow
   icon: Icon,
   title,
   description,

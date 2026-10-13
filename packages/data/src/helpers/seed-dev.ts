@@ -198,7 +198,7 @@ async function seedBankLoanDetails() {
     loanTypeId: faker.helpers.arrayElement(loans.map((l) => l.loanTypeId)),
     maxTenureInMonth: randomInt(1, 10) * 6,
     processingTimeInDays: randomInt(1, 5),
-    returnOnInvest: randomInt(6, 14),
+    rateOfInterest: randomInt(6, 14),
   }));
 
   await db.insert(Table__BankLoanDetails).values([...__dummyBankLoanDetails]);

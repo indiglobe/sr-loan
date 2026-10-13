@@ -46,6 +46,7 @@ services:
       - ../nginx.dev.secure.conf:/etc/nginx/nginx.conf:ro
       - ../localhost-cert.pem:/etc/nginx/certs/localhost-cert.pem:ro
       - ../localhost-key.pem:/etc/nginx/certs/localhost-key.pem:ro
+    restart: unless-stopped
 
   # sr-loan-dev-hoppscotch:
   #   container_name: sr-loan-dev-hoppscotch

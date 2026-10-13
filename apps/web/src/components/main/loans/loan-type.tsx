@@ -1,1528 +1,353 @@
-import { useState } from "react";
-
 import {
+  ArrowLeft,
+  ArrowUpRight,
+  Award,
+  BadgeCheck,
+  BadgeIndianRupee,
+  BriefcaseBusiness,
+  Building2,
+  Calendar,
+  CalendarDays,
+  CarFront,
+  CheckCircle2,
+  ChevronRight,
+  Clock,
+  DollarSign,
+  FileCheck,
+  FileText,
+  House,
+  IdCard,
+  Mail,
+  MapPin,
+  Percent,
+  Phone,
+  ShieldCheck,
+  TrendingUp,
+  UserCheck,
+  Zap,
+} from "lucide-react";
+import { useLoaderData, useRouter } from "@tanstack/react-router";
+import { PLATFORM_PHONE_1 } from "@repo/utils/const/platform-data";
+
+const loanIcons = {
+  ArrowLeft,
+  Award,
+  BadgeCheck,
+  BadgeIndianRupee,
+  BriefcaseBusiness,
+  Building2,
+  Calendar,
+  CalendarDays,
+  CarFront,
   CheckCircle2,
   Clock,
-  ShieldCheck,
-  Calendar,
   DollarSign,
-  UserCheck,
-  TrendingUp,
+  FileCheck,
   FileText,
-  Phone,
-  Award,
-  ChevronRight,
-  ArrowLeft,
-  Search,
-  Building2,
+  House,
+  IdCard,
+  Mail,
+  MapPin,
   Percent,
-  X,
-} from "lucide-react";
-import {
-  useLoaderData,
-  useNavigate,
-  useRouter,
-  useSearch,
-  Link,
-} from "@tanstack/react-router";
-import { cn } from "@repo/styles/cn";
+  Phone,
+  ShieldCheck,
+  TrendingUp,
+  UserCheck,
+  Zap,
+} as const;
 
-export function PersonalLoan() {
-  const { allLoansDetails } = useLoaderData({ from: "/loans/$loanType/" });
+function formatTenure(months: number) {
+  const years = Math.floor(months / 12);
+  const remainingMonths = months % 12;
 
-  const navigate = useNavigate();
+  if (years === 0) return `${months} months`;
+  if (remainingMonths === 0)
+    return `${years} ${years === 1 ? "year" : "years"}`;
 
-  return (
-    <>
-      <div className="space-y-6">
-        {/* Search Bar & Stats */}
-
-        <div
-          className={cn(
-            "2xs:px-5 mx-auto mt-5 w-full max-w-7xl px-4 sm:px-6 lg:px-8",
-          )}
-        >
-          <div
-            className={cn(
-              "flex flex-col gap-4 rounded-2xl border border-stone-800 bg-stone-900/60 p-4 backdrop-blur sm:flex-row sm:items-center sm:justify-between",
-            )}
-          >
-            <div className={cn("relative w-full sm:w-96")}>
-              <Search
-                className={cn(
-                  "pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-stone-400",
-                )}
-              />
-
-              <input
-                type="text"
-                placeholder="Search bank name or loan type..."
-                value={searchQuery}
-                onChange={(e) => filterBanks(e.target.value)}
-                className={cn(
-                  "w-full rounded-xl border border-stone-800 bg-stone-950 py-3 pr-11 pl-11 text-sm text-stone-100 transition placeholder:text-stone-500 focus:border-amber-500 focus:outline-none",
-                )}
-              />
-
-              <button
-                type="button"
-                className={cn(
-                  "absolute top-1/2 right-3.5 -translate-y-1/2 text-stone-400 transition hover:text-white",
-                )}
-                onClick={() => filterBanks("")}
-              >
-                <X className={cn("size-5")} />
-              </button>
-            </div>
-
-            <div className={cn("text-sm font-medium text-stone-400")}>
-              Showing{" "}
-              <span className={cn("font-bold text-amber-400")}>
-                {filteredBanks.length}
-              </span>{" "}
-              Partner Banks
-            </div>
-          </div>
-        </div>
-
-        {/* Banks Grid */}
-
-        <div
-          className={cn(
-            "2xs:px-5 mx-auto grid w-full max-w-7xl grid-cols-1 gap-6 px-4 sm:px-6 md:grid-cols-2 lg:grid-cols-3 lg:px-8",
-          )}
-        >
-          {filteredBanks.map((bank) => (
-            <div
-              key={bank.id}
-              className="relative flex cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border border-stone-800 bg-stone-900/90 p-6 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/60"
-            >
-              <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-amber-500/5 blur-2xl transition group-hover:bg-amber-500/10"></div>
-
-              <Link
-                to="/loans/personal-loan/$bankId"
-                params={{ bankId: bank.id }}
-              >
-                {/* Bank Top Tag */}
-
-                <div className="mb-5 flex items-start gap-3">
-                  <span
-                    className={cn(
-                      "flex-1 rounded-2xl border border-stone-800 bg-stone-950 px-4 py-2.5 text-2.75 leading-4 font-medium tracking-[0.12em] text-amber-400 uppercase",
-                    )}
-                  >
-                    {bank.tagline}
-                  </span>
-
-                  <div
-                    className={cn(
-                      "flex size-10 shrink-0 items-center justify-center rounded-xl border border-stone-800 bg-stone-950",
-                    )}
-                  >
-                    <Building2
-                      className={cn(
-                        "size-4 text-stone-500 transition group-hover:text-amber-400",
-                      )}
-                    />
-                  </div>
-                </div>
-
-                <h3 className="mb-1 text-2xl font-black text-white transition group-hover:text-amber-400">
-                  {bank.bankName}
-                </h3>
-
-                <p className="mb-6 text-xs font-medium tracking-wide text-stone-400 uppercase">
-                  {bank.productName}
-                </p>
-
-                {/* Highlights Grid */}
-
-                <div className="mb-6 grid grid-cols-2 gap-3 rounded-2xl border border-stone-800/80 bg-stone-950/60 p-4">
-                  <div>
-                    <div className="text-xs text-stone-400">Interest Rate</div>
-
-                    <div className="text-sm font-bold text-amber-400">
-                      {bank.roiStarting}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs text-stone-400">Max Amount</div>
-
-                    <div className="text-sm font-bold text-stone-100">
-                      {bank.maxAmount}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs text-stone-400">Max Tenure</div>
-
-                    <div className="text-sm font-bold text-stone-100">
-                      {bank.maxTenure}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs text-stone-400">Disbursal</div>
-
-                    <div className="text-sm font-bold text-stone-100">
-                      {bank.processingTime}
-                    </div>
-                  </div>
-                </div>
-              </Link>
-
-              <div className="@container">
-                <div
-                  className={cn("grid grid-cols-1 gap-3 py-4 @sm:grid-cols-2")}
-                >
-                  {/* View Eligibility */}
-
-                  <Link
-                    to="/loans/personal-loan/$bankId"
-                    params={{ bankId: bank.id }}
-                    type="button"
-                    className={cn(
-                      "group border-primary-400 text-primary-400 hover:bg-primary-400 flex w-full items-center justify-center gap-2 rounded-md border bg-transparent px-4 py-3 text-xs font-semibold transition duration-300 hover:text-stone-950",
-                    )}
-                  >
-                    <span>View Eligibility & Docs</span>
-
-                    <ChevronRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-                  </Link>
-
-                  {/* Apply Now */}
-
-                  <a
-                    href={bank.applyLink}
-                    className={cn(
-                      "group border-primary-400 bg-primary-500 hover:border-primary-300 hover:bg-primary-300 flex w-full items-center justify-center gap-2 rounded-md border px-4 py-3 text-xs font-bold text-stone-950 transition duration-300",
-                    )}
-                  >
-                    <span>Apply Now</span>
-
-                    <ChevronRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {filteredBanks.length === 0 && (
-          <div className="rounded-3xl border border-stone-800 bg-stone-900/40 py-16 text-center">
-            <p className="text-lg text-stone-400">
-              No banks found matching your search query.
-            </p>
-
-            <button
-              onClick={() => setSearchQuery("")}
-              className="bg-primary-500 mt-4 rounded-xl px-4 py-2 text-sm font-bold text-stone-950"
-            >
-              Reset Search
-            </button>
-          </div>
-        )}
-      </div>
-    </>
-  );
+  return `${years}y ${remainingMonths}m`;
 }
 
-// export function App() {
-
-//   const { banksLoanData } = useLoaderData({ from: "/loans/personal-loan/" });
-
-//   const { "bank-name": bankName } = useSearch({
-
-//     from: "/loans/personal-loan/",
-
-//   });
-
-//   const [selectedBankId, setSelectedBankId] = useState<string | null>(null);
-
-//   const [searchQuery, setSearchQuery] = useState(bankName ?? "");
-
-//   const [copiedPhone, setCopiedPhone] = useState<string | null>(null);
-
-//   const navigate = useNavigate();
-
-//   function filterBanks(filteringToken: string) {
-
-//     setSearchQuery(filteringToken);
-
-//     if (filteringToken === "") {
-
-//       return navigate({
-
-//         to: ".",
-
-//         search: (prev) => {
-
-//           delete prev["bank-name"];
-
-//           return {
-
-//             ...prev,
-
-//           };
-
-//         },
-
-//         resetScroll: false,
-
-//       });
-
-//     }
-
-//     return navigate({
-
-//       to: ".",
-
-//       search: (prev) => ({
-
-//         ...prev,
-
-//         "bank-name": filteringToken,
-
-//       }),
-
-//       resetScroll: false,
-
-//     });
-
-//   }
-
-//   const handleCopyPhone = (phone: string) => {
-
-//     navigator.clipboard.writeText(phone);
-
-//     setCopiedPhone(phone);
-
-//     setTimeout(() => setCopiedPhone(null), 2000);
-
-//   };
-
-//   const selectedBank = banksLoanData.find((b) => b.id === selectedBankId);
-
-//   const filteredBanks = banksLoanData.filter(
-
-//     (bank) =>
-
-//       bank.bankName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-
-//       bank.productName.toLowerCase().includes(searchQuery.toLowerCase()),
-
-//   );
-
-//   return (
-
-//     <div className="from-background bg-linear-to-br via-stone-900 to-amber-950 pt-12 font-sans text-stone-100">
-
-//       <div className="space-y-8">
-
-//         {/* CONDITIONAL VIEW: Dashboard List or Detailed Bank View */}
-
-//         {!selectedBank ? (
-
-//           <div className="space-y-6">
-
-//             {/* Search Bar & Stats */}
-
-//             <div className="flex flex-col items-center justify-between gap-4 rounded-2xl border border-stone-800 bg-stone-900/60 p-4 backdrop-blur sm:flex-row">
-
-//               <div className="relative w-full sm:w-96">
-
-//                 <Search className="absolute top-3 left-3.5 h-5 w-5 text-stone-400" />
-
-//                 <input
-
-//                   type="text"
-
-//                   placeholder="Search bank name or loan type..."
-
-//                   value={searchQuery}
-
-//                   onChange={(e) => filterBanks(e.target.value)}
-
-//                   className="w-full rounded-xl border border-stone-800 bg-stone-950 px-11 py-2.5 text-sm text-stone-100 placeholder-stone-500 transition focus:border-amber-500 focus:outline-none"
-
-//                 />
-
-//                 <button
-
-//                   type="button"
-
-//                   className="absolute top-1/2 right-3.5 h-5 w-5 -translate-y-1/2 text-stone-400"
-
-//                   onClick={() => filterBanks("")}
-
-//                 >
-
-//                   <X className={cn(`h-5 w-5`)} />
-
-//                 </button>
-
-//               </div>
-
-//               <div className="text-sm font-medium text-stone-400">
-
-//                 Showing{" "}
-
-//                 <span className="font-bold text-amber-400">
-
-//                   {filteredBanks.length}
-
-//                 </span>{" "}
-
-//                 Partner Banks
-
-//               </div>
-
-//             </div>
-
-//             {/* Banks Grid */}
-
-//             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-
-//               {filteredBanks.map((bank) => (
-
-//                 <div
-
-//                   key={bank.id}
-
-//                   className="relative flex cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border border-stone-800 bg-stone-900/90 p-6 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/60"
-
-//                 >
-
-//                   <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-amber-500/5 blur-2xl transition group-hover:bg-amber-500/10"></div>
-
-//                   <div>
-
-//                     {/* Bank Top Tag */}
-
-//                     <div className="mb-4 flex items-center justify-between">
-
-//                       <span className="rounded-full border border-stone-800 bg-stone-950 px-3 py-1 text-xs tracking-widest text-amber-400 uppercase">
-
-//                         {bank.tagline}
-
-//                       </span>
-
-//                       <Building2 className="h-5 w-5 text-stone-500 transition group-hover:text-amber-400" />
-
-//                     </div>
-
-//                     <h3 className="mb-1 text-2xl font-black text-white transition group-hover:text-amber-400">
-
-//                       {bank.bankName}
-
-//                     </h3>
-
-//                     <p className="mb-6 text-xs font-medium tracking-wide text-stone-400 uppercase">
-
-//                       {bank.productName}
-
-//                     </p>
-
-//                     {/* Highlights Grid */}
-
-//                     <div className="mb-6 grid grid-cols-2 gap-3 rounded-2xl border border-stone-800/80 bg-stone-950/60 p-4">
-
-//                       <div>
-
-//                         <div className="text-xs text-stone-400">
-
-//                           Interest Rate
-
-//                         </div>
-
-//                         <div className="text-sm font-bold text-amber-400">
-
-//                           {bank.roiStarting}
-
-//                         </div>
-
-//                       </div>
-
-//                       <div>
-
-//                         <div className="text-xs text-stone-400">Max Amount</div>
-
-//                         <div className="text-sm font-bold text-stone-100">
-
-//                           {bank.maxAmount}
-
-//                         </div>
-
-//                       </div>
-
-//                       <div>
-
-//                         <div className="text-xs text-stone-400">Max Tenure</div>
-
-//                         <div className="text-sm font-bold text-stone-100">
-
-//                           {bank.maxTenure}
-
-//                         </div>
-
-//                       </div>
-
-//                       <div>
-
-//                         <div className="text-xs text-stone-400">Disbursal</div>
-
-//                         <div className="text-sm font-bold text-stone-100">
-
-//                           {bank.processingTime}
-
-//                         </div>
-
-//                       </div>
-
-//                     </div>
-
-//                   </div>
-
-//                   <div className={cn(`space-y-3 py-4`)}>
-
-//                     <div
-
-//                       className="group flex items-center justify-between"
-
-//                       onClick={() => setSelectedBankId(bank.id)}
-
-//                     >
-
-//                       <span className="text-xs font-semibold text-stone-300 transition group-hover:text-amber-400">
-
-//                         View Eligibility & Docs
-
-//                       </span>
-
-//                       <div className="rounded-xl bg-amber-500/10 p-2 text-amber-400 transition group-hover:bg-amber-500 group-hover:text-stone-950">
-
-//                         <ChevronRight className="h-4 w-4" />
-
-//                       </div>
-
-//                     </div>
-
-//                     <a
-
-//                       href={bank.applyLink}
-
-//                       className="group flex items-center justify-between"
-
-//                     >
-
-//                       <span className="text-xs font-semibold text-stone-300 transition group-hover:text-amber-400">
-
-//                         Apply Now
-
-//                       </span>
-
-//                       <div className="rounded-xl bg-amber-500/10 p-2 text-amber-400 transition group-hover:bg-amber-500 group-hover:text-stone-950">
-
-//                         <ChevronRight className="h-4 w-4" />
-
-//                       </div>
-
-//                     </a>
-
-//                   </div>
-
-//                 </div>
-
-//               ))}
-
-//             </div>
-
-//             {filteredBanks.length === 0 && (
-
-//               <div className="rounded-3xl border border-stone-800 bg-stone-900/40 py-16 text-center">
-
-//                 <p className="text-lg text-stone-400">
-
-//                   No banks found matching your search query.
-
-//                 </p>
-
-//                 <button
-
-//                   onClick={() => setSearchQuery("")}
-
-//                   className="mt-4 rounded-xl bg-amber-500 px-4 py-2 text-sm font-bold text-stone-950"
-
-//                 >
-
-//                   Reset Search
-
-//                 </button>
-
-//               </div>
-
-//             )}
-
-//           </div>
-
-//         ) : (
-
-//           /* DETAILED BANK VIEW (Simulated Page / Modal Detail) */
-
-//           <div className="animate-fadeIn space-y-6">
-
-//             {/* Back Button */}
-
-//             <button
-
-//               onClick={() => setSelectedBankId(null)}
-
-//               className="inline-flex cursor-pointer items-center gap-2 rounded-2xl border border-stone-800 bg-stone-900 px-4 py-2.5 text-sm font-semibold text-stone-300 transition hover:border-amber-500/50 hover:text-amber-400"
-
-//             >
-
-//               <ArrowLeft className="h-4 w-4" />
-
-//               <span>Back to All Banks Dashboard</span>
-
-//             </button>
-
-//             {/* Bank Detail Header Banner */}
-
-//             <div
-
-//               className={`bg-linear-to-r ${selectedBank.logoBg} relative overflow-hidden rounded-3xl border border-amber-500/40 p-6 shadow-2xl sm:p-10`}
-
-//             >
-
-//               <div className="pointer-events-none absolute top-0 right-0 h-96 w-96 rounded-full bg-white/5 blur-3xl"></div>
-
-//               <div className="relative z-10 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
-
-//                 <div className="space-y-3">
-
-//                   <div className="flex items-center gap-3">
-
-//                     <span className="rounded-full bg-amber-500 px-3 py-1 text-xs font-extrabold tracking-wider text-stone-950 uppercase shadow-md">
-
-//                       {selectedBank.tagline}
-
-//                     </span>
-
-//                     <span className="text-sm text-stone-300">
-
-//                       Verified Loan Scheme
-
-//                     </span>
-
-//                   </div>
-
-//                   <h2 className="text-3xl font-black tracking-tight text-white sm:text-5xl">
-
-//                     {selectedBank.bankName}{" "}
-
-//                     <span className="font-serif text-amber-400 italic">
-
-//                       {selectedBank.productName}
-
-//                     </span>
-
-//                   </h2>
-
-//                   <p className="text-lg font-medium text-stone-200 sm:text-2xl">
-
-//                     ROI Starting from{" "}
-
-//                     <span className="font-bold text-amber-400 underline decoration-amber-500/50">
-
-//                       {selectedBank.roiStarting}
-
-//                     </span>
-
-//                   </p>
-
-//                   <a
-
-//                     href={selectedBank.applyLink}
-
-//                     className={cn(
-
-//                       `flex max-w-max cursor-pointer items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2 text-sm font-bold text-stone-950 shadow transition-all hover:bg-amber-400`,
-
-//                     )}
-
-//                   >
-
-//                     Apply Now
-
-//                   </a>
-
-//                 </div>
-
-//                 <div className="min-w-70 rounded-2xl border border-stone-700 bg-stone-950/80 p-6 text-center shadow-inner sm:text-left">
-
-//                   <div className="mb-1 text-xs font-semibold tracking-widest text-stone-300 uppercase">
-
-//                     Instant Support
-
-//                   </div>
-
-//                   <div className="mb-2 text-xl font-bold text-white">
-
-//                     Speak to Advisor
-
-//                   </div>
-
-//                   <p className="mb-4 text-xs text-stone-300">
-
-//                     Fast processing via SR Loan Services.
-
-//                   </p>
-
-//                   <div className="flex flex-col gap-2">
-
-//                     {selectedBank.contactNumbers.map((phone) => (
-
-//                       <button
-
-//                         key={phone}
-
-//                         onClick={() => handleCopyPhone(phone)}
-
-//                         className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2 text-sm font-bold text-stone-950 shadow transition-all hover:bg-amber-400"
-
-//                       >
-
-//                         <Phone className="h-4 w-4" />
-
-//                         <span>{phone}</span>
-
-//                         {copiedPhone === phone && (
-
-//                           <span className="ml-2 rounded bg-stone-950 px-1.5 py-0.5 text-xs font-normal text-amber-400">
-
-//                             Copied!
-
-//                           </span>
-
-//                         )}
-
-//                       </button>
-
-//                     ))}
-
-//                   </div>
-
-//                 </div>
-
-//               </div>
-
-//             </div>
-
-//             {/* Three Pillar Cards: Benefits, Eligibility, Required Documents */}
-
-//             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-
-//               {/* Benefits Section */}
-
-//               <div className="flex flex-col justify-between rounded-3xl border border-amber-500/30 bg-stone-900/90 p-6 shadow-xl sm:p-8">
-
-//                 <div>
-
-//                   <div className="mb-6 flex items-center justify-between">
-
-//                     <h3 className="flex items-center gap-2 font-serif text-2xl font-bold text-amber-400 italic">
-
-//                       <Award className="h-7 w-7 text-amber-500" /> Benefits
-
-//                     </h3>
-
-//                     <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs tracking-widest text-amber-400 uppercase">
-
-//                       Perks
-
-//                     </span>
-
-//                   </div>
-
-//                   <ul className="space-y-4">
-
-//                     {selectedBank.benefits.map((benefit) => (
-
-//                       <li
-
-//                         key={benefit.id}
-
-//                         className="flex items-start gap-3 rounded-2xl border border-stone-800 bg-stone-950/60 p-4"
-
-//                       >
-
-//                         <div className="mt-0.5 rounded-xl bg-amber-500/10 p-2">
-
-//                           {renderIcon(benefit.iconName)}
-
-//                         </div>
-
-//                         <div>
-
-//                           <h4 className="text-base font-bold text-stone-100">
-
-//                             {benefit.title}
-
-//                           </h4>
-
-//                           <p className="mt-0.5 text-sm text-stone-400">
-
-//                             {benefit.description}
-
-//                           </p>
-
-//                         </div>
-
-//                       </li>
-
-//                     ))}
-
-//                   </ul>
-
-//                 </div>
-
-//                 <div className="mt-6 flex items-center justify-between border-t border-stone-800 pt-4 text-xs text-stone-400">
-
-//                   <span>Max Limit: {selectedBank.maxAmount}</span>
-
-//                   <span className="font-semibold text-amber-400">
-
-//                     {selectedBank.processingTime}
-
-//                   </span>
-
-//                 </div>
-
-//               </div>
-
-//               {/* Eligibility Section */}
-
-//               <div className="flex flex-col justify-between rounded-3xl border border-amber-500/30 bg-stone-900/90 p-6 shadow-xl sm:p-8">
-
-//                 <div>
-
-//                   <div className="mb-6 flex items-center justify-between">
-
-//                     <h3 className="flex items-center gap-2 font-serif text-2xl font-bold text-amber-400 italic">
-
-//                       <UserCheck className="h-7 w-7 text-amber-500" />{" "}
-
-//                       Eligibility
-
-//                     </h3>
-
-//                     <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs tracking-widest text-amber-400 uppercase">
-
-//                       Criteria
-
-//                     </span>
-
-//                   </div>
-
-//                   <ul className="space-y-4">
-
-//                     {selectedBank.eligibility.map((item) => (
-
-//                       <li
-
-//                         key={item.id}
-
-//                         className="flex items-start gap-3 rounded-2xl border border-stone-800 bg-stone-950/60 p-4"
-
-//                       >
-
-//                         <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber-500 text-xs font-bold text-stone-950">
-
-//                           ✓
-
-//                         </div>
-
-//                         <div>
-
-//                           <h4 className="text-base font-bold text-stone-100">
-
-//                             {item.requirement}
-
-//                           </h4>
-
-//                           <p className="mt-0.5 text-sm text-stone-400">
-
-//                             {item.detail}
-
-//                           </p>
-
-//                         </div>
-
-//                       </li>
-
-//                     ))}
-
-//                   </ul>
-
-//                 </div>
-
-//                 <div className="mt-6 flex items-center justify-between border-t border-stone-800 pt-4 text-xs text-stone-400">
-
-//                   <span>Tenure: {selectedBank.maxTenure}</span>
-
-//                   <span className="font-semibold text-amber-400">
-
-//                     Salaried / Self-Employed
-
-//                   </span>
-
-//                 </div>
-
-//               </div>
-
-//               {/* Required Documents Section */}
-
-//               <div className="flex flex-col justify-between rounded-3xl border border-amber-500/30 bg-stone-900/90 p-6 shadow-xl sm:p-8">
-
-//                 <div>
-
-//                   <div className="mb-6 flex items-center justify-between">
-
-//                     <h3 className="flex items-center gap-2 font-serif text-2xl font-bold text-amber-400 italic">
-
-//                       <FileText className="h-7 w-7 text-amber-500" /> Documents
-
-//                     </h3>
-
-//                     <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs tracking-widest text-amber-400 uppercase">
-
-//                       Checklist
-
-//                     </span>
-
-//                   </div>
-
-//                   <ul className="space-y-4">
-
-//                     {selectedBank.requiredDocuments.map((doc) => (
-
-//                       <li
-
-//                         key={doc.id}
-
-//                         className="flex items-start gap-3 rounded-2xl border border-stone-800 bg-stone-950/60 p-4"
-
-//                       >
-
-//                         <div className="mt-0.5 rounded-xl bg-amber-500/10 p-2 text-amber-400">
-
-//                           <FileText className="h-5 w-5" />
-
-//                         </div>
-
-//                         <div>
-
-//                           <h4 className="text-base font-bold text-stone-100">
-
-//                             {doc.documentName}
-
-//                           </h4>
-
-//                           <p className="mt-0.5 text-xs font-medium tracking-wide text-amber-500/80 uppercase">
-
-//                             {doc.category}
-
-//                           </p>
-
-//                         </div>
-
-//                       </li>
-
-//                     ))}
-
-//                   </ul>
-
-//                 </div>
-
-//                 <div className="mt-6 flex items-center justify-between border-t border-stone-800 pt-4 text-xs text-stone-400">
-
-//                   <span>Digital Upload</span>
-
-//                   <span className="font-semibold text-amber-400">
-
-//                     Fast Verification
-
-//                   </span>
-
-//                 </div>
-
-//               </div>
-
-//             </div>
-
-//             {/* Bottom Call to Action Footer */}
-
-//             <footer className="space-y-6 rounded-3xl border border-amber-500/40 bg-linear-to-r from-stone-900 via-amber-950 to-stone-900 p-8 text-center shadow-2xl">
-
-//               <div className="mx-auto max-w-2xl space-y-2">
-
-//                 <h3 className="font-serif text-xl font-bold text-white italic sm:text-2xl">
-
-//                   Ready to apply for {selectedBank.bankName}{" "}
-
-//                   {selectedBank.productName}?
-
-//                 </h3>
-
-//                 <p className="text-sm text-stone-300 sm:text-base">
-
-//                   Connect with our authorized loan experts to get best-in-market
-
-//                   rates and zero hassle processing.
-
-//                 </p>
-
-//               </div>
-
-//               <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-
-//                 {selectedBank.contactNumbers.map((phone) => (
-
-//                   <a
-
-//                     key={phone}
-
-//                     href={`tel:${phone}`}
-
-//                     className="flex transform items-center gap-3 rounded-2xl bg-amber-500 px-6 py-3.5 text-base font-extrabold text-stone-950 shadow-lg transition hover:-translate-y-0.5 hover:bg-amber-400 hover:shadow-amber-500/20 sm:text-lg"
-
-//                   >
-
-//                     <Phone className="h-5 w-5" />
-
-//                     <span>Call: {phone}</span>
-
-//                     <ChevronRight className="ml-1 h-4 w-4" />
-
-//                   </a>
-
-//                 ))}
-
-//               </div>
-
-//             </footer>
-
-//           </div>
-
-//         )}
-
-//       </div>
-
-//     </div>
-
-//   );
-
-// }
-
-export function PersonalLoanSeparated() {
-  const { banksLoanData } = useLoaderData({ from: "/loans/personal-loan/" });
-
-  const { "bank-name": bankName } = useSearch({
-    from: "/loans/personal-loan/",
-  });
-
-  const [searchQuery, setSearchQuery] = useState(bankName ?? "");
-
-  const navigate = useNavigate();
-
-  function filterBanks(filteringToken: string) {
-    setSearchQuery(filteringToken);
-
-    if (filteringToken === "") {
-      return navigate({
-        to: ".",
-
-        search: (prev) => {
-          delete prev["bank-name"];
-
-          return {
-            ...prev,
-          };
-        },
-
-        resetScroll: false,
-      });
-    }
-
-    return navigate({
-      to: ".",
-
-      search: (prev) => ({
-        ...prev,
-
-        "bank-name": filteringToken,
-      }),
-
-      resetScroll: false,
-    });
-  }
-
-  const filteredBanks = banksLoanData.filter(
-    (bank) =>
-      bank.bankName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      bank.productName.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
-
-  return (
-    <>
-      <div className="space-y-6">
-        {/* Search Bar & Stats */}
-
-        <div className="flex flex-col items-center justify-between gap-4 rounded-2xl border border-stone-800 bg-stone-900/60 p-4 backdrop-blur sm:flex-row">
-          <div className="relative w-full sm:w-96">
-            <Search className="absolute top-3 left-3.5 h-5 w-5 text-stone-400" />
-
-            <input
-              type="text"
-              placeholder="Search bank name or loan type..."
-              value={searchQuery}
-              onChange={(e) => filterBanks(e.target.value)}
-              className="w-full rounded-xl border border-stone-800 bg-stone-950 px-11 py-2.5 text-sm text-stone-100 placeholder-stone-500 transition focus:border-amber-500 focus:outline-none"
-            />
-
-            <button
-              type="button"
-              className="absolute top-1/2 right-3.5 h-5 w-5 -translate-y-1/2 text-stone-400"
-              onClick={() => filterBanks("")}
-            >
-              <X className={cn(`h-5 w-5`)} />
-            </button>
-          </div>
-
-          <div className="text-sm font-medium text-stone-400">
-            Showing{" "}
-            <span className="font-bold text-amber-400">
-              {filteredBanks.length}
-            </span>{" "}
-            Partner Banks
-          </div>
-        </div>
-
-        {/* Banks Grid */}
-
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredBanks.map((bank) => (
-            <div
-              key={bank.id}
-              className="relative flex cursor-pointer flex-col justify-between overflow-hidden rounded-3xl border border-stone-800 bg-stone-900/90 p-6 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/60"
-            >
-              <div className="absolute top-0 right-0 h-32 w-32 rounded-full bg-amber-500/5 blur-2xl transition group-hover:bg-amber-500/10"></div>
-
-              <div>
-                {/* Bank Top Tag */}
-
-                <div className="mb-4 flex items-center justify-between">
-                  <span className="rounded-full border border-stone-800 bg-stone-950 px-3 py-1 text-xs tracking-widest text-amber-400 uppercase">
-                    {bank.tagline}
-                  </span>
-
-                  <Building2 className="h-5 w-5 text-stone-500 transition group-hover:text-amber-400" />
-                </div>
-
-                <h3 className="mb-1 text-2xl font-black text-white transition group-hover:text-amber-400">
-                  {bank.bankName}
-                </h3>
-
-                <p className="mb-6 text-xs font-medium tracking-wide text-stone-400 uppercase">
-                  {bank.productName}
-                </p>
-
-                {/* Highlights Grid */}
-
-                <div className="mb-6 grid grid-cols-2 gap-3 rounded-2xl border border-stone-800/80 bg-stone-950/60 p-4">
-                  <div>
-                    <div className="text-xs text-stone-400">Interest Rate</div>
-
-                    <div className="text-sm font-bold text-amber-400">
-                      {bank.roiStarting}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs text-stone-400">Max Amount</div>
-
-                    <div className="text-sm font-bold text-stone-100">
-                      {bank.maxAmount}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs text-stone-400">Max Tenure</div>
-
-                    <div className="text-sm font-bold text-stone-100">
-                      {bank.maxTenure}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs text-stone-400">Disbursal</div>
-
-                    <div className="text-sm font-bold text-stone-100">
-                      {bank.processingTime}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className={cn(`space-y-3 py-4`)}>
-                <div className="group flex items-center justify-between">
-                  <span className="text-xs font-semibold text-stone-300 transition group-hover:text-amber-400">
-                    View Eligibility & Docs
-                  </span>
-
-                  <div className="rounded-xl bg-amber-500/10 p-2 text-amber-400 transition group-hover:bg-amber-500 group-hover:text-stone-950">
-                    <ChevronRight className="h-4 w-4" />
-                  </div>
-                </div>
-
-                <a
-                  href={bank.applyLink}
-                  className="group flex items-center justify-between"
-                >
-                  <span className="text-xs font-semibold text-stone-300 transition group-hover:text-amber-400">
-                    Apply Now
-                  </span>
-
-                  <div className="rounded-xl bg-amber-500/10 p-2 text-amber-400 transition group-hover:bg-amber-500 group-hover:text-stone-950">
-                    <ChevronRight className="h-4 w-4" />
-                  </div>
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {filteredBanks.length === 0 && (
-          <div className="rounded-3xl border border-stone-800 bg-stone-900/40 py-16 text-center">
-            <p className="text-lg text-stone-400">
-              No banks found matching your search query.
-            </p>
-
-            <button
-              onClick={() => setSearchQuery("")}
-              className="mt-4 rounded-xl bg-amber-500 px-4 py-2 text-sm font-bold text-stone-950"
-            >
-              Reset Search
-            </button>
-          </div>
-        )}
-      </div>
-    </>
-  );
+function formatInterest(rate: number) {
+  return `${rate}%`;
 }
 
-export function IndividualPersonalLoan() {
+export function IndividualLoanType() {
   const router = useRouter();
-
-  const { bankDetails: selectedBank } = useLoaderData({
-    from: "/loans/personal-loan/$bankId/",
+  const { oneLoansDetails } = useLoaderData({
+    from: "/loans/$loanType/",
   });
 
+  const LoanIcon =
+    loanIcons[oneLoansDetails.icon as keyof typeof loanIcons] ??
+    BadgeIndianRupee;
+
+  const banks = oneLoansDetails.banks ?? [];
+
   return (
-    <div className="animate-fadeIn space-y-6">
-      {/* Back Button */}
-
+    <main className="min-h-screen space-y-8 pb-10 text-stone-100">
+      {/* Navigation */}
       <button
+        type="button"
         onClick={() => router.history.back()}
-        className="inline-flex cursor-pointer items-center gap-2 rounded-2xl border border-stone-800 bg-stone-900 px-4 py-2.5 text-sm font-semibold text-stone-300 transition hover:border-amber-500/50 hover:text-amber-400"
+        className="group inline-flex min-h-10 items-center gap-2 rounded-xl border border-stone-800 bg-stone-950/70 px-4 py-2 text-sm font-medium text-stone-300 transition hover:border-amber-500/50 hover:text-amber-400"
       >
-        <ArrowLeft className="h-4 w-4" />
-
-        <span>Back to All Banks Dashboard</span>
+        <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-1" />
+        <span>Back to all loans</span>
       </button>
 
-      {/* Bank Detail Header Banner */}
+      {/* Hero */}
+      <section className="relative isolate overflow-hidden rounded-3xl border border-amber-500/20 bg-stone-950 shadow-2xl shadow-black/20">
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,rgba(245,158,11,0.17),transparent_50%),linear-gradient(135deg,#1c1917,#0c0a09_65%)]" />
 
-      <div
-        className={`bg-linear-to-r ${selectedBank.logoBg} relative overflow-hidden rounded-3xl border border-amber-500/40 p-6 shadow-2xl sm:p-10`}
-      >
-        <div className="pointer-events-none absolute top-0 right-0 h-96 w-96 rounded-full bg-white/5 blur-3xl"></div>
+        <div className="absolute -right-16 -top-20 -z-10 size-64 rounded-full border border-amber-500/10 sm:size-80" />
+        <div className="absolute -right-8 -top-12 -z-10 size-48 rounded-full border border-amber-500/10 sm:size-64" />
 
-        <div className="relative z-10 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <span className="rounded-full bg-amber-500 px-3 py-1 text-xs font-extrabold tracking-wider text-stone-950 uppercase shadow-md">
-                {selectedBank.tagline}
+        <div className="grid gap-8 p-5 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center lg:p-10">
+          <div className="min-w-0">
+            <div className="mb-6 flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/25 bg-amber-500/10 px-3 py-1.5 text-xs font-semibold text-amber-300">
+                <ShieldCheck className="size-3.5" />
+                Loan overview
               </span>
 
-              <span className="text-sm text-stone-300">
-                Verified Loan Scheme
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-stone-700 bg-stone-900/80 px-3 py-1.5 text-xs text-stone-300">
+                <Building2 className="size-3.5" />
+                {banks.length} {banks.length === 1 ? "lender" : "lenders"}{" "}
+                available
               </span>
             </div>
 
-            <h2 className="text-3xl font-black tracking-tight text-white sm:text-5xl">
-              {selectedBank.bankName}{" "}
-              <span className="font-serif text-amber-400 italic">
-                {selectedBank.productName}
-              </span>
+            <div className="flex items-start gap-4 sm:gap-5">
+              <div className="flex size-14 shrink-0 items-center justify-center rounded-2xl border border-amber-500/20 bg-amber-500/10 text-amber-400 sm:size-16">
+                <LoanIcon className="size-7 sm:size-8" />
+              </div>
+
+              <div className="min-w-0">
+                <p className="mb-2 text-xs font-semibold tracking-[0.2em] text-stone-400 uppercase">
+                  Loan product
+                </p>
+
+                <h1 className="text-3xl leading-tight font-black tracking-tight text-white sm:text-4xl lg:text-5xl">
+                  {oneLoansDetails.bankLoanType}
+                </h1>
+
+                <p className="mt-4 max-w-2xl text-sm leading-7 text-stone-300 sm:text-base">
+                  {oneLoansDetails.description}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-7 flex flex-wrap gap-3">
+              <a
+                href="#bank-offers"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-amber-400 px-5 py-3 text-sm font-bold text-stone-950 transition hover:bg-amber-300"
+              >
+                Explore bank offers
+                <ChevronRight className="size-4" />
+              </a>
+
+              <a
+                href={`tel:+91${PLATFORM_PHONE_1}`}
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-stone-700 bg-stone-900/70 px-5 py-3 text-sm font-semibold text-stone-200 transition hover:border-stone-500 hover:bg-stone-800"
+              >
+                <Phone className="size-4 text-amber-400" />
+                Talk to an advisor
+              </a>
+            </div>
+          </div>
+
+          {/* Quick overview */}
+          <div className="grid grid-cols-2 gap-3 lg:w-64 lg:grid-cols-1">
+            <div className="rounded-2xl border border-stone-800 bg-black/30 p-4 sm:p-5">
+              <div className="mb-3 flex items-center gap-2 text-xs text-stone-400">
+                <Building2 className="size-4 text-amber-400" />
+                Available lenders
+              </div>
+              <p className="text-2xl font-bold text-white sm:text-3xl">
+                {banks.length}
+              </p>
+              <p className="mt-1 text-xs text-stone-500">
+                Bank and finance offers
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-stone-800 bg-black/30 p-4 sm:p-5">
+              <div className="mb-3 flex items-center gap-2 text-xs text-stone-400">
+                <TrendingUp className="size-4 text-amber-400" />
+                Starting interest
+              </div>
+              <p className="text-2xl font-bold text-amber-400 sm:text-3xl">
+                {banks.length
+                  ? `${Math.min(...banks.map((bank) => bank.rateOfInterest))}%`
+                  : "—"}
+              </p>
+              <p className="mt-1 text-xs text-stone-500">
+                Rates vary by lender
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Bank offers */}
+      <section id="bank-offers" className="scroll-mt-6 space-y-5">
+        <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-end">
+          <div>
+            <p className="mb-2 text-xs font-bold tracking-[0.2em] text-amber-400 uppercase">
+              Compare your options
+            </p>
+            <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+              Available bank offers
             </h2>
-
-            <p className="text-lg font-medium text-stone-200 sm:text-2xl">
-              ROI Starting from{" "}
-              <span className="font-bold text-amber-400 underline decoration-amber-500/50">
-                {selectedBank.roiStarting}
-              </span>
+            <p className="mt-2 text-sm leading-6 text-stone-400">
+              Compare interest rates, processing times, and repayment tenures.
             </p>
+          </div>
 
+          <span className="text-sm text-stone-500">
+            {banks.length} {banks.length === 1 ? "offer" : "offers"}
+          </span>
+        </div>
+
+        {banks.length > 0 ? (
+          <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">
+            {banks.map((bank, index) => (
+              <article
+                key={bank.id}
+                className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-stone-800 bg-stone-950/80 transition duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-xl hover:shadow-black/20"
+              >
+                <div className="h-1 bg-linear-to-r from-amber-600 via-amber-400 to-yellow-200 opacity-70 transition group-hover:opacity-100" />
+
+                <div className="flex flex-1 flex-col p-5 sm:p-6">
+                  <div className="flex items-start gap-3">
+                    <div className="flex size-12 shrink-0 items-center justify-center rounded-xl border border-stone-700 bg-stone-900 text-amber-400">
+                      <Building2 className="size-6" />
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="wrap-break-word text-lg font-bold text-white">
+                          {bank.bankName}
+                        </h3>
+                        {index === 0 && (
+                          <span className="rounded-md bg-amber-500/10 px-2 py-1 text-2.5 font-bold tracking-wide text-amber-300 uppercase">
+                            Featured
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="mt-1 text-sm leading-6 text-stone-400">
+                        {bank.tagline ||
+                          "Loan solutions tailored to your needs"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 rounded-xl border border-amber-500/15 bg-amber-500/6 p-4">
+                    <p className="flex items-center gap-2 text-xs font-medium text-stone-400">
+                      <Percent className="size-4 text-amber-400" />
+                      Interest rate
+                    </p>
+                    <div className="mt-2 flex flex-wrap items-baseline gap-2">
+                      <span className="text-3xl font-black tracking-tight text-amber-400">
+                        {formatInterest(bank.rateOfInterest)}
+                      </span>
+                      <span className="text-xs text-stone-400">
+                        per annum, as listed
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="my-5 grid grid-cols-2 gap-3">
+                    <div className="rounded-xl border border-stone-800 bg-stone-900/60 p-3">
+                      <Clock className="mb-3 size-4 text-amber-400" />
+                      <p className="text-lg font-bold text-white">
+                        {bank.processingTimeInDays}
+                      </p>
+                      <p className="mt-1 text-xs leading-5 text-stone-400">
+                        Processing days
+                      </p>
+                    </div>
+
+                    <div className="rounded-xl border border-stone-800 bg-stone-900/60 p-3">
+                      <CalendarDays className="mb-3 size-4 text-amber-400" />
+                      <p className="text-lg font-bold text-white">
+                        {formatTenure(bank.maxTenureInMonth)}
+                      </p>
+                      <p className="mt-1 text-xs leading-5 text-stone-400">
+                        Maximum tenure
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-auto pt-1">
+                    <a
+                      href={bank.applyLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 py-3 text-sm font-bold text-stone-950 transition hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950"
+                    >
+                      View bank offer
+                      <ArrowUpRight className="size-4" />
+                    </a>
+                    <p className="mt-3 text-center text-2.75 leading-5 text-stone-500">
+                      Eligibility and final terms depend on lender approval.
+                    </p>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-dashed border-stone-700 bg-stone-950/60 px-5 py-12 text-center">
+            <Building2 className="mx-auto size-10 text-stone-600" />
+            <h3 className="mt-4 font-semibold text-white">
+              No bank offers available
+            </h3>
+            <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-stone-400">
+              There are no bank offers listed for this loan type yet. Please
+              contact our advisor for assistance.
+            </p>
             <a
-              href={selectedBank.applyLink}
-              className={cn(
-                `flex max-w-max cursor-pointer items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2 text-sm font-bold text-stone-950 shadow transition-all hover:bg-amber-400`,
-              )}
+              href={`tel:+91${PLATFORM_PHONE_1}`}
+              className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-xl bg-amber-400 px-5 py-3 text-sm font-bold text-stone-950 hover:bg-amber-300"
             >
-              Apply Now
+              <Phone className="size-4" />
+              Contact advisor
             </a>
           </div>
+        )}
+      </section>
 
-          <div className="min-w-70 rounded-2xl border border-stone-700 bg-stone-950/80 p-6 text-center shadow-inner sm:text-left">
-            <div className="mb-1 text-xs font-semibold tracking-widest text-stone-300 uppercase">
-              Instant Support
+      {/* Support banner */}
+      <section className="relative overflow-hidden rounded-2xl border border-stone-800 bg-linear-to-br from-stone-900 to-stone-950 p-5 sm:p-7 lg:p-8">
+        <div className="pointer-events-none absolute -right-12 -top-20 size-56 rounded-full bg-amber-500/[0.07] blur-3xl" />
+
+        <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-4">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400">
+              <UserCheck className="size-6" />
             </div>
-
-            <div className="mb-2 text-xl font-bold text-white">
-              Speak to Advisor
-            </div>
-
-            <p className="mb-4 text-xs text-stone-300">
-              Fast processing via SR Loan Services.
-            </p>
-
-            <div className="flex flex-col gap-2">
-              {selectedBank.contactNumbers.map((phone) => (
-                <a
-                  href={`tel:+91${phone}`}
-                  key={phone}
-                  className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2 text-sm font-bold text-stone-950 shadow transition-all hover:bg-amber-400"
-                >
-                  <Phone className="h-4 w-4" />
-
-                  <span>{phone}</span>
-                </a>
-              ))}
+            <div>
+              <h2 className="text-lg font-bold text-white sm:text-xl">
+                Need help choosing a loan?
+              </h2>
+              <p className="mt-2 max-w-xl text-sm leading-6 text-stone-400">
+                Speak with an SR Loan Services advisor to understand lender
+                options, eligibility requirements, and the application process.
+              </p>
             </div>
           </div>
+
+          <a
+            href={`tel:+91${PLATFORM_PHONE_1}`}
+            className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-xl bg-amber-400 px-5 py-3 text-sm font-bold text-stone-950 transition hover:bg-amber-300"
+          >
+            <Phone className="size-4" />
+            Call {PLATFORM_PHONE_1}
+          </a>
         </div>
-      </div>
-
-      {/* Three Pillar Cards: Benefits, Eligibility, Required Documents */}
-
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {/* Benefits Section */}
-
-        <div className="flex flex-col justify-between rounded-3xl border border-amber-500/30 bg-stone-900/90 p-6 shadow-xl sm:p-8">
-          <div>
-            <div className="mb-6 flex items-center justify-between">
-              <h3 className="flex items-center gap-2 font-serif text-2xl font-bold text-amber-400 italic">
-                <Award className="h-7 w-7 text-amber-500" /> Benefits
-              </h3>
-
-              <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs tracking-widest text-amber-400 uppercase">
-                Perks
-              </span>
-            </div>
-
-            <ul className="space-y-4">
-              {selectedBank.benefits.map((benefit) => (
-                <li
-                  key={benefit.id}
-                  className="flex items-start gap-3 rounded-2xl border border-stone-800 bg-stone-950/60 p-4"
-                >
-                  <div className="mt-0.5 rounded-xl bg-amber-500/10 p-2">
-                    {renderIcon(benefit.iconName)}
-                  </div>
-
-                  <div>
-                    <h4 className="text-base font-bold text-stone-100">
-                      {benefit.title}
-                    </h4>
-
-                    <p className="mt-0.5 text-sm text-stone-400">
-                      {benefit.description}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="mt-6 flex items-center justify-between border-t border-stone-800 pt-4 text-xs text-stone-400">
-            <span>Max Limit: {selectedBank.maxAmount}</span>
-
-            <span className="font-semibold text-amber-400">
-              {selectedBank.processingTime}
-            </span>
-          </div>
-        </div>
-
-        {/* Eligibility Section */}
-
-        <div className="flex flex-col justify-between rounded-3xl border border-amber-500/30 bg-stone-900/90 p-6 shadow-xl sm:p-8">
-          <div>
-            <div className="mb-6 flex items-center justify-between">
-              <h3 className="flex items-center gap-2 font-serif text-2xl font-bold text-amber-400 italic">
-                <UserCheck className="h-7 w-7 text-amber-500" /> Eligibility
-              </h3>
-
-              <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs tracking-widest text-amber-400 uppercase">
-                Criteria
-              </span>
-            </div>
-
-            <ul className="space-y-4">
-              {selectedBank.eligibility.map((item) => (
-                <li
-                  key={item.id}
-                  className="flex items-start gap-3 rounded-2xl border border-stone-800 bg-stone-950/60 p-4"
-                >
-                  <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber-500 text-xs font-bold text-stone-950">
-                    ✓
-                  </div>
-
-                  <div>
-                    <h4 className="text-base font-bold text-stone-100">
-                      {item.requirement}
-                    </h4>
-
-                    <p className="mt-0.5 text-sm text-stone-400">
-                      {item.detail}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="mt-6 flex items-center justify-between border-t border-stone-800 pt-4 text-xs text-stone-400">
-            <span>Tenure: {selectedBank.maxTenure}</span>
-
-            <span className="font-semibold text-amber-400">
-              Salaried / Self-Employed
-            </span>
-          </div>
-        </div>
-
-        {/* Required Documents Section */}
-
-        <div className="flex flex-col justify-between rounded-3xl border border-amber-500/30 bg-stone-900/90 p-6 shadow-xl sm:p-8">
-          <div>
-            <div className="mb-6 flex items-center justify-between">
-              <h3 className="flex items-center gap-2 font-serif text-2xl font-bold text-amber-400 italic">
-                <FileText className="h-7 w-7 text-amber-500" /> Documents
-              </h3>
-
-              <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs tracking-widest text-amber-400 uppercase">
-                Checklist
-              </span>
-            </div>
-
-            <ul className="space-y-4">
-              {selectedBank.requiredDocuments.map((doc) => (
-                <li
-                  key={doc.id}
-                  className="flex items-start gap-3 rounded-2xl border border-stone-800 bg-stone-950/60 p-4"
-                >
-                  <div className="mt-0.5 rounded-xl bg-amber-500/10 p-2 text-amber-400">
-                    <FileText className="h-5 w-5" />
-                  </div>
-
-                  <div>
-                    <h4 className="text-base font-bold text-stone-100">
-                      {doc.documentName}
-                    </h4>
-
-                    <p className="mt-0.5 text-xs font-medium tracking-wide text-amber-500/80 uppercase">
-                      {doc.category}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="mt-6 flex items-center justify-between border-t border-stone-800 pt-4 text-xs text-stone-400">
-            <span>Digital Upload</span>
-
-            <span className="font-semibold text-amber-400">
-              Fast Verification
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Call to Action Footer */}
-
-      <footer className="space-y-6 rounded-3xl border border-amber-500/40 bg-linear-to-r from-stone-900 via-amber-950 to-stone-900 p-8 text-center shadow-2xl">
-        <div className="mx-auto max-w-2xl space-y-2">
-          <h3 className="font-serif text-xl font-bold text-white italic sm:text-2xl">
-            Ready to apply for {selectedBank.bankName}{" "}
-            {selectedBank.productName}?
-          </h3>
-
-          <p className="text-sm text-stone-300 sm:text-base">
-            Connect with our authorized loan experts to get best-in-market rates
-            and zero hassle processing.
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-          {selectedBank.contactNumbers.map((phone) => (
-            <a
-              key={phone}
-              href={`tel:${phone}`}
-              className="flex transform items-center gap-3 rounded-2xl bg-amber-500 px-6 py-3.5 text-base font-extrabold text-stone-950 shadow-lg transition hover:-translate-y-0.5 hover:bg-amber-400 hover:shadow-amber-500/20 sm:text-lg"
-            >
-              <Phone className="h-5 w-5" />
-
-              <span>Call: {phone}</span>
-
-              <ChevronRight className="ml-1 h-4 w-4" />
-            </a>
-          ))}
-        </div>
-      </footer>
-    </div>
+      </section>
+    </main>
   );
-}
-
-function renderIcon(name: string) {
-  switch (name) {
-    case "ShieldCheck":
-      return <ShieldCheck className="h-5 w-5 text-amber-700" />;
-
-    case "Clock":
-      return <Clock className="h-5 w-5 text-amber-700" />;
-
-    case "DollarSign":
-      return <DollarSign className="h-5 w-5 text-amber-700" />;
-
-    case "Calendar":
-      return <Calendar className="h-5 w-5 text-amber-700" />;
-
-    case "TrendingUp":
-      return <TrendingUp className="h-5 w-5 text-amber-700" />;
-
-    case "Percent":
-      return <Percent className="h-5 w-5 text-amber-700" />;
-
-    case "Award":
-      return <Award className="h-5 w-5 text-amber-700" />;
-
-    case "UserCheck":
-      return <UserCheck className="h-5 w-5 text-amber-700" />;
-
-    default:
-      return <CheckCircle2 className="h-5 w-5 text-amber-700" />;
-  }
 }
