@@ -4,7 +4,7 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact, { reactCompilerPreset } from "@vitejs/plugin-react";
 import babel from "@rolldown/plugin-babel";
 import tailwindcss from "@tailwindcss/vite";
-// import { nitro } from "nitro/vite";
+import { nitro } from "nitro/vite";
 
 const config = defineConfig(({ mode }) => {
   const isProd = mode === "production";
@@ -20,11 +20,11 @@ const config = defineConfig(({ mode }) => {
 
     plugins: [
       devtools(),
-      // isProd &&
-      //   nitro({
-      //     rollupConfig: { external: [/^@sentry\//] },
-      //     output: { dir: "dist" },
-      //   }),
+      isProd &&
+        nitro({
+          rollupConfig: { external: [/^@sentry\//] },
+          output: { dir: "dist" },
+        }),
       tailwindcss(),
       tanstackStart({ prerender: { enabled: true } }),
       viteReact(),
