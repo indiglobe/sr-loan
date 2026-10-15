@@ -558,7 +558,8 @@ function LoanCTA({ className, ...props }: ComponentProps<"section">) {
 
             <Button
               type="button"
-              variant={"outline"}
+              variant={"secondary"}
+              appearance={'filled'}
               className={cn(
                 `inline-block py-6 flex justify-center items-center px-10`,
               )}

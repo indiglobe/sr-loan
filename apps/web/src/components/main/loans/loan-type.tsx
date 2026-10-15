@@ -287,7 +287,7 @@ export function IndividualLoanType() {
                       rel="noopener noreferrer"
                       className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-amber-400 px-4 py-3 text-sm font-bold text-stone-950 transition hover:bg-amber-300 focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2 focus-visible:ring-offset-stone-950"
                     >
-                      View bank offer
+                      Apply link
                       <ArrowUpRight className="size-4" />
                     </a>
                     <p className="mt-3 text-center text-2.75 leading-5 text-stone-500">

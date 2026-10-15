@@ -16,7 +16,7 @@ import {
 import type { ComponentProps, ElementType } from "react";
 import Main from "@/components/main/main";
 import { cn } from "@repo/styles/cn";
-import { useLoaderData } from "@tanstack/react-router";
+import { useLoaderData, Link } from "@tanstack/react-router";
 import { Icon } from "@repo/ui/icon";
 
 export default function OurProduct() {
@@ -166,36 +166,41 @@ function ProductShowcase({ className, ...props }: ComponentProps<"section">) {
           {/* Right Product List */}
           <div className="space-y-5">
             {serviceTypes.map((service, index) => (
-              <article className="border-primary-100 bg-background hover:border-primary-300 dark:border-primary-900 group rounded-4xl border p-5 transition hover:shadow-xl sm:p-7">
-                <div className="grid gap-6 sm:grid-cols-[auto_1fr_auto] sm:items-center">
-                  <div
-                    className={cn(
-                      "grid size-14 place-items-center rounded-2xl",
-                      index % 3 === 0 &&
-                        "bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200",
+              <Link
+                className={cn(`inline-block`)}
+                to="/our-product/$productType"
+                params={{ productType: service.serviceTypeId }}
+              >
+                <article className="border-primary-100 bg-background hover:border-primary-300 dark:border-primary-900 group rounded-4xl border p-5 transition hover:shadow-xl sm:p-7">
+                  <div className="grid gap-6 sm:grid-cols-[auto_1fr_auto] sm:items-center">
+                    <div
+                      className={cn(
+                        "grid size-14 place-items-center rounded-2xl",
+                        index % 3 === 0 &&
+                          "bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200",
 
-                      index % 3 === 1 &&
-                        "bg-secondary-100 text-secondary-700 dark:bg-secondary-900/40 dark:text-secondary-200",
+                        index % 3 === 1 &&
+                          "bg-secondary-100 text-secondary-700 dark:bg-secondary-900/40 dark:text-secondary-200",
 
-                      index % 3 === 2 &&
-                        "bg-accent-100 text-accent-700 dark:bg-accent-900/40 dark:text-accent-200",
-                    )}
-                  >
-                    <Icon className="size-6" icon={service.icon} />
-                  </div>
-
-                  <div>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-brand-secondary text-xl font-bold sm:text-2xl">
-                        {service.bankServiceType}
-                      </h3>
+                        index % 3 === 2 &&
+                          "bg-accent-100 text-accent-700 dark:bg-accent-900/40 dark:text-accent-200",
+                      )}
+                    >
+                      <Icon className="size-6" icon={service.icon} />
                     </div>
 
-                    <p className="text-foreground/55 mt-2 max-w-xl text-sm leading-6">
-                      {service.description}
-                    </p>
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="font-brand-secondary text-xl font-bold sm:text-2xl">
+                          {service.bankServiceType}
+                        </h3>
+                      </div>
 
-                    {/* <div className="mt-4 flex flex-wrap gap-2">
+                      <p className="text-foreground/55 mt-2 max-w-xl text-sm leading-6">
+                        {service.description}
+                      </p>
+
+                      {/* <div className="mt-4 flex flex-wrap gap-2">
                       {features.map((feature) => (
                         <span
                           key={feature}
@@ -205,16 +210,17 @@ function ProductShowcase({ className, ...props }: ComponentProps<"section">) {
                         </span>
                       ))}
                     </div> */}
-                  </div>
+                    </div>
 
-                  <button
-                    type="button"
-                    className="bg-primary-50 text-primary-700 group/button hover:bg-primary-100 dark:bg-primary-950 dark:text-primary-300 dark:hover:bg-primary-900 flex size-11 items-center justify-center rounded-xl transition"
-                  >
-                    <ArrowRight className="size-4 transition group-hover/button:translate-x-1" />
-                  </button>
-                </div>
-              </article>
+                    <button
+                      type="button"
+                      className="bg-primary-50 text-primary-700 group/button hover:bg-primary-100 dark:bg-primary-950 dark:text-primary-300 dark:hover:bg-primary-900 flex size-11 items-center justify-center rounded-xl transition"
+                    >
+                      <ArrowRight className="size-4 transition group-hover/button:translate-x-1" />
+                    </button>
+                  </div>
+                </article>
+              </Link>
             ))}
           </div>
         </div>

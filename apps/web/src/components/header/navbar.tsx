@@ -1,6 +1,5 @@
-// import { cn } from "@/lib/utils/cn";
-// import { LogoIcon, LogoText } from "@/ui/logo";
 import { cn } from "@repo/styles/cn";
+import { LogoIcon, LogoText } from "@repo/ui/logo";
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import type { ComponentProps } from "react";
@@ -23,8 +22,12 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
           onClick={() => setIsOpen(false)}
           className="flex items-center"
         >
-          {/* <LogoIcon className={cn(`h-12 w-12`)} />
-          <LogoText className={cn(`h-12 w-48 max-xs:hidden xs:block md:hidden xl:block`)} /> */}
+          <LogoIcon className={cn(`h-12 w-12`)} />
+          <LogoText
+            className={cn(
+              `h-12 w-48 max-xs:hidden xs:block md:hidden xl:block`,
+            )}
+          />
         </Link>
 
         {/* Desktop Links */}
@@ -79,8 +82,6 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
 
         {/* Desktop Right Side */}
         <div className="hidden items-center gap-3 md:flex">
-          
-
           <button
             type="button"
             className="bg-primary-600 shadow-primary-600/15 hover:bg-primary-700 rounded-md px-5 py-2.5 text-sm font-semibold text-white shadow-md transition active:scale-95"
@@ -191,16 +192,9 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
 
           <button
             type="button"
-            className="text-primary-700 hover:bg-primary-50 dark:text-primary-300 dark:hover:bg-primary-950 rounded-md px-4 py-3 text-left text-sm font-semibold transition"
-          >
-            Sign In
-          </button>
-
-          <button
-            type="button"
             className="bg-primary-600 hover:bg-primary-700 mt-1 w-full rounded-md px-5 py-3 text-sm font-semibold text-white transition"
           >
-            Apply Now
+            Sign In
           </button>
         </div>
       </div>

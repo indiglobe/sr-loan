@@ -16,6 +16,7 @@ import { Route as LoansLoanTypeRouteRouteImport } from './routes/loans/$loanType
 import { Route as OurProductIndexRouteImport } from './routes/our-product/index'
 import { Route as LoansLoanTypeIndexRouteImport } from './routes/loans/$loanType/index'
 import { Route as LoansLoanTypeBankNameRouteRouteImport } from './routes/loans/$loanType/$bankName/route'
+import { Route as OurProductProductTypeIndexRouteImport } from './routes/our-product/$productType/index'
 import { Route as LoansLoanTypeBankNameIndexRouteImport } from './routes/loans/$loanType/$bankName/index'
 import { Route as LoansLoanTypeBankNameApplyLinkIndexRouteImport } from './routes/loans/$loanType/$bankName/apply-link/index'
 
@@ -55,6 +56,12 @@ const LoansLoanTypeBankNameRouteRoute =
     path: '/$bankName',
     getParentRoute: () => LoansLoanTypeRouteRoute,
   } as any)
+const OurProductProductTypeIndexRoute =
+  OurProductProductTypeIndexRouteImport.update({
+    id: '/our-product/$productType/',
+    path: '/our-product/$productType/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LoansLoanTypeBankNameIndexRoute =
   LoansLoanTypeBankNameIndexRouteImport.update({
     id: '/',
@@ -76,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/our-product/': typeof OurProductIndexRoute
   '/loans/$loanType/$bankName': typeof LoansLoanTypeBankNameRouteRouteWithChildren
   '/loans/$loanType/': typeof LoansLoanTypeIndexRoute
+  '/our-product/$productType/': typeof OurProductProductTypeIndexRoute
   '/loans/$loanType/$bankName/': typeof LoansLoanTypeBankNameIndexRoute
   '/loans/$loanType/$bankName/apply-link/': typeof LoansLoanTypeBankNameApplyLinkIndexRoute
 }
@@ -85,6 +93,7 @@ export interface FileRoutesByTo {
   '/loans': typeof LoansIndexRoute
   '/our-product': typeof OurProductIndexRoute
   '/loans/$loanType': typeof LoansLoanTypeIndexRoute
+  '/our-product/$productType': typeof OurProductProductTypeIndexRoute
   '/loans/$loanType/$bankName': typeof LoansLoanTypeBankNameIndexRoute
   '/loans/$loanType/$bankName/apply-link': typeof LoansLoanTypeBankNameApplyLinkIndexRoute
 }
@@ -97,6 +106,7 @@ export interface FileRoutesById {
   '/our-product/': typeof OurProductIndexRoute
   '/loans/$loanType/$bankName': typeof LoansLoanTypeBankNameRouteRouteWithChildren
   '/loans/$loanType/': typeof LoansLoanTypeIndexRoute
+  '/our-product/$productType/': typeof OurProductProductTypeIndexRoute
   '/loans/$loanType/$bankName/': typeof LoansLoanTypeBankNameIndexRoute
   '/loans/$loanType/$bankName/apply-link/': typeof LoansLoanTypeBankNameApplyLinkIndexRoute
 }
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/our-product/'
     | '/loans/$loanType/$bankName'
     | '/loans/$loanType/'
+    | '/our-product/$productType/'
     | '/loans/$loanType/$bankName/'
     | '/loans/$loanType/$bankName/apply-link/'
   fileRoutesByTo: FileRoutesByTo
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/loans'
     | '/our-product'
     | '/loans/$loanType'
+    | '/our-product/$productType'
     | '/loans/$loanType/$bankName'
     | '/loans/$loanType/$bankName/apply-link'
   id:
@@ -130,6 +142,7 @@ export interface FileRouteTypes {
     | '/our-product/'
     | '/loans/$loanType/$bankName'
     | '/loans/$loanType/'
+    | '/our-product/$productType/'
     | '/loans/$loanType/$bankName/'
     | '/loans/$loanType/$bankName/apply-link/'
   fileRoutesById: FileRoutesById
@@ -140,6 +153,7 @@ export interface RootRouteChildren {
   ContactUsIndexRoute: typeof ContactUsIndexRoute
   LoansIndexRoute: typeof LoansIndexRoute
   OurProductIndexRoute: typeof OurProductIndexRoute
+  OurProductProductTypeIndexRoute: typeof OurProductProductTypeIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -192,6 +206,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/loans/$loanType/$bankName'
       preLoaderRoute: typeof LoansLoanTypeBankNameRouteRouteImport
       parentRoute: typeof LoansLoanTypeRouteRoute
+    }
+    '/our-product/$productType/': {
+      id: '/our-product/$productType/'
+      path: '/our-product/$productType'
+      fullPath: '/our-product/$productType/'
+      preLoaderRoute: typeof OurProductProductTypeIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/loans/$loanType/$bankName/': {
       id: '/loans/$loanType/$bankName/'
@@ -246,6 +267,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactUsIndexRoute: ContactUsIndexRoute,
   LoansIndexRoute: LoansIndexRoute,
   OurProductIndexRoute: OurProductIndexRoute,
+  OurProductProductTypeIndexRoute: OurProductProductTypeIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -140,7 +140,7 @@ export const Table__BankServiceDetails = mysqlTable(
       .notNull()
       .$defaultFn(() => "https://example.com"),
 
-    ...metadata("BLOA"),
+    ...metadata("BSRV"),
   },
   (t) => [
     uniqueIndex("bank_loan_unique").on(t.bankId, t.serviceTypeId),
