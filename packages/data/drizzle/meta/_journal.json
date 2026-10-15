@@ -15,6 +15,13 @@
       "when": 1791965823433,
       "tag": "0001_silky_cobalt_man",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1792047291401,
+      "tag": "0002_melodic_la_nuit",
+      "breakpoints": true
     }
   ]
 }
