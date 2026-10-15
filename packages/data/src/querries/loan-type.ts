@@ -1,5 +1,5 @@
 import { Table__LoanType } from "@/schema";
-import { desc, getTableColumns } from "drizzle-orm";
+import { asc, getTableColumns } from "drizzle-orm";
 import { db } from "@/index";
 import { tryCatch } from "@repo/utils/try-catch";
 
@@ -12,7 +12,7 @@ export async function read__AllLoansTypes() {
   const baseQuery = db
     .select({ ...rest })
     .from(Table__LoanType)
-    .orderBy(desc(Table__LoanType.createdAt));
+    .orderBy(asc(Table__LoanType.createdAt));
 
   const [baseQueryError, baseQueryData] = await tryCatch(baseQuery);
 
