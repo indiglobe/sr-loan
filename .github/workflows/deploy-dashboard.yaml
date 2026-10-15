@@ -1,4 +1,4 @@
-name: Deploy Dockerized Web App (Dashboard) to VPS
+name: Deploy Dockerized Dashboard App to VPS
 
 on:
   push:
