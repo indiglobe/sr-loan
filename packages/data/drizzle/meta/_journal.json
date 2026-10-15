@@ -22,6 +22,13 @@
       "when": 1792047291401,
       "tag": "0002_melodic_la_nuit",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1792051948502,
+      "tag": "0003_cheerful_wallop",
+      "breakpoints": true
     }
   ]
 }

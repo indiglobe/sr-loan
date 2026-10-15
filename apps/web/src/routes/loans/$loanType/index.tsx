@@ -6,8 +6,6 @@ export const Route = createFileRoute("/loans/$loanType/")({
   component: RouteComponent,
 
   loader: async ({ params: { loanType } }) => {
-    console.log(loanType);
-
     const [oneLoansDetails] = await Promise.all([
       serverFn__readOneLoansDetails({
         data: { identifier: { loanTypeId: loanType } },

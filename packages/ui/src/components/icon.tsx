@@ -27,6 +27,10 @@ import {
   IdCard,
   MapPin,
   Zap,
+  BarChart3,
+  CreditCard,
+  Landmark,
+  ReceiptIndianRupee,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { ICON_ENUM } from "@repo/utils/enums/db-enums";
@@ -93,6 +97,14 @@ export function Icon({
       return <X {...props} />;
     case "Zap":
       return <Zap {...props} />;
+    case "BarChart3":
+      return <BarChart3 {...props} />;
+    case "CreditCard":
+      return <CreditCard {...props} />;
+    case "Landmark":
+      return <Landmark {...props} />;
+    case "ReceiptIndianRupee":
+      return <ReceiptIndianRupee {...props} />;
 
     default:
       return null;
