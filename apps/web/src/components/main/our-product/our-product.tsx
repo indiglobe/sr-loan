@@ -1,14 +1,11 @@
 import {
   ArrowRight,
-  BarChart3,
   Calculator,
   Check,
   ChevronRight,
-  CreditCard,
   FileCheck2,
   HandCoins,
   Landmark,
-  ReceiptIndianRupee,
   RefreshCw,
   ShieldCheck,
   Sparkles,
@@ -19,115 +16,8 @@ import {
 import type { ComponentProps, ElementType } from "react";
 import Main from "@/components/main/main";
 import { cn } from "@repo/styles/cn";
-
-const products = [
-  {
-    icon: Landmark,
-    title: "Bank Account",
-    description:
-      "Open and manage suitable banking accounts with simple guidance and assistance.",
-    features: [
-      "Savings & current account options",
-      "Simple onboarding support",
-      "Banking guidance",
-    ],
-  },
-  {
-    icon: BarChart3,
-    title: "Demat Account",
-    description:
-      "Start your investment journey with a Demat account for holding and managing securities digitally.",
-    features: [
-      "Digital investment access",
-      "Portfolio-ready setup",
-      "Easy account assistance",
-    ],
-  },
-  {
-    icon: CreditCard,
-    title: "Credit Cards",
-    description:
-      "Explore credit card options based on your spending needs, lifestyle and eligibility.",
-    features: [
-      "Multiple card options",
-      "Rewards & benefits",
-      "Application assistance",
-    ],
-  },
-  {
-    icon: ShieldCheck,
-    title: "Insurance",
-    description:
-      "Explore insurance solutions designed to protect your health, family, vehicle and financial future.",
-    features: ["Health insurance", "Life insurance", "General insurance"],
-  },
-  {
-    icon: ReceiptIndianRupee,
-    title: "Taxations",
-    description:
-      "Get assistance with taxation-related services, filing requirements and financial documentation.",
-    features: [
-      "Tax filing assistance",
-      "Documentation support",
-      "Basic tax guidance",
-    ],
-  },
-];
-
-const benefits = [
-  {
-    icon: Calculator,
-    title: "Easy Planning",
-    description:
-      "Understand repayment estimates before moving ahead with an application.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Transparent Process",
-    description:
-      "Clear information about major steps, requirements and documentation.",
-  },
-  {
-    icon: RefreshCw,
-    title: "Flexible Choices",
-    description:
-      "Explore multiple products for different financial requirements.",
-  },
-  {
-    icon: UserRoundCheck,
-    title: "Personal Assistance",
-    description:
-      "Get support from SR Loan Services throughout your loan journey.",
-  },
-];
-
-const comparisonRows = [
-  {
-    label: "Primary Use",
-    personal: "Personal Needs",
-    home: "Property",
-    education: "Studies",
-    business: "Business",
-  },
-  {
-    label: "Typical Tenure",
-    personal: "6–60 Months",
-    home: "Up to 30 Years",
-    education: "Up to 15 Years",
-    business: "12–84 Months",
-  },
-  {
-    label: "Documentation",
-    personal: "Standard",
-    home: "Detailed",
-    education: "Academic",
-    business: "Business",
-  },
-];
-
-/* -------------------------------------------------------------------------- */
-/*                               MAIN COMPONENT                               */
-/* -------------------------------------------------------------------------- */
+import { useLoaderData, Link } from "@tanstack/react-router";
+import { Icon } from "@repo/ui/icon";
 
 export default function OurProduct() {
   return (
@@ -147,11 +37,9 @@ export default function OurProduct() {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/*                                PRODUCT HERO                                */
-/* -------------------------------------------------------------------------- */
-
 function ProductHero({ className, ...props }: ComponentProps<"section">) {
+  const { serviceTypes } = useLoaderData({ from: "/our-product/" });
+
   return (
     <section className={cn("relative overflow-hidden", className)} {...props}>
       <div className="bg-primary-200/40 dark:bg-primary-900/20 absolute top-0 right-0 -z-10 size-96 rounded-full blur-3xl" />
@@ -159,7 +47,7 @@ function ProductHero({ className, ...props }: ComponentProps<"section">) {
       <div className="bg-secondary-200/25 dark:bg-secondary-900/15 absolute bottom-0 left-0 -z-10 size-80 rounded-full blur-3xl" />
 
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-20 lg:px-8 lg:py-24">
-        <div className="grid items-end gap-12 lg:grid-cols-[1.2fr_.8fr]">
+        <div className="grid gap-12 lg:grid-cols-[1.2fr_.8fr]">
           {/* Left */}
           <div>
             <div className="border-primary-200 bg-primary-50 text-primary-700 dark:border-primary-800 dark:bg-primary-950 dark:text-primary-300 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-bold">
@@ -207,7 +95,7 @@ function ProductHero({ className, ...props }: ComponentProps<"section">) {
                 </p>
 
                 <p className="font-brand-secondary mt-1 text-2xl font-bold">
-                  4 Loan Categories
+                  {serviceTypes.length} Product Categories
                 </p>
               </div>
 
@@ -217,25 +105,23 @@ function ProductHero({ className, ...props }: ComponentProps<"section">) {
             </div>
 
             <div className="mt-6 space-y-3">
-              {products.map((product) => {
-                const Icon = product.icon;
-
+              {serviceTypes.map((service) => {
                 return (
                   <div
-                    key={product.title}
+                    key={service.id}
                     className="border-primary-100 bg-primary-50/50 dark:border-primary-900 dark:bg-primary-950/20 flex items-center gap-3 rounded-2xl border p-3"
                   >
                     <div className="bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200 grid size-10 shrink-0 place-items-center rounded-xl">
-                      <Icon className="size-4.5" />
+                      <Icon className="size-4.5" icon={service.icon} />
                     </div>
 
                     <div>
                       <p className="font-brand-secondary text-sm font-bold">
-                        {product.title}
+                        {service.bankServiceType}
                       </p>
 
                       <p className="text-foreground/45 mt-0.5 text-xs">
-                        {product.features[0]}
+                        {service.description}
                       </p>
                     </div>
 
@@ -251,11 +137,9 @@ function ProductHero({ className, ...props }: ComponentProps<"section">) {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/*                             PRODUCT SHOWCASE                               */
-/* -------------------------------------------------------------------------- */
-
 function ProductShowcase({ className, ...props }: ComponentProps<"section">) {
+  const { serviceTypes } = useLoaderData({ from: "/our-product/" });
+
   return (
     <section className={cn("py-20 sm:py-24", className)} {...props}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -281,8 +165,62 @@ function ProductShowcase({ className, ...props }: ComponentProps<"section">) {
 
           {/* Right Product List */}
           <div className="space-y-5">
-            {products.map((product, index) => (
-              <ProductPanel key={product.title} {...product} index={index} />
+            {serviceTypes.map((service, index) => (
+              <Link
+                className={cn(`inline-block`)}
+                to="/our-product/$productType"
+                params={{ productType: service.serviceTypeId }}
+              >
+                <article className="border-primary-100 bg-background hover:border-primary-300 dark:border-primary-900 group rounded-4xl border p-5 transition hover:shadow-xl sm:p-7">
+                  <div className="grid gap-6 sm:grid-cols-[auto_1fr_auto] sm:items-center">
+                    <div
+                      className={cn(
+                        "grid size-14 place-items-center rounded-2xl",
+                        index % 3 === 0 &&
+                          "bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200",
+
+                        index % 3 === 1 &&
+                          "bg-secondary-100 text-secondary-700 dark:bg-secondary-900/40 dark:text-secondary-200",
+
+                        index % 3 === 2 &&
+                          "bg-accent-100 text-accent-700 dark:bg-accent-900/40 dark:text-accent-200",
+                      )}
+                    >
+                      <Icon className="size-6" icon={service.icon} />
+                    </div>
+
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h3 className="font-brand-secondary text-xl font-bold sm:text-2xl">
+                          {service.bankServiceType}
+                        </h3>
+                      </div>
+
+                      <p className="text-foreground/55 mt-2 max-w-xl text-sm leading-6">
+                        {service.description}
+                      </p>
+
+                      {/* <div className="mt-4 flex flex-wrap gap-2">
+                      {features.map((feature) => (
+                        <span
+                          key={feature}
+                          className="bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300 rounded-full px-3 py-1.5 text-xs font-semibold"
+                        >
+                          {feature}
+                        </span>
+                      ))}
+                    </div> */}
+                    </div>
+
+                    <button
+                      type="button"
+                      className="bg-primary-50 text-primary-700 group/button hover:bg-primary-100 dark:bg-primary-950 dark:text-primary-300 dark:hover:bg-primary-900 flex size-11 items-center justify-center rounded-xl transition"
+                    >
+                      <ArrowRight className="size-4 transition group-hover/button:translate-x-1" />
+                    </button>
+                  </div>
+                </article>
+              </Link>
             ))}
           </div>
         </div>
@@ -291,75 +229,32 @@ function ProductShowcase({ className, ...props }: ComponentProps<"section">) {
   );
 }
 
-function ProductPanel({
-  icon: Icon,
-  title,
-  description,
-  features,
-  index,
-}: {
-  icon: ElementType;
-  title: string;
-  description: string;
-  features: string[];
-  index: number;
-}) {
-  return (
-    <article className="border-primary-100 bg-background hover:border-primary-300 dark:border-primary-900 group rounded-4xl border p-5 transition hover:shadow-xl sm:p-7">
-      <div className="grid gap-6 sm:grid-cols-[auto_1fr_auto] sm:items-center">
-        <div
-          className={cn(
-            "grid size-14 place-items-center rounded-2xl",
-            index % 3 === 0 &&
-              "bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200",
-
-            index % 3 === 1 &&
-              "bg-secondary-100 text-secondary-700 dark:bg-secondary-900/40 dark:text-secondary-200",
-
-            index % 3 === 2 &&
-              "bg-accent-100 text-accent-700 dark:bg-accent-900/40 dark:text-accent-200",
-          )}
-        >
-          <Icon className="size-6" />
-        </div>
-
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="font-brand-secondary text-xl font-bold sm:text-2xl">
-              {title}
-            </h3>
-          </div>
-
-          <p className="text-foreground/55 mt-2 max-w-xl text-sm leading-6">
-            {description}
-          </p>
-
-          <div className="mt-4 flex flex-wrap gap-2">
-            {features.map((feature) => (
-              <span
-                key={feature}
-                className="bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300 rounded-full px-3 py-1.5 text-xs font-semibold"
-              >
-                {feature}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <button
-          type="button"
-          className="bg-primary-50 text-primary-700 group/button hover:bg-primary-100 dark:bg-primary-950 dark:text-primary-300 dark:hover:bg-primary-900 flex size-11 items-center justify-center rounded-xl transition"
-        >
-          <ArrowRight className="size-4 transition group-hover/button:translate-x-1" />
-        </button>
-      </div>
-    </article>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/*                                BENEFIT STRIP                               */
-/* -------------------------------------------------------------------------- */
+const benefits = [
+  {
+    icon: Calculator,
+    title: "Easy Planning",
+    description:
+      "Understand repayment estimates before moving ahead with an application.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Transparent Process",
+    description:
+      "Clear information about major steps, requirements and documentation.",
+  },
+  {
+    icon: RefreshCw,
+    title: "Flexible Choices",
+    description:
+      "Explore multiple products for different financial requirements.",
+  },
+  {
+    icon: UserRoundCheck,
+    title: "Personal Assistance",
+    description:
+      "Get support from SR Loan Services throughout your loan journey.",
+  },
+];
 
 function BenefitStrip({ className, ...props }: ComponentProps<"section">) {
   return (
@@ -380,6 +275,7 @@ function BenefitStrip({ className, ...props }: ComponentProps<"section">) {
 }
 
 function BenefitItem({
+  // eslint-disable-next-line no-shadow
   icon: Icon,
   title,
   description,
@@ -401,9 +297,29 @@ function BenefitItem({
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/*                            PRODUCT COMPARISON                              */
-/* -------------------------------------------------------------------------- */
+const comparisonRows = [
+  {
+    label: "Primary Use",
+    personal: "Personal Needs",
+    home: "Property",
+    education: "Studies",
+    business: "Business",
+  },
+  {
+    label: "Typical Tenure",
+    personal: "6-60 Months",
+    home: "Up to 30 Years",
+    education: "Up to 15 Years",
+    business: "12-84 Months",
+  },
+  {
+    label: "Documentation",
+    personal: "Standard",
+    home: "Detailed",
+    education: "Academic",
+    business: "Business",
+  },
+];
 
 function ProductComparison({ className, ...props }: ComponentProps<"section">) {
   return (
@@ -451,10 +367,6 @@ function ProductComparison({ className, ...props }: ComponentProps<"section">) {
     </section>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/*                            PRODUCT EXPERIENCE                              */
-/* -------------------------------------------------------------------------- */
 
 function ProductExperience({ className, ...props }: ComponentProps<"section">) {
   return (
@@ -532,10 +444,6 @@ function ProductExperience({ className, ...props }: ComponentProps<"section">) {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/*                                  CTA                                       */
-/* -------------------------------------------------------------------------- */
-
 function ProductCTA({ className, ...props }: ComponentProps<"section">) {
   return (
     <section className={cn("px-4 py-20 sm:px-6 lg:px-8", className)} {...props}>
@@ -590,10 +498,6 @@ function ProductCTA({ className, ...props }: ComponentProps<"section">) {
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/*                            SMALL COMPONENTS                                */
-/* -------------------------------------------------------------------------- */
-
 function SectionHeader({
   label,
   title,
@@ -619,6 +523,7 @@ function SectionHeader({
     </div>
   );
 }
+
 function ComparisonHeader({ title }: { title: string }) {
   return (
     <div className="border-primary-100 dark:border-primary-900 border-r p-4 last:border-r-0">
@@ -649,6 +554,7 @@ function ComparisonCell({
 }
 
 function ExperienceRow({
+  // eslint-disable-next-line no-shadow
   icon: Icon,
   title,
   description,

@@ -1,0 +1,1 @@
+ALTER TABLE `bank_service_details` MODIFY COLUMN `table_identifier_token` enum('USER','BANK','BLOA','BNFT','LBNF','LOAN','ELGB','LELG','DOCM','LDOC','BSRV','SRVC') NOT NULL DEFAULT 'BSRV';

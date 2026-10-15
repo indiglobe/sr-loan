@@ -1,9 +1,9 @@
 {
   "name": "@repo/utils",
   "scripts": {
+    "build": "pkgroll",
     "dev": "pkgroll --watch",
     "prebuild": "rimraf ./dist",
-    "build": "pkgroll",
     "lint": "eslint",
     "format": "prettier --write **/* ",
     "lint:staged": "lint-staged",
@@ -58,6 +58,16 @@
       "import": {
         "types": "./dist/const/*.d.mts",
         "default": "./dist/const/*.mjs"
+      }
+    },
+    "./enums/*": {
+      "require": {
+        "types": "./dist/enums/*.d.cts",
+        "default": "./dist/enums/*.cjs"
+      },
+      "import": {
+        "types": "./dist/enums/*.d.mts",
+        "default": "./dist/enums/*.mjs"
       }
     }
   },

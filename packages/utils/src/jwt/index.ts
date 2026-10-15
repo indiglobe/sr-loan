@@ -1,15 +1,14 @@
+import { ROLE_ENUM } from "@/enums/db-enums";
 import { env } from "@repo/env/server";
 import * as jose from "jose";
 import z from "zod";
 
 const secret = new TextEncoder().encode(env.TOKEN_SECRET);
 
-export const ROLE_ENUM = z.enum(["ADMIN", "CUSTOMER", "AGENT"]);
-
 export const jwtPayloadSchema = z.object({
   email: z.email(),
   name: z.string(),
-  role: ROLE_ENUM,
+  role: z.enum(ROLE_ENUM),
   userId: z.string(),
   employeeId: z.string(),
 });
