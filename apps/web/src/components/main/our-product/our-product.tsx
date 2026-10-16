@@ -18,6 +18,7 @@ import Main from "@/components/main/main";
 import { cn } from "@repo/styles/cn";
 import { useLoaderData, Link } from "@tanstack/react-router";
 import { Icon } from "@repo/ui/icon";
+import { Button } from "@repo/ui/button";
 
 export default function OurProduct() {
   return (
@@ -69,25 +70,27 @@ function ProductHero({ className, ...props }: ComponentProps<"section">) {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <button
+              <Button
                 type="button"
-                className="group bg-primary-600 hover:bg-primary-700 shadow-primary-600/20 flex items-center justify-center gap-2 rounded-2xl px-7 py-3.5 text-sm font-bold text-white shadow-lg transition"
+                className=" text-white"
               >
                 Explore Products
                 <ArrowRight className="size-4 transition group-hover:translate-x-1" />
-              </button>
+              </Button>
 
-              <button
+              <Button
                 type="button"
-                className="border-primary-200 bg-background text-primary-700 hover:bg-primary-50 dark:border-primary-800 dark:text-primary-300 dark:hover:bg-primary-950 flex items-center justify-center gap-2 rounded-2xl border px-7 py-3.5 text-sm font-bold transition"
+                className=" text-white"
+                variant={'primary'}
+                appearance={'outline'}
               >
                 Speak to an Advisor
-              </button>
+              </Button>
             </div>
           </div>
 
           {/* Right Mini Panel */}
-          <div className="border-primary-100 bg-background shadow-primary-950/5 dark:border-primary-900 rounded-4xl border p-5 shadow-xl sm:p-6">
+          <div className="border-primary-100 bg-background shadow-primary-950/5 dark:border-primary-900 rounded-2xl border p-5 shadow-xl sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-foreground/45 text-xs font-semibold">
@@ -99,19 +102,19 @@ function ProductHero({ className, ...props }: ComponentProps<"section">) {
                 </p>
               </div>
 
-              <div className="bg-secondary-100 text-secondary-700 dark:bg-secondary-900/40 dark:text-secondary-300 grid size-12 place-items-center rounded-2xl">
+              <div className="bg-secondary-100 text-secondary-700 dark:bg-secondary-900/40 dark:text-secondary-300 grid size-12 place-items-center rounded-lg">
                 <WalletCards className="size-5" />
               </div>
             </div>
 
             <div className="mt-6 space-y-3">
-              {serviceTypes.map((service) => {
+              {serviceTypes.slice(0, 5).map((service) => {
                 return (
                   <div
                     key={service.id}
-                    className="border-primary-100 bg-primary-50/50 dark:border-primary-900 dark:bg-primary-950/20 flex items-center gap-3 rounded-2xl border p-3"
+                    className="border-primary-100 bg-primary-50/50 dark:border-primary-900 dark:bg-primary-950/20 flex items-center gap-3 rounded-lg border p-3"
                   >
-                    <div className="bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200 grid size-10 shrink-0 place-items-center rounded-xl">
+                    <div className="bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200 grid size-10 shrink-0 place-items-center rounded-md">
                       <Icon className="size-4.5" icon={service.icon} />
                     </div>
 
@@ -129,6 +132,15 @@ function ProductHero({ className, ...props }: ComponentProps<"section">) {
                   </div>
                 );
               })}
+
+              {serviceTypes.slice(5).length > 0 && (
+                <div className="flex items-center justify-center pt-2">
+                  <span className="inline-flex items-center gap-2 rounded-md bg-accent-100 dark:bg-accent-900/50 px-4 py-2.5 text-xs font-semibold text-accent-700 dark:text-accent-300 border border-accent-200 dark:border-accent-800">
+                    <span className="flex h-2 w-2 rounded-full bg-primary-500 animate-pulse" />
+                    +{serviceTypes.slice(5).length} more services available
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -171,11 +183,11 @@ function ProductShowcase({ className, ...props }: ComponentProps<"section">) {
                 to="/our-product/$productType"
                 params={{ productType: service.serviceTypeId }}
               >
-                <article className="border-primary-100 bg-background hover:border-primary-300 dark:border-primary-900 group rounded-4xl border p-5 transition hover:shadow-xl sm:p-7">
+                <article className="border-primary-100 bg-background hover:border-primary-300 dark:border-primary-900 group rounded-lg border p-5 transition hover:shadow-xl sm:p-7">
                   <div className="grid gap-6 sm:grid-cols-[auto_1fr_auto] sm:items-center">
                     <div
                       className={cn(
-                        "grid size-14 place-items-center rounded-2xl",
+                        "grid size-14 place-items-center rounded-md",
                         index % 3 === 0 &&
                           "bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200",
 
@@ -214,7 +226,7 @@ function ProductShowcase({ className, ...props }: ComponentProps<"section">) {
 
                     <button
                       type="button"
-                      className="bg-primary-50 text-primary-700 group/button hover:bg-primary-100 dark:bg-primary-950 dark:text-primary-300 dark:hover:bg-primary-900 flex size-11 items-center justify-center rounded-xl transition"
+                      className="bg-primary-50 text-primary-700 group/button hover:bg-primary-100 dark:bg-primary-950 dark:text-primary-300 dark:hover:bg-primary-900 flex size-11 items-center justify-center rounded-md transition"
                     >
                       <ArrowRight className="size-4 transition group-hover/button:translate-x-1" />
                     </button>
@@ -286,7 +298,7 @@ function BenefitItem({
 }) {
   return (
     <div className="p-5">
-      <div className="bg-secondary-100 text-secondary-700 dark:bg-secondary-900/40 dark:text-secondary-300 grid size-10 place-items-center rounded-xl">
+      <div className="bg-secondary-100 text-secondary-700 dark:bg-secondary-900/40 dark:text-secondary-300 grid size-10 place-items-center rounded-md">
         <Icon className="size-4.5" />
       </div>
 
@@ -331,7 +343,7 @@ function ProductComparison({ className, ...props }: ComponentProps<"section">) {
           description="A simple overview to help you understand how our major loan categories differ."
         />
 
-        <div className="border-primary-100 dark:border-primary-900 mt-12 overflow-x-auto rounded-3xl border">
+        <div className="border-primary-100 dark:border-primary-900 mt-12 overflow-x-auto rounded-md border">
           <div className="min-w-200">
             <div className="bg-primary-50 dark:bg-primary-950/40 grid grid-cols-5">
               <ComparisonHeader title="Category" />
@@ -379,7 +391,7 @@ function ProductExperience({ className, ...props }: ComponentProps<"section">) {
     >
       <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
         {/* Left Card */}
-        <div className="bg-primary-800 text-primary-50 relative overflow-hidden rounded-4xl p-7 sm:p-10">
+        <div className="bg-primary-800 text-primary-50 relative overflow-hidden rounded-lg p-7 sm:p-10">
           <div className="bg-secondary-400/20 absolute -top-20 -right-20 size-64 rounded-full blur-3xl" />
 
           <div className="relative">
@@ -447,7 +459,7 @@ function ProductExperience({ className, ...props }: ComponentProps<"section">) {
 function ProductCTA({ className, ...props }: ComponentProps<"section">) {
   return (
     <section className={cn("px-4 py-20 sm:px-6 lg:px-8", className)} {...props}>
-      <div className="border-primary-200 dark:border-primary-800 mx-auto grid max-w-7xl overflow-hidden rounded-4xl border lg:grid-cols-[1.2fr_.8fr]">
+      <div className="border-primary-200 dark:border-primary-800 mx-auto grid max-w-7xl overflow-hidden rounded-lg border lg:grid-cols-[1.2fr_.8fr]">
         <div className="bg-background p-7 sm:p-10 lg:p-12">
           <p className="text-primary-600 text-xs font-bold tracking-[0.2em] uppercase">
             SR Loan Services
@@ -462,17 +474,17 @@ function ProductCTA({ className, ...props }: ComponentProps<"section">) {
             the available options.
           </p>
 
-          <button
+          <Button
             type="button"
-            className="group bg-primary-600 hover:bg-primary-700 mt-8 flex items-center gap-2 rounded-2xl px-7 py-3.5 text-sm font-bold text-white transition"
+            className="mt-6 text-white"
           >
             Find My Loan
             <ArrowRight className="size-4 transition group-hover:translate-x-1" />
-          </button>
+          </Button>
         </div>
 
         <div className="bg-primary-700 text-primary-50 flex flex-col justify-center p-7 sm:p-10 lg:p-12">
-          <div className="bg-primary-600/70 grid size-12 place-items-center rounded-2xl">
+          <div className="bg-primary-600/70 grid size-12 place-items-center rounded-lg">
             <Zap className="size-5" />
           </div>
 
@@ -485,13 +497,15 @@ function ProductCTA({ className, ...props }: ComponentProps<"section">) {
             may suit your requirement.
           </p>
 
-          <button
+          <Button
             type="button"
-            className="border-primary-500/40 hover:bg-primary-600 mt-6 flex w-fit items-center gap-2 rounded-xl border px-5 py-3 text-sm font-bold transition"
+            className="max-w-max mt-6"
+            // appearance={''}
+            variant={'primary'}
           >
             Contact Us
             <ChevronRight className="size-4" />
-          </button>
+          </Button>
         </div>
       </div>
     </section>
@@ -564,8 +578,8 @@ function ExperienceRow({
   description: string;
 }) {
   return (
-    <div className="border-primary-100 bg-background dark:border-primary-900 flex gap-4 rounded-2xl border p-5">
-      <div className="bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200 grid size-11 shrink-0 place-items-center rounded-xl">
+    <div className="border-primary-100 bg-background dark:border-primary-900 flex gap-4 rounded-lg border p-5">
+      <div className="bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200 grid size-11 shrink-0 place-items-center rounded-md">
         <Icon className="size-5" />
       </div>
 

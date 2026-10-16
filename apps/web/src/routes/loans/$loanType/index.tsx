@@ -1,3 +1,4 @@
+import { BankUnavailableState } from "@/components/main/loans/loan-not-found";
 import { IndividualLoanType } from "@/components/main/loans/loan-type";
 import { serverFn__readOneLoansDetails } from "@/integrations/tanstack/server-functions/bank-loan-details.sfn";
 import { createFileRoute, notFound } from "@tanstack/react-router";
@@ -16,6 +17,8 @@ export const Route = createFileRoute("/loans/$loanType/")({
 
     return { oneLoansDetails };
   },
+
+  notFoundComponent: () => <BankUnavailableState />,
 });
 
 function RouteComponent() {

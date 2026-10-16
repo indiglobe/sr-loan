@@ -14,11 +14,9 @@ import { Route as ContactUsIndexRouteImport } from './routes/contact-us/index'
 import { Route as LoansIndexRouteImport } from './routes/loans/index'
 import { Route as LoansLoanTypeRouteRouteImport } from './routes/loans/$loanType/route'
 import { Route as OurProductIndexRouteImport } from './routes/our-product/index'
+import { Route as OurProductProductTypeRouteRouteImport } from './routes/our-product/$productType/route'
 import { Route as LoansLoanTypeIndexRouteImport } from './routes/loans/$loanType/index'
-import { Route as LoansLoanTypeBankNameRouteRouteImport } from './routes/loans/$loanType/$bankName/route'
 import { Route as OurProductProductTypeIndexRouteImport } from './routes/our-product/$productType/index'
-import { Route as LoansLoanTypeBankNameIndexRouteImport } from './routes/loans/$loanType/$bankName/index'
-import { Route as LoansLoanTypeBankNameApplyLinkIndexRouteImport } from './routes/loans/$loanType/$bankName/apply-link/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -45,47 +43,33 @@ const OurProductIndexRoute = OurProductIndexRouteImport.update({
   path: '/our-product/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OurProductProductTypeRouteRoute =
+  OurProductProductTypeRouteRouteImport.update({
+    id: '/our-product/$productType',
+    path: '/our-product/$productType',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LoansLoanTypeIndexRoute = LoansLoanTypeIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => LoansLoanTypeRouteRoute,
 } as any)
-const LoansLoanTypeBankNameRouteRoute =
-  LoansLoanTypeBankNameRouteRouteImport.update({
-    id: '/$bankName',
-    path: '/$bankName',
-    getParentRoute: () => LoansLoanTypeRouteRoute,
-  } as any)
 const OurProductProductTypeIndexRoute =
   OurProductProductTypeIndexRouteImport.update({
-    id: '/our-product/$productType/',
-    path: '/our-product/$productType/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const LoansLoanTypeBankNameIndexRoute =
-  LoansLoanTypeBankNameIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => LoansLoanTypeBankNameRouteRoute,
-  } as any)
-const LoansLoanTypeBankNameApplyLinkIndexRoute =
-  LoansLoanTypeBankNameApplyLinkIndexRouteImport.update({
-    id: '/apply-link/',
-    path: '/apply-link/',
-    getParentRoute: () => LoansLoanTypeBankNameRouteRoute,
+    getParentRoute: () => OurProductProductTypeRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/loans/$loanType': typeof LoansLoanTypeRouteRouteWithChildren
+  '/our-product/$productType': typeof OurProductProductTypeRouteRouteWithChildren
   '/contact-us/': typeof ContactUsIndexRoute
   '/loans/': typeof LoansIndexRoute
   '/our-product/': typeof OurProductIndexRoute
-  '/loans/$loanType/$bankName': typeof LoansLoanTypeBankNameRouteRouteWithChildren
   '/loans/$loanType/': typeof LoansLoanTypeIndexRoute
   '/our-product/$productType/': typeof OurProductProductTypeIndexRoute
-  '/loans/$loanType/$bankName/': typeof LoansLoanTypeBankNameIndexRoute
-  '/loans/$loanType/$bankName/apply-link/': typeof LoansLoanTypeBankNameApplyLinkIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,35 +78,29 @@ export interface FileRoutesByTo {
   '/our-product': typeof OurProductIndexRoute
   '/loans/$loanType': typeof LoansLoanTypeIndexRoute
   '/our-product/$productType': typeof OurProductProductTypeIndexRoute
-  '/loans/$loanType/$bankName': typeof LoansLoanTypeBankNameIndexRoute
-  '/loans/$loanType/$bankName/apply-link': typeof LoansLoanTypeBankNameApplyLinkIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/loans/$loanType': typeof LoansLoanTypeRouteRouteWithChildren
+  '/our-product/$productType': typeof OurProductProductTypeRouteRouteWithChildren
   '/contact-us/': typeof ContactUsIndexRoute
   '/loans/': typeof LoansIndexRoute
   '/our-product/': typeof OurProductIndexRoute
-  '/loans/$loanType/$bankName': typeof LoansLoanTypeBankNameRouteRouteWithChildren
   '/loans/$loanType/': typeof LoansLoanTypeIndexRoute
   '/our-product/$productType/': typeof OurProductProductTypeIndexRoute
-  '/loans/$loanType/$bankName/': typeof LoansLoanTypeBankNameIndexRoute
-  '/loans/$loanType/$bankName/apply-link/': typeof LoansLoanTypeBankNameApplyLinkIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/loans/$loanType'
+    | '/our-product/$productType'
     | '/contact-us/'
     | '/loans/'
     | '/our-product/'
-    | '/loans/$loanType/$bankName'
     | '/loans/$loanType/'
     | '/our-product/$productType/'
-    | '/loans/$loanType/$bankName/'
-    | '/loans/$loanType/$bankName/apply-link/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -131,29 +109,25 @@ export interface FileRouteTypes {
     | '/our-product'
     | '/loans/$loanType'
     | '/our-product/$productType'
-    | '/loans/$loanType/$bankName'
-    | '/loans/$loanType/$bankName/apply-link'
   id:
     | '__root__'
     | '/'
     | '/loans/$loanType'
+    | '/our-product/$productType'
     | '/contact-us/'
     | '/loans/'
     | '/our-product/'
-    | '/loans/$loanType/$bankName'
     | '/loans/$loanType/'
     | '/our-product/$productType/'
-    | '/loans/$loanType/$bankName/'
-    | '/loans/$loanType/$bankName/apply-link/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoansLoanTypeRouteRoute: typeof LoansLoanTypeRouteRouteWithChildren
+  OurProductProductTypeRouteRoute: typeof OurProductProductTypeRouteRouteWithChildren
   ContactUsIndexRoute: typeof ContactUsIndexRoute
   LoansIndexRoute: typeof LoansIndexRoute
   OurProductIndexRoute: typeof OurProductIndexRoute
-  OurProductProductTypeIndexRoute: typeof OurProductProductTypeIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -193,6 +167,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OurProductIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/our-product/$productType': {
+      id: '/our-product/$productType'
+      path: '/our-product/$productType'
+      fullPath: '/our-product/$productType'
+      preLoaderRoute: typeof OurProductProductTypeRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/loans/$loanType/': {
       id: '/loans/$loanType/'
       path: '/'
@@ -200,74 +181,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoansLoanTypeIndexRouteImport
       parentRoute: typeof LoansLoanTypeRouteRoute
     }
-    '/loans/$loanType/$bankName': {
-      id: '/loans/$loanType/$bankName'
-      path: '/$bankName'
-      fullPath: '/loans/$loanType/$bankName'
-      preLoaderRoute: typeof LoansLoanTypeBankNameRouteRouteImport
-      parentRoute: typeof LoansLoanTypeRouteRoute
-    }
     '/our-product/$productType/': {
       id: '/our-product/$productType/'
-      path: '/our-product/$productType'
+      path: '/'
       fullPath: '/our-product/$productType/'
       preLoaderRoute: typeof OurProductProductTypeIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/loans/$loanType/$bankName/': {
-      id: '/loans/$loanType/$bankName/'
-      path: '/'
-      fullPath: '/loans/$loanType/$bankName/'
-      preLoaderRoute: typeof LoansLoanTypeBankNameIndexRouteImport
-      parentRoute: typeof LoansLoanTypeBankNameRouteRoute
-    }
-    '/loans/$loanType/$bankName/apply-link/': {
-      id: '/loans/$loanType/$bankName/apply-link/'
-      path: '/apply-link'
-      fullPath: '/loans/$loanType/$bankName/apply-link/'
-      preLoaderRoute: typeof LoansLoanTypeBankNameApplyLinkIndexRouteImport
-      parentRoute: typeof LoansLoanTypeBankNameRouteRoute
+      parentRoute: typeof OurProductProductTypeRouteRoute
     }
   }
 }
-
-interface LoansLoanTypeBankNameRouteRouteChildren {
-  LoansLoanTypeBankNameIndexRoute: typeof LoansLoanTypeBankNameIndexRoute
-  LoansLoanTypeBankNameApplyLinkIndexRoute: typeof LoansLoanTypeBankNameApplyLinkIndexRoute
-}
-
-const LoansLoanTypeBankNameRouteRouteChildren: LoansLoanTypeBankNameRouteRouteChildren =
-  {
-    LoansLoanTypeBankNameIndexRoute: LoansLoanTypeBankNameIndexRoute,
-    LoansLoanTypeBankNameApplyLinkIndexRoute:
-      LoansLoanTypeBankNameApplyLinkIndexRoute,
-  }
-
-const LoansLoanTypeBankNameRouteRouteWithChildren =
-  LoansLoanTypeBankNameRouteRoute._addFileChildren(
-    LoansLoanTypeBankNameRouteRouteChildren,
-  )
 
 interface LoansLoanTypeRouteRouteChildren {
-  LoansLoanTypeBankNameRouteRoute: typeof LoansLoanTypeBankNameRouteRouteWithChildren
   LoansLoanTypeIndexRoute: typeof LoansLoanTypeIndexRoute
 }
 
 const LoansLoanTypeRouteRouteChildren: LoansLoanTypeRouteRouteChildren = {
-  LoansLoanTypeBankNameRouteRoute: LoansLoanTypeBankNameRouteRouteWithChildren,
   LoansLoanTypeIndexRoute: LoansLoanTypeIndexRoute,
 }
 
 const LoansLoanTypeRouteRouteWithChildren =
   LoansLoanTypeRouteRoute._addFileChildren(LoansLoanTypeRouteRouteChildren)
 
+interface OurProductProductTypeRouteRouteChildren {
+  OurProductProductTypeIndexRoute: typeof OurProductProductTypeIndexRoute
+}
+
+const OurProductProductTypeRouteRouteChildren: OurProductProductTypeRouteRouteChildren =
+  {
+    OurProductProductTypeIndexRoute: OurProductProductTypeIndexRoute,
+  }
+
+const OurProductProductTypeRouteRouteWithChildren =
+  OurProductProductTypeRouteRoute._addFileChildren(
+    OurProductProductTypeRouteRouteChildren,
+  )
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoansLoanTypeRouteRoute: LoansLoanTypeRouteRouteWithChildren,
+  OurProductProductTypeRouteRoute: OurProductProductTypeRouteRouteWithChildren,
   ContactUsIndexRoute: ContactUsIndexRoute,
   LoansIndexRoute: LoansIndexRoute,
   OurProductIndexRoute: OurProductIndexRoute,
-  OurProductProductTypeIndexRoute: OurProductProductTypeIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

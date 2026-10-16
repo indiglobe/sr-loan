@@ -84,7 +84,7 @@ export function IndividualLoanType() {
   const banks = oneLoansDetails.banks ?? [];
 
   return (
-    <main className="min-h-screen space-y-8 pb-10 text-stone-100">
+    <div className="min-h-screen space-y-8 pb-10 text-stone-100">
       {/* Navigation */}
       <button
         type="button"
@@ -348,6 +348,6 @@ export function IndividualLoanType() {
           </a>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

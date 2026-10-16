@@ -1,3 +1,4 @@
+import { BankUnavailableState } from "@/components/main/our-product/service-not-found";
 import { IndividualServiceType } from "@/components/main/our-product/service-type";
 import { serverFn__readOneServiceDetails } from "@/integrations/tanstack/server-functions/bank-service-details.sfn";
 import { createFileRoute, notFound } from "@tanstack/react-router";
@@ -16,6 +17,8 @@ export const Route = createFileRoute("/our-product/$productType/")({
 
     return { oneServiceDetails };
   },
+
+  notFoundComponent: () => <BankUnavailableState />,
 });
 
 function RouteComponent() {

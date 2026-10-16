@@ -120,7 +120,7 @@ export function Footer({ className, ...props }: ComponentProps<"footer">) {
           <div className="mt-5 space-y-4">
             {/* Phone */}
             <div className="flex items-start gap-3">
-              <div className="bg-primary-50 text-primary-600 dark:bg-primary-950 dark:text-primary-300 flex size-9 shrink-0 items-center justify-center rounded-xl">
+              <div className="bg-primary-50 text-primary-600 dark:bg-primary-950 dark:text-primary-300 flex size-9 shrink-0 items-center justify-center rounded-lg">
                 <Icon icon="PhoneCall" />
               </div>
 
@@ -133,7 +133,7 @@ export function Footer({ className, ...props }: ComponentProps<"footer">) {
 
             {/* Email */}
             <div className="flex items-start gap-3">
-              <div className="bg-primary-50 text-primary-600 dark:bg-primary-950 dark:text-primary-300 flex size-9 shrink-0 items-center justify-center rounded-xl">
+              <div className="bg-primary-50 text-primary-600 dark:bg-primary-950 dark:text-primary-300 flex size-9 shrink-0 items-center justify-center rounded-lg">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"

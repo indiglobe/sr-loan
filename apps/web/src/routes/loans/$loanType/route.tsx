@@ -7,7 +7,7 @@ export const Route = createFileRoute("/loans/$loanType")({
 
 function RouteComponent() {
   return (
-    <Main className="space-y-6 px-4 py-6 sm:px-10 md:px-12 lg:px-16">
+    <Main className="2xs:px-5 mx-auto w-full max-w-7xl py-4 px-4 sm:px-6 lg:px-8">
       <Outlet />
     </Main>
   );
