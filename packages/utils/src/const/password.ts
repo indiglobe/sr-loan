@@ -1,0 +1,1 @@
+export const DEFUALT_PASSWORD = "11111111";

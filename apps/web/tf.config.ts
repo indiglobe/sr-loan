@@ -14,14 +14,13 @@ export default defineConfig({
     },
     start: {
       execute: "node dist/server/index.mjs",
-      envFile: ".env.production",
-      envValues: {
-        NODE_ENV: "production",
-      },
+      // envFile: ".env.production",
+      // envValues: {
+      //   NODE_ENV: "production",
+      // },
     },
     build: {
       execute: "vite build",
-      envFile: ".env.production",
     },
     "sb:dev": {
       execute: "storybook dev -p 15101 --no-open",

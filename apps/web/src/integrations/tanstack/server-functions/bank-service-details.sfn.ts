@@ -6,7 +6,7 @@ import {
 import { read__OneServiceDetailsSchema } from "@repo/data/validators/bank-service-details";
 import { tryCatch } from "@repo/utils/try-catch";
 
-export const serverFn__readAllServiceDetails = createServerFn().handler(
+export const serverFn__readAllServiceDetails = createServerFn({method:'GET'}).handler(
   async () => {
     const [serverFnError, serverFnResponse] = await tryCatch(
       read__AllServiceDetails(),
@@ -22,7 +22,7 @@ export const serverFn__readAllServiceDetails = createServerFn().handler(
   },
 );
 
-export const serverFn__readOneServiceDetails = createServerFn()
+export const serverFn__readOneServiceDetails = createServerFn({method:'GET'})
   .validator(read__OneServiceDetailsSchema)
   .handler(async ({ data }) => {
     const [serverFnError, serverFnResponse] = await tryCatch(

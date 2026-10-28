@@ -6,23 +6,23 @@ import {
 import { read__OneLoansDetailsSchema } from "@repo/data/validators/bank-loan-details";
 import { tryCatch } from "@repo/utils/try-catch";
 
-export const serverFn__readAllLoansDetails = createServerFn().handler(
-  async () => {
-    const [serverFnError, serverFnResponse] = await tryCatch(
-      read__AllLoansDetails(),
-    );
+export const serverFn__readAllLoansDetails = createServerFn({
+  method: "GET",
+}).handler(async () => {
+  const [serverFnError, serverFnResponse] = await tryCatch(
+    read__AllLoansDetails(),
+  );
 
-    if (serverFnError) {
-      console.error(`Error in serverFnError in serverFn__readAllLoansDetails`);
-      console.error(serverFnError);
-      throw serverFnError;
-    }
+  if (serverFnError) {
+    console.error(`Error in serverFnError in serverFn__readAllLoansDetails`);
+    console.error(serverFnError);
+    throw serverFnError;
+  }
 
-    return serverFnResponse;
-  },
-);
+  return serverFnResponse;
+});
 
-export const serverFn__readOneLoansDetails = createServerFn()
+export const serverFn__readOneLoansDetails = createServerFn({ method: "GET" })
   .validator(read__OneLoansDetailsSchema)
   .handler(async ({ data }) => {
     const [serverFnError, serverFnResponse] = await tryCatch(

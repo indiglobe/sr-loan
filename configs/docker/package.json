@@ -4,6 +4,11 @@
     "build-run:dashboard": "docker compose --env-file ../../.env.production -f ./compose.yaml up -d --build dashboard 2>&1 | tee docker-build.dashboard.log",
     "build:dashboard:nocache": "docker compose --env-file ../../.env.production -f ./compose.yaml build --no-cache dashboard 2>&1 | tee docker-build.dashboard.log",
     "build:dashboard": "docker compose --env-file ../../.env.production -f ./compose.yaml build dashboard 2>&1 | tee docker-build.dashboard.log",
-    "run:dashboard": "docker compose --env-file ../../.env.production -f ./compose.yaml up -d dashboard"
+    "run:dashboard": "docker compose --env-file ../../.env.production -f ./compose.yaml up -d dashboard",
+    "SEPARATOR BETWEEN DASHBOARD AND WEB": "==============================",
+    "build-run:web": "docker compose --env-file ../../.env.production -f ./compose.yaml up -d --build web 2>&1 | tee docker-build.web.log",
+    "build:web:nocache": "docker compose --env-file ../../.env.production -f ./compose.yaml build --no-cache web 2>&1 | tee docker-build.web.log",
+    "build:web": "docker compose --env-file ../../.env.production -f ./compose.yaml build web 2>&1 | tee docker-build.web.log",
+    "run:web": "docker compose --env-file ../../.env.production -f ./compose.yaml up -d web"
   }
 }

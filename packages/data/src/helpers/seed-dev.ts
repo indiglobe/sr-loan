@@ -13,6 +13,7 @@ import { env } from "@repo/env/server";
 import { eq } from "drizzle-orm";
 import { platformEmployeeId } from "@repo/utils/id";
 import { ICON_ENUM } from "@repo/utils/enums/db-enums";
+import { DEFUALT_PASSWORD } from "@repo/utils/const/password";
 /* -------------------------------------------------------------------------- */
 /*                                   HELPERS                                  */
 /* -------------------------------------------------------------------------- */
@@ -72,7 +73,7 @@ async function seedUser() {
         employeeType: role,
       }),
       name: fullName,
-      password: bcrypt.hashSync("12341234", env.SALT_ROUND),
+      password: bcrypt.hashSync(DEFUALT_PASSWORD, env.SALT_ROUND),
       phoneNumber: `${randomInt(9000000000, 9999999999)}`,
       role: role,
       location: faker.location.city(),

@@ -4,8 +4,8 @@ import { tryCatch } from "@repo/utils/try-catch";
 import bcrypt from "bcryptjs";
 import { signJWT } from "@repo/utils/jwt";
 import { ROLE_ENUM } from "@repo/utils/enums/db-enums";
-import { serverFn__readOneUser } from "../tanstack/server-functions/user.sfn";
 import { setUserDetailsCookie } from "@/integrations/auth/session";
+import { read__OneUser } from "@repo/data/querries/user";
 
 export const loginSchema = z.object({
   role: z.enum(ROLE_ENUM, {
@@ -20,25 +20,23 @@ export const loginSchema = z.object({
     .min(6, "Password must be at least 6 characters"),
 });
 
-export const serverFn__login = createServerFn()
+export const serverFn__login = createServerFn({ method: "POST" })
   .validator(loginSchema)
   .handler(async ({ data }) => {
     const { email, password, role } = data;
 
-    const [serverFnError, user] = await tryCatch(
-      serverFn__readOneUser({
-        data: {
-          identifier: {
-            email,
-          },
-          include: { password: true },
+    const [fetchingExistingUserError, user] = await tryCatch(
+      read__OneUser({
+        identifier: {
+          email,
         },
+        include: { password: true },
       }),
     );
 
-    if (serverFnError) {
-      console.error("Error in serverFnError in serverFn__login");
-      console.error(serverFnError);
+    if (fetchingExistingUserError) {
+      console.error("Error in fetchingExistingUserError in serverFn__login");
+      console.error(fetchingExistingUserError);
 
       return {
         status: "error" as const,

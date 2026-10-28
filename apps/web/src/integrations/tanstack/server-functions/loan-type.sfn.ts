@@ -6,7 +6,7 @@ import {
 import { read__OneLoansTypeSchema } from "@repo/data/validators/loan-type";
 import { tryCatch } from "@repo/utils/try-catch";
 
-export const serverFn__readAllLoansTypes = createServerFn().handler(
+export const serverFn__readAllLoansTypes = createServerFn({method:'GET'}).handler(
   async () => {
     const [serverFnError, serverFnResponse] = await tryCatch(
       read__AllLoansTypes(),
@@ -26,7 +26,7 @@ export const serverFn__readAllLoansTypes = createServerFn().handler(
 // ++++++++++++++++++++++++++++++++++++++++++++++++++
 // ==================================================
 
-export const serverFn__readOneLoansType = createServerFn()
+export const serverFn__readOneLoansType = createServerFn({method:'GET'})
   .validator(read__OneLoansTypeSchema)
   .handler(async ({ data }) => {
     const [serverFnError, serverFnResponse] = await tryCatch(

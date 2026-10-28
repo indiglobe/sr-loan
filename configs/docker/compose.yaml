@@ -6,8 +6,7 @@ networks:
 
 services:
   dashboard:
-    container_name: sr-loan-prod-local-live
-    # pull_policy: "always"
+    container_name: sr-loan-prod-local-dashboard
     image: "nirvikpurkait/sr-loan-dashboard"
     build:
       context: ../../
@@ -15,14 +14,74 @@ services:
       args:
         DATABASE_URL: ${DATABASE_URL}
         DASHBOARD_APP_HOST: ${DASHBOARD_APP_HOST}
+        WEB_APP_HOST: ${WEB_APP_HOST}
         VITE_DASHBOARD_APP_HOST: ${VITE_DASHBOARD_APP_HOST}
+        VITE_WEB_APP_HOST: ${VITE_WEB_APP_HOST}
         TOKEN_SECRET: ${TOKEN_SECRET}
         SALT_ROUND: ${SALT_ROUND}
         TURBO_TOKEN: ${TURBO_TOKEN}
         TURBO_TEAM: ${TURBO_TEAM}
     env_file:
-      - ../../.env.production
+      - ../../.env.development
     ports:
-      - 18532:3000
+      - 19551:3000
     networks:
       - sr-loan-prod-local
+    depends_on:
+      - sr-loan-prod-local-database
+      - sr-loan-prod-local-phpmyadmin
+
+  web:
+    container_name: sr-loan-prod-local-web
+    image: "nirvikpurkait/sr-loan-web"
+    build:
+      context: ../../
+      dockerfile: apps/web/Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+        DASHBOARD_APP_HOST: ${DASHBOARD_APP_HOST}
+        WEB_APP_HOST: ${WEB_APP_HOST}
+        VITE_DASHBOARD_APP_HOST: ${VITE_DASHBOARD_APP_HOST}
+        VITE_WEB_APP_HOST: ${VITE_WEB_APP_HOST}
+        TOKEN_SECRET: ${TOKEN_SECRET}
+        SALT_ROUND: ${SALT_ROUND}
+        TURBO_TOKEN: ${TURBO_TOKEN}
+        TURBO_TEAM: ${TURBO_TEAM}
+    env_file:
+      - ../../.env.development
+    ports:
+      - 12430:3000
+    networks:
+      - sr-loan-prod-local
+    depends_on:
+      - sr-loan-prod-local-database
+      - sr-loan-prod-local-phpmyadmin
+
+  sr-loan-prod-local-database:
+    container_name: sr-loan-prod-local-database
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - 18563:3306
+    networks:
+      - sr-loan-prod-local
+    volumes:
+      - database:/var/lib/mysql
+  sr-loan-prod-local-phpmyadmin:
+    container_name: sr-loan-prod-local-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "15521:80"
+    environment:
+      PMA_HOST: sr-loan-prod-local-database
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: password
+    depends_on:
+      - sr-loan-prod-local-database
+    networks:
+      - sr-loan-prod-local
+
+volumes:
+  database:

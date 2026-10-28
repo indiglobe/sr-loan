@@ -12,7 +12,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { tryCatch } from "@repo/utils/try-catch";
 import { hashPassword } from "@repo/utils/utility/password-hashing";
 
-export const serverFn__createOneUser = createServerFn()
+export const serverFn__createOneUser = createServerFn({ method: "POST" })
   .validator(create__OneUserSchema)
   .handler(async ({ data }) => {
     const [passwordHasingError, hashedPassword] = await tryCatch(
@@ -38,7 +38,7 @@ export const serverFn__createOneUser = createServerFn()
     return serverFnData;
   });
 
-export const serverFn__readOneUser = createServerFn()
+export const serverFn__readOneUser = createServerFn({ method: "GET" })
   .validator(read__OneUserSchema)
   .handler(async ({ data }) => {
     const [serverFnError, serverFnData] = await tryCatch(read__OneUser(data));
@@ -51,7 +51,7 @@ export const serverFn__readOneUser = createServerFn()
     return serverFnData;
   });
 
-export const serverFn__readAllUsers = createServerFn()
+export const serverFn__readAllUsers = createServerFn({ method: "GET" })
   .validator(read__AllUsersSchema)
   .handler(async ({ data }) => {
     const [serverFnError, serverFnData] = await tryCatch(read__AllUsers(data));
