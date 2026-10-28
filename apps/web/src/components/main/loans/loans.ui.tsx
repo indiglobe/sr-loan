@@ -1,6 +1,4 @@
 import { cn } from "@repo/styles/cn";
-import { Link } from "@tanstack/react-router";
-import type { LinkProps } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import type { ComponentProps } from "react";
 
@@ -46,11 +44,11 @@ export function OverviewStatLabel({
 export function LoanProductCard({
   className,
   ...props
-}: ComponentProps<typeof Link> & { to: LinkProps["to"] }) {
+}: ComponentProps<"div">) {
   return (
-    <Link
+    <div
       className={cn(
-        `group border-foreground/5 bg-background hover:border-primary-200 shadow-primary-950/5 dark:bg-foreground/3 rounded-lg border p-6 transition duration-300 hover:-translate-y-1 hover:shadow-xl`,
+        `group border-foreground/5 bg-background hover:border-primary-200 shadow-primary-950/5 dark:bg-foreground/3 rounded-lg border p-6 transition duration-300 hover:-translate-y-1 hover:shadow-xl h-full flex flex-col`,
         className,
       )}
       {...props}
@@ -89,7 +87,7 @@ export function LoanProductCardDescription({
   return (
     <p
       className={cn(
-        `text-foreground/55 mt-3 min-h-24 text-sm leading-6`,
+        `text-foreground/55 mt-3 min-h-24 text-sm leading-6 grow`,
         className,
       )}
       {...props}

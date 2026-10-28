@@ -3,16 +3,13 @@ import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
 import { LuPlus } from "react-icons/lu";
 import { tryCatch } from "@repo/utils/try-catch";
-import {
-  useCreateOneUser,
-  useReadAllUsers,
-} from "@/integrations/tanstack/react-query/user.rq";
-import { useRouteContext } from "@tanstack/react-router";
+import { useCreateOneUser } from "@/integrations/tanstack/react-query/user.rq";
+import { useRouteContext, Link } from "@tanstack/react-router";
 import { platformEmployeeId } from "@repo/utils/id";
 import z from "zod";
 import { Button } from "@repo/ui/button";
 import { User } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { useReadAllUsers } from "@/integrations/tanstack/react-query/admin-dashboard.rq";
 
 export function AgentDashboard() {
   return (
@@ -33,7 +30,7 @@ function CreateCustomer() {
 
   const {
     userDetailsAsCookie: { employeeId: adminEmployeeId },
-  } = useRouteContext({ from: "/(authenticated-routes)/agent" });
+  } = useRouteContext({ from: "/(authenticated)/agent" });
 
   const { mutateAsync } = useCreateOneUser();
 
@@ -823,7 +820,7 @@ function CustomerTableError() {
 }
 
 function CustomersTableData() {
-  const { data } = useReadAllUsers({ identifier: { role: "CUSTOMER" } });
+  const { data } = useReadAllUsers();
 
   if (!data) return null;
 
@@ -985,9 +982,8 @@ function CustomersTable() {
     data: customersData,
     isError: customersError,
     isPending: customersPending,
-  } = useReadAllUsers({
-    identifier: { role: "CUSTOMER" },
-  });
+  } = useReadAllUsers();
+
   return (
     <section className={cn("mt-8 w-full")}>
       {/* Table Header */}

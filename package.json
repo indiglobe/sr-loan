@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "turbo run build",
+    "preinstall": "corepack prepare pnpm@10.27.0 --activate",
     "dev": "turbo run dev",
     "dev:apps": "turbo run dev --filter=!@repo/*",
     "dev:packages": "turbo run dev --filter=@repo/*",
@@ -12,6 +13,8 @@
     "format": "turbo run format",
     "lint:staged": "turbo run lint:staged",
     "ui": "turbo devtools --port 8520",
+    "build:dev:apps:web": "turbo run build --filter=@repo/* && turbo run dev --filter=web",
+    "build:dev:apps:dashboard": "turbo run build --filter=@repo/* && turbo run dev --filter=dashboard",
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
@@ -25,6 +28,13 @@
     "overrides": {
       "react": "19.2.6",
       "react-dom": "19.2.6"
+    }
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "10.27.0",
+      "onFail": "download"
     }
   },
   "packageManager": "pnpm@10.27.0",

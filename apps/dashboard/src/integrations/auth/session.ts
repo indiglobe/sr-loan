@@ -7,6 +7,7 @@ import {
 import { USER_DETAILS } from "@repo/utils/const/cookie-name";
 import { tryCatch } from "@repo/utils/try-catch";
 import { signJWT, verifyJWT, jwtPayloadSchema } from "@repo/utils/jwt";
+import { env } from "@repo/env/server";
 
 /**
  * Retrieves user details from the user-details cookie.
@@ -22,7 +23,7 @@ import { signJWT, verifyJWT, jwtPayloadSchema } from "@repo/utils/jwt";
  *   employeeId: string;
  * } | null>} The verified user details, or `null` when the cookie is
  * missing or the JWT verification fails.
- * 
+ *
  * Usualy its returned vaue is called as `userDetailsAsCookie`
  */
 export const fetchUserDetailsCookie = createServerFn().handler(async () => {
@@ -56,7 +57,10 @@ export const setUserDetailsCookie = createServerFn()
   .handler(async ({ data }) => {
     const generatedTokenToStoreToClientCookie = await signJWT(data);
 
-    setCookie(USER_DETAILS, generatedTokenToStoreToClientCookie);
+    setCookie(USER_DETAILS, generatedTokenToStoreToClientCookie, {
+      httpOnly: true,
+      domain: new URL(env.WEB_APP_HOST).hostname,
+    });
   });
 
 /**

@@ -1,14 +1,17 @@
-import { serverFn__login } from "@/integrations/form-actions/log-in";
 import { cn } from "@repo/styles/cn";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "@repo/ui/sonner";
 import z from "zod";
+import { ROLE_ENUM } from "@repo/utils/enums/db-enums";
+import { useNavigate, useSearch } from "@tanstack/react-router";
+import { serverFn__login } from "@/integrations/form-actions/log-in.sfn";
 
-type LoginRole = "ADMIN" | "AGENT";
+const roleSchema = z.enum(ROLE_ENUM);
+
+type LoginRole = z.infer<typeof roleSchema>;
 
 const loginSchema = z.object({
   email: z.email("Enter a valid email address"),
@@ -18,10 +21,14 @@ const loginSchema = z.object({
     .min(6, "Password must be at least 6 characters"),
 });
 
-export default function LoginForm() {
+export function Login() {
   const [role, setRole] = useState<LoginRole>("ADMIN");
 
+  const searchParams = useSearch({ from: "/(un-authenticated)" });
+
   const loginMutation = useLogin();
+
+  const navigate = useNavigate();
 
   const form = useForm({
     defaultValues: {
@@ -51,6 +58,12 @@ export default function LoginForm() {
           response.user?.role === "ADMIN" ? "Admin" : "Agent"
         }.`,
       });
+
+      if (searchParams?.["redirect-to"]) {
+        navigate({ href: searchParams["redirect-to"] });
+      } else {
+        navigate({ to: "/" });
+      }
     },
   });
 
@@ -318,21 +331,8 @@ export default function LoginForm() {
 
 export function useLogin() {
   const login = useServerFn(serverFn__login);
-  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: login,
-
-    onSuccess: ({ user, status }) => {
-      if (status === "success") {
-        const { role } = user;
-
-        if (role === "ADMIN") {
-          navigate({ to: "/admin/dashboard" });
-        } else {
-          navigate({ to: "/agent/dashboard" });
-        }
-      }
-    },
   });
 }

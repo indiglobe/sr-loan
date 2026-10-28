@@ -1,9 +1,96 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "b223e32e-8eec-4455-a6d5-43e3c07455df",
+  "id": "b0b2d6bf-ecae-40db-973c-32556ee27e52",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "activity": {
+      "name": "activity",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(10)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "employee_id": {
+          "name": "employee_id",
+          "type": "char(10)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "loan_id": {
+          "name": "loan_id",
+          "type": "char(10)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "table_identifier_token": {
+          "name": "table_identifier_token",
+          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN','ELGB','LELG','DOCM','LDOC','BSRV','SRVC','ACTY')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'ACTY'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "emp_id_fk": {
+          "name": "emp_id_fk",
+          "tableFrom": "activity",
+          "tableTo": "user",
+          "columnsFrom": [
+            "employee_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "loan_id_fk": {
+          "name": "loan_id_fk",
+          "tableFrom": "activity",
+          "tableTo": "loan_type",
+          "columnsFrom": [
+            "loan_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "activity_id": {
+          "name": "activity_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
     "bank": {
       "name": "bank",
       "columns": {
@@ -51,7 +138,7 @@
         },
         "table_identifier_token": {
           "name": "table_identifier_token",
-          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN')",
+          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN','ELGB','LELG','DOCM','LDOC','BSRV','SRVC','ACTY')",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
@@ -109,8 +196,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "return_on_invest": {
-          "name": "return_on_invest",
+        "rate_of_interest": {
+          "name": "rate_of_interest",
           "type": "int",
           "primaryKey": false,
           "notNull": true,
@@ -146,7 +233,7 @@
         },
         "table_identifier_token": {
           "name": "table_identifier_token",
-          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN')",
+          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN','ELGB','LELG','DOCM','LDOC','BSRV','SRVC','ACTY')",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
@@ -164,8 +251,8 @@
         }
       },
       "foreignKeys": {
-        "bank_loan_details_bank_id_bank_bank_id_fk": {
-          "name": "bank_loan_details_bank_id_bank_bank_id_fk",
+        "fk_bank_loan_bank": {
+          "name": "fk_bank_loan_bank",
           "tableFrom": "bank_loan_details",
           "tableTo": "bank",
           "columnsFrom": [
@@ -177,8 +264,8 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "bank_loan_details_loan_type_id_loan_type_loan_type_id_fk": {
-          "name": "bank_loan_details_loan_type_id_loan_type_loan_type_id_fk",
+        "fk_bank_loan_type": {
+          "name": "fk_bank_loan_type",
           "tableFrom": "bank_loan_details",
           "tableTo": "loan_type",
           "columnsFrom": [
@@ -194,6 +281,109 @@
       "compositePrimaryKeys": {
         "bank_loan_details_id": {
           "name": "bank_loan_details_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "bank_service_details": {
+      "name": "bank_service_details",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(10)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "bank_id": {
+          "name": "bank_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "service_type_id": {
+          "name": "service_type_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "apply_link": {
+          "name": "apply_link",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "table_identifier_token": {
+          "name": "table_identifier_token",
+          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN','ELGB','LELG','DOCM','LDOC','BSRV','SRVC','ACTY')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'BSRV'"
+        }
+      },
+      "indexes": {
+        "bank_loan_unique": {
+          "name": "bank_loan_unique",
+          "columns": [
+            "bank_id",
+            "service_type_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "fk_bank_service_bank": {
+          "name": "fk_bank_service_bank",
+          "tableFrom": "bank_service_details",
+          "tableTo": "bank",
+          "columnsFrom": [
+            "bank_id"
+          ],
+          "columnsTo": [
+            "bank_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "fk_bank_service_type": {
+          "name": "fk_bank_service_type",
+          "tableFrom": "bank_service_details",
+          "tableTo": "service-type",
+          "columnsFrom": [
+            "service_type_id"
+          ],
+          "columnsTo": [
+            "service-type_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "bank_service_details_id": {
+          "name": "bank_service_details_id",
           "columns": [
             "id"
           ]
@@ -228,7 +418,7 @@
         },
         "icon": {
           "name": "icon",
-          "type": "enum('ArrowLeft','Award','BadgeCheck','Building2','Calendar','CalendarDays','CheckCircle2','ChevronRight','Clock','DollarSign','FileCheck','FileText','Mail','MapPin','Percent','Phone','PhoneCall','Search','ShieldCheck','TrendingUp','UserCheck','X')",
+          "type": "enum('ArrowLeft','Award','BadgeCheck','BadgeIndianRupee','BarChart3','BriefcaseBusiness','Building2','Calendar','CalendarDays','CarFront','CheckCircle2','ChevronRight','Clock','CreditCard','DollarSign','FileCheck','FileText','House','IdCard','Landmark','Mail','MapPin','Percent','Phone','PhoneCall','ReceiptIndianRupee','Search','ShieldCheck','TrendingUp','UserCheck','X','Zap')",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -249,7 +439,7 @@
         },
         "table_identifier_token": {
           "name": "table_identifier_token",
-          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN')",
+          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN','ELGB','LELG','DOCM','LDOC','BSRV','SRVC','ACTY')",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
@@ -261,6 +451,140 @@
       "compositePrimaryKeys": {
         "benefits_id": {
           "name": "benefits_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "documents_required": {
+      "name": "documents_required",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(10)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "icon": {
+          "name": "icon",
+          "type": "enum('ArrowLeft','Award','BadgeCheck','BadgeIndianRupee','BarChart3','BriefcaseBusiness','Building2','Calendar','CalendarDays','CarFront','CheckCircle2','ChevronRight','Clock','CreditCard','DollarSign','FileCheck','FileText','House','IdCard','Landmark','Mail','MapPin','Percent','Phone','PhoneCall','ReceiptIndianRupee','Search','ShieldCheck','TrendingUp','UserCheck','X','Zap')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "table_identifier_token": {
+          "name": "table_identifier_token",
+          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN','ELGB','LELG','DOCM','LDOC','BSRV','SRVC','ACTY')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'DOCM'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "documents_required_id": {
+          "name": "documents_required_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "eligibility": {
+      "name": "eligibility",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(10)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "icon": {
+          "name": "icon",
+          "type": "enum('ArrowLeft','Award','BadgeCheck','BadgeIndianRupee','BarChart3','BriefcaseBusiness','Building2','Calendar','CalendarDays','CarFront','CheckCircle2','ChevronRight','Clock','CreditCard','DollarSign','FileCheck','FileText','House','IdCard','Landmark','Mail','MapPin','Percent','Phone','PhoneCall','ReceiptIndianRupee','Search','ShieldCheck','TrendingUp','UserCheck','X','Zap')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "table_identifier_token": {
+          "name": "table_identifier_token",
+          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN','ELGB','LELG','DOCM','LDOC','BSRV','SRVC','ACTY')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'ELGB'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "eligibility_id": {
+          "name": "eligibility_id",
           "columns": [
             "id"
           ]
@@ -309,7 +633,7 @@
         },
         "table_identifier_token": {
           "name": "table_identifier_token",
-          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN')",
+          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN','ELGB','LELG','DOCM','LDOC','BSRV','SRVC','ACTY')",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
@@ -318,8 +642,8 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "loan_benefits_benefit_id_benefits_id_fk": {
-          "name": "loan_benefits_benefit_id_benefits_id_fk",
+        "lbnf_benefit_fk": {
+          "name": "lbnf_benefit_fk",
           "tableFrom": "loan_benefits",
           "tableTo": "benefits",
           "columnsFrom": [
@@ -331,8 +655,8 @@
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
-        "loan_benefits_bank_loan_id_bank_loan_details_id_fk": {
-          "name": "loan_benefits_bank_loan_id_bank_loan_details_id_fk",
+        "lbnf_bank_loan_fk": {
+          "name": "lbnf_bank_loan_fk",
           "tableFrom": "loan_benefits",
           "tableTo": "bank_loan_details",
           "columnsFrom": [
@@ -348,6 +672,180 @@
       "compositePrimaryKeys": {
         "loan_benefits_id": {
           "name": "loan_benefits_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "loan_documents_required": {
+      "name": "loan_documents_required",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(10)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "documents_required_id": {
+          "name": "documents_required_id",
+          "type": "char(10)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "bank_loan_id": {
+          "name": "bank_loan_id",
+          "type": "char(10)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "table_identifier_token": {
+          "name": "table_identifier_token",
+          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN','ELGB','LELG','DOCM','LDOC','BSRV','SRVC','ACTY')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'LDOC'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ldoc_doc_req_fk": {
+          "name": "ldoc_doc_req_fk",
+          "tableFrom": "loan_documents_required",
+          "tableTo": "documents_required",
+          "columnsFrom": [
+            "documents_required_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "ldoc_bank_loan_fk": {
+          "name": "ldoc_bank_loan_fk",
+          "tableFrom": "loan_documents_required",
+          "tableTo": "bank_loan_details",
+          "columnsFrom": [
+            "bank_loan_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "loan_documents_required_id": {
+          "name": "loan_documents_required_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "loan_eligibility": {
+      "name": "loan_eligibility",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(10)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "eligibility_id": {
+          "name": "eligibility_id",
+          "type": "char(10)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "bank_loan_id": {
+          "name": "bank_loan_id",
+          "type": "char(10)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "table_identifier_token": {
+          "name": "table_identifier_token",
+          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN','ELGB','LELG','DOCM','LDOC','BSRV','SRVC','ACTY')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'LELG'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "lelg_eligibility_fk": {
+          "name": "lelg_eligibility_fk",
+          "tableFrom": "loan_eligibility",
+          "tableTo": "eligibility",
+          "columnsFrom": [
+            "eligibility_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        },
+        "lelg_bank_loan_fk": {
+          "name": "lelg_bank_loan_fk",
+          "tableFrom": "loan_eligibility",
+          "tableTo": "bank_loan_details",
+          "columnsFrom": [
+            "bank_loan_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "loan_eligibility_id": {
+          "name": "loan_eligibility_id",
           "columns": [
             "id"
           ]
@@ -380,6 +878,28 @@
           "notNull": true,
           "autoincrement": false
         },
+        "description": {
+          "name": "description",
+          "type": "varchar(1023)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "icon": {
+          "name": "icon",
+          "type": "enum('ArrowLeft','Award','BadgeCheck','BadgeIndianRupee','BarChart3','BriefcaseBusiness','Building2','Calendar','CalendarDays','CarFront','CheckCircle2','ChevronRight','Clock','CreditCard','DollarSign','FileCheck','FileText','House','IdCard','Landmark','Mail','MapPin','Percent','Phone','PhoneCall','ReceiptIndianRupee','Search','ShieldCheck','TrendingUp','UserCheck','X','Zap')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "minimum_allowed_role": {
+          "name": "minimum_allowed_role",
+          "type": "enum('ADMIN','AGENT','CUSTOMER')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'AGENT'"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp(6)",
@@ -396,7 +916,7 @@
         },
         "table_identifier_token": {
           "name": "table_identifier_token",
-          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN')",
+          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN','ELGB','LELG','DOCM','LDOC','BSRV','SRVC','ACTY')",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
@@ -418,6 +938,87 @@
           "name": "loan_type_loan_type_id_unique",
           "columns": [
             "loan_type_id"
+          ]
+        }
+      },
+      "checkConstraint": {}
+    },
+    "service-type": {
+      "name": "service-type",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(10)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "service-type_id": {
+          "name": "service-type_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "bank_service-type": {
+          "name": "bank_service-type",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(1023)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "icon": {
+          "name": "icon",
+          "type": "enum('ArrowLeft','Award','BadgeCheck','BadgeIndianRupee','BarChart3','BriefcaseBusiness','Building2','Calendar','CalendarDays','CarFront','CheckCircle2','ChevronRight','Clock','CreditCard','DollarSign','FileCheck','FileText','House','IdCard','Landmark','Mail','MapPin','Percent','Phone','PhoneCall','ReceiptIndianRupee','Search','ShieldCheck','TrendingUp','UserCheck','X','Zap')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp(6)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "table_identifier_token": {
+          "name": "table_identifier_token",
+          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN','ELGB','LELG','DOCM','LDOC','BSRV','SRVC','ACTY')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'SRVC'"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "service-type_id": {
+          "name": "service-type_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "service-type_service-type_id_unique": {
+          "name": "service-type_service-type_id_unique",
+          "columns": [
+            "service-type_id"
           ]
         }
       },
@@ -519,7 +1120,7 @@
         },
         "table_identifier_token": {
           "name": "table_identifier_token",
-          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN')",
+          "type": "enum('USER','BANK','BLOA','BNFT','LBNF','LOAN','ELGB','LELG','DOCM','LDOC','BSRV','SRVC','ACTY')",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,

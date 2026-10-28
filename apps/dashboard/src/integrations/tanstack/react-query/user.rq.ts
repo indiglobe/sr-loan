@@ -3,7 +3,7 @@ import {
   serverFn__readOneUser,
   serverFn__readAllUsers,
   serverFn__createOneUser,
-} from "@/integrations/tanstack/server-functions/querry/user.sfn";
+} from "@/integrations/tanstack/server-functions/user.sfn";
 
 type ReadOneUserInput = Parameters<typeof serverFn__readOneUser>[0]["data"];
 type ReadAllUsersInput = NonNullable<

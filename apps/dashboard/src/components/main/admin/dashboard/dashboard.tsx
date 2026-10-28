@@ -3,27 +3,19 @@ import { useForm } from "@tanstack/react-form";
 import { useState } from "react";
 import { LuPlus } from "react-icons/lu";
 import { tryCatch } from "@repo/utils/try-catch";
-import {
-  useCreateOneUser,
-  useReadAllUsers,
-} from "@/integrations/tanstack/react-query/user.rq";
+import { useCreateOneUser } from "@/integrations/tanstack/react-query/user.rq";
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { platformEmployeeId } from "@repo/utils/id";
 import z from "zod";
 import { Button } from "@repo/ui/button";
-import { ArrowRight, User } from "lucide-react";
+import { User } from "lucide-react";
+import { useReadAllUsers } from "@/integrations/tanstack/react-query/admin-dashboard.rq";
 
 export function AdminDashboard() {
   return (
-    <main
-      className={cn(
-        "bg-background px-4 py-5 text-foreground sm:px-6 sm:py-6 lg:px-8",
-      )}
-    >
-      <div className={cn("mx-auto w-full max-w-7xl")}>
-        <AgentTable />
-      </div>
-    </main>
+    <div className={cn("mx-auto w-full max-w-7xl")}>
+      <AgentTable />
+    </div>
   );
 }
 
@@ -32,7 +24,7 @@ function CreateAgent() {
 
   const {
     userDetailsAsCookie: { employeeId: adminEmployeeId },
-  } = useRouteContext({ from: "/(authenticated-routes)/admin" });
+  } = useRouteContext({ from: "/(authenticated)/admin" });
 
   const { mutateAsync } = useCreateOneUser();
 
@@ -822,7 +814,7 @@ function AgentTableError() {
 }
 
 function AgentTableData() {
-  const { data } = useReadAllUsers({ identifier: { role: "AGENT" } });
+  const { data } = useReadAllUsers();
 
   if (!data) return null;
 
@@ -979,14 +971,12 @@ function AgentTableData() {
   );
 }
 
-function AgentTable() {
+export function AgentTable() {
   const {
     data: agentsData,
     isError: agentsIsError,
     isPending: agentsIsPending,
-  } = useReadAllUsers({
-    identifier: { role: "AGENT" },
-  });
+  } = useReadAllUsers();
   return (
     <section className={cn("mt-8 w-full")}>
       {/* Table Header */}

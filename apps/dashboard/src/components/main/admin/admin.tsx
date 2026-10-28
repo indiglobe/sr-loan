@@ -72,7 +72,7 @@ export function AdminHeader() {
           )}
           onClick={async () => {
             await deleteUserDetailsCookie();
-            navigate({ to: "/login" });
+            navigate({ to: "/log-in" });
           }}
         >
           Logout

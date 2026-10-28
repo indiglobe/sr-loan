@@ -1,9 +1,9 @@
 {
   "name": "@repo/ui",
   "scripts": {
+    "build": "tsup",
     "dev": "tsup --watch",
     "prebuild": "rimraf ./dist",
-    "build": "tsup",
     "lint": "eslint",
     "format": "prettier --write **/* ",
     "lint:staged": "lint-staged",
@@ -25,6 +25,7 @@
     "@gsap/react": "^2.1.2",
     "@radix-ui/react-slot": "^1.2.4",
     "@repo/styles": "workspace:^",
+    "@repo/utils": "workspace:*",
     "@unpic/react": "^1.0.2",
     "class-variance-authority": "^0.7.1",
     "embla-carousel-auto-scroll": "^8.6.0",

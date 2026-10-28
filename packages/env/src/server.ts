@@ -11,6 +11,7 @@ export const env = createEnv({
     SALT_ROUND: z.coerce.number().int().min(4).max(31),
 
     DASHBOARD_APP_HOST: z.string(),
+    WEB_APP_HOST: z.string(),
   },
 
   /**

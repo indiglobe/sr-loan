@@ -612,7 +612,7 @@ function downloadCanvasAsJpg(
 
 function CustomerIdCardGenerator() {
   const { setteledUserDetails } = useLoaderData({
-    from: "/(authenticated-routes)/admin/dashboard/$agentId/id-card/",
+    from: "/(authenticated)/admin/dashboard/$agentId/id-card/",
   });
 
   const agreementRef = useRef<HTMLDivElement | null>(null);

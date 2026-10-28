@@ -1,12 +1,19 @@
-// import { cn } from "@/lib/utils/cn";
-// import { LogoIcon, LogoText } from "@/ui/logo";
+import { deleteUserDetailsCookie as serverFn__deleteUserDetailsCookie } from "@/integrations/auth/session";
 import { cn } from "@repo/styles/cn";
-import { Link } from "@tanstack/react-router";
+import { Button } from "@repo/ui/button";
+import { LogoIcon, LogoText } from "@repo/ui/logo";
+import { Link, useNavigate, useRouteContext } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import type { ComponentProps } from "react";
 
 export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
   const [isOpen, setIsOpen] = useState(false);
+  const { userDetailsAsCookie } = useRouteContext({ from: "__root__" });
+  const deleteUserDetailsCookie = useServerFn(
+    serverFn__deleteUserDetailsCookie,
+  );
+  const navigate = useNavigate();
 
   return (
     <nav
@@ -23,8 +30,12 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
           onClick={() => setIsOpen(false)}
           className="flex items-center"
         >
-          {/* <LogoIcon className={cn(`h-12 w-12`)} />
-          <LogoText className={cn(`h-12 w-48 max-xs:hidden xs:block md:hidden xl:block`)} /> */}
+          <LogoIcon className={cn(`h-12 w-12`)} />
+          <LogoText
+            className={cn(
+              `h-12 w-48 max-xs:hidden xs:block md:hidden xl:block`,
+            )}
+          />
         </Link>
 
         {/* Desktop Links */}
@@ -34,7 +45,7 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
             activeOptions={{
               exact: true,
             }}
-            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-xl px-4 py-2 text-sm font-semibold transition-colors"
+            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-md px-4 py-2 text-sm font-semibold transition-colors"
             activeProps={{
               className:
                 "bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300",
@@ -45,7 +56,7 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
 
           <Link
             to="/our-product"
-            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-xl px-4 py-2 text-sm font-semibold transition-colors"
+            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-md px-4 py-2 text-sm font-semibold transition-colors"
             activeProps={{
               className:
                 "bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300",
@@ -56,7 +67,7 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
 
           <Link
             to="/loans"
-            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-xl px-4 py-2 text-sm font-semibold transition-colors"
+            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-md px-4 py-2 text-sm font-semibold transition-colors"
             activeProps={{
               className:
                 "bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300",
@@ -67,7 +78,7 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
 
           <Link
             to="/contact-us"
-            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-xl px-4 py-2 text-sm font-semibold transition-colors"
+            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-md px-4 py-2 text-sm font-semibold transition-colors"
             activeProps={{
               className:
                 "bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300",
@@ -79,19 +90,27 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
 
         {/* Desktop Right Side */}
         <div className="hidden items-center gap-3 md:flex">
-          <button
-            type="button"
-            className="text-primary-700 hover:bg-primary-50 dark:text-primary-300 dark:hover:bg-primary-950 rounded-xl px-4 py-2.5 text-sm font-semibold transition"
-          >
-            Sign In
-          </button>
+          {userDetailsAsCookie && (
+            <Button
+              variant={"destructive"}
+              onClick={async () => {
+                await deleteUserDetailsCookie();
+                await navigate({ to: "/" });
+              }}
+            >
+              Log out
+            </Button>
+          )}
 
-          <button
-            type="button"
-            className="bg-primary-600 shadow-primary-600/15 hover:bg-primary-700 rounded-xl px-5 py-2.5 text-sm font-semibold text-white shadow-md transition active:scale-95"
-          >
-            Apply Now
-          </button>
+          {!userDetailsAsCookie && (
+            <Button
+              asChild
+              type="button"
+              className="bg-primary-600 shadow-primary-600/15 hover:bg-primary-700 rounded-md px-5 py-2.5 text-sm font-semibold text-white shadow-md transition active:scale-95"
+            >
+              <Link to="/log-in">Log In</Link>
+            </Button>
+          )}
         </div>
 
         {/* Mobile Hamburger */}
@@ -100,7 +119,7 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
           aria-label="Toggle navigation menu"
           aria-expanded={isOpen}
           onClick={() => setIsOpen((prev) => !prev)}
-          className="border-primary-100 text-foreground hover:bg-primary-50 dark:border-primary-900 dark:hover:bg-primary-950 flex size-10 items-center justify-center rounded-xl border transition md:hidden"
+          className="border-primary-100 text-foreground hover:bg-primary-50 dark:border-primary-900 dark:hover:bg-primary-950 flex size-10 items-center justify-center   border transition md:hidden"
         >
           {isOpen ? (
             <svg
@@ -147,7 +166,7 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
               exact: true,
             }}
             onClick={() => setIsOpen(false)}
-            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-xl px-4 py-3 text-sm font-semibold transition"
+            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-md px-4 py-3 text-sm font-semibold transition"
             activeProps={{
               className:
                 "bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300",
@@ -159,7 +178,7 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
           <Link
             to="/loans"
             onClick={() => setIsOpen(false)}
-            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-xl px-4 py-3 text-sm font-semibold transition"
+            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-md px-4 py-3 text-sm font-semibold transition"
             activeProps={{
               className:
                 "bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300",
@@ -171,7 +190,7 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
           <Link
             to="/our-product"
             onClick={() => setIsOpen(false)}
-            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-xl px-4 py-3 text-sm font-semibold transition"
+            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-md px-4 py-3 text-sm font-semibold transition"
             activeProps={{
               className:
                 "bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300",
@@ -183,7 +202,7 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
           <Link
             to="/contact-us"
             onClick={() => setIsOpen(false)}
-            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-xl px-4 py-3 text-sm font-semibold transition"
+            className="text-foreground/60 hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950 rounded-md px-4 py-3 text-sm font-semibold transition"
             activeProps={{
               className:
                 "bg-primary-50 text-primary-700 dark:bg-primary-950 dark:text-primary-300",
@@ -194,19 +213,27 @@ export default function Navbar({ className, ...props }: ComponentProps<"nav">) {
 
           <div className="bg-primary-100 dark:bg-primary-900 my-2 h-px" />
 
-          <button
-            type="button"
-            className="text-primary-700 hover:bg-primary-50 dark:text-primary-300 dark:hover:bg-primary-950 rounded-xl px-4 py-3 text-left text-sm font-semibold transition"
-          >
-            Sign In
-          </button>
+          {userDetailsAsCookie && (
+            <Button
+              variant={"destructive"}
+              onClick={async () => {
+                await deleteUserDetailsCookie();
+                await navigate({ to: "/" });
+              }}
+            >
+              Log out
+            </Button>
+          )}
 
-          <button
-            type="button"
-            className="bg-primary-600 hover:bg-primary-700 mt-1 w-full rounded-xl px-5 py-3 text-sm font-semibold text-white transition"
-          >
-            Apply Now
-          </button>
+          {!userDetailsAsCookie && (
+            <Button
+              type="button"
+              asChild
+              className="bg-primary-600 hover:bg-primary-700 mt-1 w-full rounded-md px-5 py-3 text-sm font-semibold text-white transition"
+            >
+              <Link to="/log-in">Log In</Link>
+            </Button>
+          )}
         </div>
       </div>
     </nav>

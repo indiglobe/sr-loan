@@ -11,6 +11,7 @@ import { Link, useRouteContext } from "@tanstack/react-router";
 export function HomePage() {
   const { userDetailsAsCookie } = useRouteContext({ from: "/(public)/" });
 
+
   return (
     <section
       className={cn(
@@ -124,7 +125,7 @@ export function HomePage() {
               )}
             >
               <Link
-                to="/login"
+                to="/log-in"
                 className={cn(
                   "w-full py-3 rounded-lg bg-primary-500 hover:bg-primary-600 text-white font-medium shadow-lg shadow-primary-500/25 transition-all flex items-center justify-center gap-2",
                 )}

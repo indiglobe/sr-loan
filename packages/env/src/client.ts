@@ -14,6 +14,7 @@ export const env = createEnv({
 
   client: {
     VITE_DASHBOARD_APP_HOST: z.string(),
+    VITE_WEB_APP_HOST: z.string(),
   },
 
   /**

@@ -18,7 +18,7 @@ export function AgreementPage() {
 
 function AgreementGenerator() {
   const { setteledUserDetails } = useLoaderData({
-    from: "/(authenticated-routes)/agent/agreement/",
+    from: "/(authenticated)/agent/agreement/",
   });
 
   const agreementRef = useRef<null | HTMLDivElement>(null);

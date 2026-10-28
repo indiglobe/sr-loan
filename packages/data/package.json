@@ -1,9 +1,9 @@
 {
   "name": "@repo/data",
   "scripts": {
+    "build": "pkgroll",
     "dev": "pkgroll --watch",
     "prebuild": "rimraf ./dist",
-    "build": "pkgroll",
     "format": "prettier --write **/* ",
     "lint:staged": "lint-staged",
     "lint": "eslint",
@@ -56,16 +56,6 @@
       "import": {
         "types": "./dist/validators/*.d.mts",
         "default": "./dist/validators/*.mjs"
-      }
-    },
-    "./utils/*": {
-      "require": {
-        "types": "./dist/exports/utils/*.d.cts",
-        "default": "./dist/exports/utils/*.cjs"
-      },
-      "import": {
-        "types": "./dist/exports/utils/*.d.mts",
-        "default": "./dist/exports/utils/*.mjs"
       }
     }
   },

@@ -2,10 +2,7 @@ import {
   ArrowRight,
   BadgeIndianRupee,
   Banknote,
-  BriefcaseBusiness,
-  Building2,
   Calculator,
-  CarFront,
   Check,
   ChevronRight,
   CircleCheckBig,
@@ -13,19 +10,18 @@ import {
   FileCheck2,
   FileText,
   HandCoins,
-  House,
   IdCard,
   Landmark,
+  Phone,
   ReceiptIndianRupee,
   ShieldCheck,
   Sparkles,
   UserRoundCheck,
   WalletCards,
-  Zap,
 } from "lucide-react";
 import type { ComponentProps, ElementType } from "react";
 import Main from "@/components/main/main";
-import type { LinkProps } from "@tanstack/react-router";
+import { Link, useLoaderData } from "@tanstack/react-router";
 import {
   LoanProductCard,
   LoanProductCardDescription,
@@ -34,20 +30,15 @@ import {
   OverviewStat,
   OverviewStatLabel,
   OverviewStatValue,
-  ProductDetailLabel,
-  ProductDetailValue,
-  ProductDetail,
   ViewDetails,
   EligibilityCard,
   EligibilityCardIcon,
   EligibilityCardHeading,
   EligibilityCardDescription,
-} from "./loans.ui";
+} from "@/components/main/loans/loans.ui";
 import { cn } from "@repo/styles/cn";
-
-/* -------------------------------------------------------------------------- */
-/*                               MAIN COMPONENT                               */
-/* -------------------------------------------------------------------------- */
+import { Button } from "@repo/ui/button";
+import { Icon } from "@repo/ui/icon";
 
 export default function Loans() {
   return (
@@ -76,7 +67,7 @@ function LoanHero({ className, ...props }: ComponentProps<"section">) {
 
       <div className="bg-secondary-200/25 dark:bg-secondary-900/15 absolute -bottom-40 -left-40 -z-10 size-96 rounded-full blur-3xl" />
 
-      <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 md:py-20 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:py-24">
+      <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 md:py-20 lg:grid-cols-[1.05fr_.95fr] lg:px-8 lg:py-24">
         {/* Hero Content */}
         <div>
           <div className="border-primary-200 bg-primary-50 text-primary-700 dark:border-primary-800 dark:bg-primary-950 dark:text-primary-200 inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold">
@@ -188,7 +179,7 @@ function LoanOverviewCard({ className, ...props }: ComponentProps<"div">) {
 
         <div className="border-primary-100 bg-primary-50/70 dark:border-primary-900 dark:bg-primary-950/40 mt-5 rounded-lg border p-5">
           <div className="flex gap-4">
-            <div className="bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200 grid size-11 shrink-0 place-items-center rounded-xl">
+            <div className="bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200 grid size-11 shrink-0 place-items-center rounded-lg">
               <Clock3 className="size-5" />
             </div>
 
@@ -215,83 +206,15 @@ function LoanOverviewCard({ className, ...props }: ComponentProps<"div">) {
   );
 }
 
-const loanProducts = [
-  {
-    icon: Zap,
-    title: "Instant Loan",
-    description:
-      "Quick financing for urgent requirements with a fast and simplified application experience.",
-    amount: "₹10K - ₹5L",
-    tenure: "3 - 36 Months",
-    productLink: "/loans/instant-loan",
-  },
-  {
-    icon: BadgeIndianRupee,
-    title: "Personal Loan",
-    description:
-      "Get financial support for medical needs, travel, weddings and other personal expenses.",
-    amount: "₹50K - ₹20L",
-    tenure: "6 - 60 Months",
-    productLink: "/loans/personal-loan",
-  },
-  {
-    icon: CarFront,
-    title: "Car Loan",
-    description:
-      "Finance your new or used car with flexible repayment options and simple application support.",
-    amount: "₹1L - ₹50L",
-    tenure: "12 - 84 Months",
-    productLink: "/loans/car-loan",
-  },
-  {
-    icon: House,
-    title: "Home Loan",
-    description:
-      "Get financing support for purchasing, constructing or renovating your dream home.",
-    amount: "₹5L - ₹2Cr",
-    tenure: "Up to 30 Years",
-    productLink: "/loans/home-loan",
-  },
-  {
-    icon: BriefcaseBusiness,
-    title: "Business Loan",
-    description:
-      "Access funds for business growth, working capital, inventory and expansion.",
-    amount: "₹1L - ₹50L",
-    tenure: "12 - 84 Months",
-    productLink: "/loans/business-loan",
-  },
-  {
-    icon: IdCard,
-    title: "KYC Loan",
-    description:
-      "Explore loan options with a streamlined KYC-based verification and documentation process.",
-    amount: "Based on Eligibility",
-    tenure: "Flexible",
-    productLink: "/loans/kyc-loan",
-  },
-
-  {
-    icon: Building2,
-    title: "Loan Against Property",
-    description:
-      "Unlock funds by leveraging your property as collateral while continuing to retain ownership.",
-    amount: "₹5L - ₹5Cr",
-    tenure: "Up to 15 Years",
-    productLink: "/loans/loan-against-property",
-  },
-] satisfies {
-  icon: ElementType;
-  title: string;
-  description: string;
-  amount: string;
-  tenure: string;
-  productLink: LinkProps["to"];
-}[];
-
 function LoanProducts({ className, ...props }: ComponentProps<"section">) {
+  const { loanTypes } = useLoaderData({ from: "/loans/" });
+
   return (
-    <section className={cn("py-20 sm:py-24", className)} {...props}>
+    <section
+      id="loan-products"
+      className={cn("py-20 sm:py-24", className)}
+      {...props}
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           label="Loan Products"
@@ -300,42 +223,51 @@ function LoanProducts({ className, ...props }: ComponentProps<"section">) {
         />
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {loanProducts.map((loan, idx) => {
-            const Icon = loan.icon;
+          {loanTypes.map((loan, idx) => {
+            // const Icon = loan.icon;
             return (
-              <LoanProductCard key={loan.title} to={loan.productLink}>
-                <LoanProductCardIcon
-                  className={cn(``, {
-                    "bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200":
-                      idx % 3 === 0,
-                    "bg-secondary-100 text-secondary-700 dark:bg-secondary-900/40 dark:text-secondary-200":
-                      idx % 3 === 1,
-                    "bg-accent-100 text-accent-700 dark:bg-accent-900/40 dark:text-accent-200":
-                      idx % 3 === 2,
-                  })}
-                >
-                  <Icon className="size-5" />
-                </LoanProductCardIcon>
+              <Link
+                key={loan.id}
+                to={"/loans/$loanType"}
+                params={{ loanType: loan.loanTypeId }}
+                className={cn(`inline-block`)}
+              >
+                <LoanProductCard>
+                  <LoanProductCardIcon
+                    className={cn(``, {
+                      "bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200":
+                        idx % 3 === 0,
+                      "bg-secondary-100 text-secondary-700 dark:bg-secondary-900/40 dark:text-secondary-200":
+                        idx % 3 === 1,
+                      "bg-accent-100 text-accent-700 dark:bg-accent-900/40 dark:text-accent-200":
+                        idx % 3 === 2,
+                    })}
+                  >
+                    <Icon icon={loan.icon} className="size-5" />
+                  </LoanProductCardIcon>
 
-                <LoanProductCardHeading>{loan.title}</LoanProductCardHeading>
+                  <LoanProductCardHeading>
+                    {loan.bankLoanType}
+                  </LoanProductCardHeading>
 
-                <LoanProductCardDescription>
-                  {loan.description}
-                </LoanProductCardDescription>
+                  <LoanProductCardDescription>
+                    {loan.description}
+                  </LoanProductCardDescription>
 
-                <div className="border-foreground/5 mt-5 space-y-3 border-t pt-5">
-                  <ProductDetail>
-                    <ProductDetailLabel>Loan Amount</ProductDetailLabel>
-                    <ProductDetailValue>{loan.amount}</ProductDetailValue>
-                  </ProductDetail>
-                  <ProductDetail>
-                    <ProductDetailLabel>Tenure</ProductDetailLabel>
-                    <ProductDetailValue>{loan.tenure}</ProductDetailValue>
-                  </ProductDetail>
-                </div>
+                  {/* <div className="border-foreground/5 mt-5 space-y-3 border-t pt-5">
+                    <ProductDetail>
+                      <ProductDetailLabel>Loan Amount</ProductDetailLabel>
+                      <ProductDetailValue>{loan.amount}</ProductDetailValue>
+                    </ProductDetail>
+                    <ProductDetail>
+                      <ProductDetailLabel>Tenure</ProductDetailLabel>
+                      <ProductDetailValue>{loan.tenure}</ProductDetailValue>
+                    </ProductDetail>
+                  </div> */}
 
-                <ViewDetails />
-              </LoanProductCard>
+                  <ViewDetails />
+                </LoanProductCard>
+              </Link>
             );
           })}
         </div>
@@ -343,10 +275,6 @@ function LoanProducts({ className, ...props }: ComponentProps<"section">) {
     </section>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/*                                  DATA                                      */
-/* -------------------------------------------------------------------------- */
 
 const eligibilityPoints = [
   {
@@ -432,10 +360,6 @@ const applicationSteps = [
   },
 ];
 
-/* -------------------------------------------------------------------------- */
-/*                              ELIGIBILITY                                   */
-/* -------------------------------------------------------------------------- */
-
 function EligibilitySection({
   className,
   ...props
@@ -463,17 +387,20 @@ function EligibilitySection({
             partner. These are some common factors that may be considered.
           </p>
 
-          <button
+          <Link
+            to={"/loans"}
+            hash={"loan-products"}
             type="button"
             className="group text-primary-700 dark:text-primary-300 mt-7 flex items-center gap-2 text-sm font-bold"
           >
             Check your eligibility
             <ChevronRight className="size-4 transition group-hover:translate-x-1" />
-          </button>
+          </Link>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           {eligibilityPoints.map((item) => {
+            // eslint-disable-next-line no-shadow
             const Icon = item.icon;
             return (
               <EligibilityCard key={item.title}>
@@ -492,10 +419,6 @@ function EligibilitySection({
     </section>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/*                                DOCUMENTS                                   */
-/* -------------------------------------------------------------------------- */
 
 function DocumentsSection({ className, ...props }: ComponentProps<"section">) {
   return (
@@ -516,10 +439,6 @@ function DocumentsSection({ className, ...props }: ComponentProps<"section">) {
     </section>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/*                           APPLICATION PROCESS                              */
-/* -------------------------------------------------------------------------- */
 
 function ApplicationProcess({
   className,
@@ -549,10 +468,6 @@ function ApplicationProcess({
     </section>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/*                               LOAN SUPPORT                                 */
-/* -------------------------------------------------------------------------- */
 
 function LoanSupportSection({
   className,
@@ -604,10 +519,6 @@ function LoanSupportSection({
   );
 }
 
-/* -------------------------------------------------------------------------- */
-/*                                  CTA                                       */
-/* -------------------------------------------------------------------------- */
-
 function LoanCTA({ className, ...props }: ComponentProps<"section">) {
   return (
     <section className={cn("px-4 pb-20 sm:px-6 lg:px-8", className)} {...props}>
@@ -631,30 +542,41 @@ function LoanCTA({ className, ...props }: ComponentProps<"section">) {
           </p>
 
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <button
+            <Button
               type="button"
-              className="group bg-primary-50 text-primary-800 hover:bg-primary-100 flex items-center justify-center gap-2 rounded-2xl px-7 py-3.5 text-sm font-bold transition"
+              className={cn(
+                `inline-block py-6 flex justify-center items-center px-10`,
+              )}
             >
-              Apply for a Loan
-              <ArrowRight className="size-4 transition group-hover:translate-x-1" />
-            </button>
+              <span>
+                <span>Apply for a Loan</span>{" "}
+                <span>
+                  <ArrowRight className="size-4 inline-block transition group-hover:translate-x-1" />
+                </span>
+              </span>
+            </Button>
 
-            <button
+            <Button
               type="button"
-              className="border-primary-500/40 bg-primary-700/50 hover:bg-primary-700 text-primary-50 rounded-2xl border px-7 py-3.5 text-sm font-bold transition"
+              variant={"secondary"}
+              appearance={'filled'}
+              className={cn(
+                `inline-block py-6 flex justify-center items-center px-10`,
+              )}
             >
-              Talk to Our Team
-            </button>
+              <span>
+                <span>Talk to Our Team</span>{" "}
+                <span>
+                  <Phone className="size-4 inline-block transition group-hover:translate-x-1" />
+                </span>
+              </span>
+            </Button>
           </div>
         </div>
       </div>
     </section>
   );
 }
-
-/* -------------------------------------------------------------------------- */
-/*                            SMALL UI COMPONENTS                             */
-/* -------------------------------------------------------------------------- */
 
 function SectionHeader({
   label,
@@ -683,6 +605,7 @@ function SectionHeader({
 }
 
 function DocumentCard({
+  // eslint-disable-next-line no-shadow
   icon: Icon,
   title,
   description,
@@ -697,7 +620,7 @@ function DocumentCard({
     <article className="border-foreground/5 bg-background dark:bg-foreground/3 rounded-2xl border p-5">
       <div
         className={cn(
-          "grid size-11 place-items-center rounded-xl",
+          "grid size-11 place-items-center rounded-lg",
           index % 2 === 0
             ? "bg-secondary-100 text-secondary-700 dark:bg-secondary-900/40 dark:text-secondary-200"
             : "bg-accent-100 text-accent-700 dark:bg-accent-900/40 dark:text-accent-200",
@@ -715,6 +638,7 @@ function DocumentCard({
 
 function ProcessStep({
   number,
+  // eslint-disable-next-line no-shadow
   icon: Icon,
   title,
   description,
@@ -727,7 +651,7 @@ function ProcessStep({
   return (
     <article className="text-center">
       <div className="relative mx-auto w-fit">
-        <div className="bg-primary-600 shadow-primary-600/20 grid size-16 place-items-center rounded-2xl text-white shadow-lg">
+        <div className="bg-primary-600 shadow-primary-600/20 grid size-16 place-items-center rounded-lg text-white shadow-lg">
           <Icon className="size-6" />
         </div>
 
@@ -746,6 +670,7 @@ function ProcessStep({
 }
 
 function SupportRow({
+  // eslint-disable-next-line no-shadow
   icon: Icon,
   title,
   description,
@@ -755,8 +680,8 @@ function SupportRow({
   description: string;
 }) {
   return (
-    <div className="border-primary-100 bg-background dark:border-primary-900 flex gap-4 rounded-2xl border p-5">
-      <div className="bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200 grid size-11 shrink-0 place-items-center rounded-xl">
+    <div className="border-primary-100 bg-background dark:border-primary-900 flex gap-4 rounded-lg border p-5">
+      <div className="bg-primary-100 text-primary-700 dark:bg-primary-900/40 dark:text-primary-200 grid size-11 shrink-0 place-items-center rounded-lg">
         <Icon className="size-5" />
       </div>
 

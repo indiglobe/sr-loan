@@ -1,6 +1,6 @@
 import { Table__User } from "@/schema";
 import { db } from "@/index";
-import { desc, eq, getTableColumns } from "drizzle-orm";
+import { and, desc, eq, getTableColumns, inArray, SQL } from "drizzle-orm";
 import { tryCatch } from "@repo/utils/try-catch";
 import { removeUndefinedFromObject } from "@repo/utils/utility/remove-undefined";
 import { id } from "@repo/utils/id";
@@ -102,7 +102,20 @@ export async function read__OneUser({ identifier }: TRead__OneUser) {
 }
 
 type TRead__AllUser = {
-  identifier?: Pick<typeof Table__User.$inferSelect, "role">;
+  identifier?: (
+    | Partial<{
+        role: Pick<typeof Table__User.$inferSelect, "role">["role"];
+      }>
+    | Partial<{
+        roles: Pick<typeof Table__User.$inferSelect, "role">["role"][];
+      }>
+  ) &
+    Partial<{
+      referrerEmployeeId: Pick<
+        typeof Table__User.$inferSelect,
+        "referrerEmployeeId"
+      >["referrerEmployeeId"];
+    }>;
 };
 
 export async function read__AllUsers(options?: TRead__AllUser) {
@@ -110,13 +123,34 @@ export async function read__AllUsers(options?: TRead__AllUser) {
   const { tableIdentifierToken, createdAt, updatedAt, password, ...rest } =
     getTableColumns(Table__User);
 
+  const conditions: SQL[] = [];
+
   const baseQuery = db
     .select({ ...rest })
     .from(Table__User)
     .orderBy(desc(Table__User.createdAt));
 
-  if (options?.identifier?.role) {
-    baseQuery.where(eq(Table__User.role, options.identifier.role));
+  if (options?.identifier) {
+    if ("role" in options.identifier && options.identifier.role) {
+      conditions.push(eq(Table__User.role, options.identifier.role));
+    }
+
+    if ("roles" in options.identifier && options.identifier.roles) {
+      conditions.push(inArray(Table__User.role, options.identifier.roles));
+    }
+
+    if (options.identifier.referrerEmployeeId) {
+      conditions.push(
+        eq(
+          Table__User.referrerEmployeeId,
+          options.identifier.referrerEmployeeId,
+        ),
+      );
+    }
+  }
+
+  if (conditions.length > 0) {
+    baseQuery.where(and(...conditions));
   }
 
   const [baseQueryError, baseQueryData] = await tryCatch(baseQuery);

@@ -11,6 +11,7 @@ import appCss from "../styles.css?url";
 import { cn } from "@repo/styles/cn";
 import { RootErrorComponent } from "@/components/main/root-error";
 import { RootNotFoundComponent } from "@/components/main/root-not-found";
+import { fetchUserDetailsCookie } from "@/integrations/auth/session";
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -42,6 +43,12 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
   shellComponent: RootDocument,
+
+  beforeLoad: async () => {
+    const userDetailsAsCookie = await fetchUserDetailsCookie();
+
+    return { userDetailsAsCookie };
+  },
 
   errorComponent: () => <RootErrorComponent />,
   notFoundComponent: () => <RootNotFoundComponent />,
