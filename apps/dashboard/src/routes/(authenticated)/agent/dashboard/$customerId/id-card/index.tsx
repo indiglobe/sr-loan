@@ -8,8 +8,10 @@ export const Route = createFileRoute(
   component: RouteComponent,
 
   loader: async ({ params: { customerId } }) => {
-    const [setteledUserDetails] = await Promise.allSettled([
-      serverFn__readOneUser({ data: { identifier: { email: customerId } } }),
+    const [setteledUserDetails] = await Promise.all([
+      serverFn__readOneUser({
+        data: { identifier: { employeeId: customerId } },
+      }),
     ]);
 
     return { setteledUserDetails };

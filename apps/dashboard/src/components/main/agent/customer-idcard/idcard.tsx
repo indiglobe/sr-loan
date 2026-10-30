@@ -150,9 +150,7 @@ const COMPUTED_STYLE_PROPERTIES = [
  *
  * We intentionally don't modify the application's stylesheet.
  */
-function getSafeComputedValue(
-  value: string,
-): string {
+function getSafeComputedValue(value: string): string {
   if (!value) {
     return value;
   }
@@ -175,8 +173,7 @@ function getSafeComputedValue(
      * A solid color can be resolved by asking the browser to render
      * it as a temporary element.
      */
-    const temp =
-      document.createElement("div");
+    const temp = document.createElement("div");
 
     temp.style.position = "fixed";
     temp.style.left = "-100000px";
@@ -192,49 +189,30 @@ function getSafeComputedValue(
 
     document.body.appendChild(temp);
 
-    const computed =
-      window.getComputedStyle(temp);
+    const computed = window.getComputedStyle(temp);
 
-    const resolvedBackground =
-      computed.backgroundColor;
+    const resolvedBackground = computed.backgroundColor;
 
-    const resolvedColor =
-      computed.color;
+    const resolvedColor = computed.color;
 
     temp.remove();
 
     if (
       resolvedBackground &&
-      !resolvedBackground.includes(
-        "oklch(",
-      ) &&
-      !resolvedBackground.includes(
-        "oklab(",
-      ) &&
-      !resolvedBackground.includes(
-        "lab(",
-      ) &&
-      !resolvedBackground.includes(
-        "lch(",
-      )
+      !resolvedBackground.includes("oklch(") &&
+      !resolvedBackground.includes("oklab(") &&
+      !resolvedBackground.includes("lab(") &&
+      !resolvedBackground.includes("lch(")
     ) {
       return resolvedBackground;
     }
 
     if (
       resolvedColor &&
-      !resolvedColor.includes(
-        "oklch(",
-      ) &&
-      !resolvedColor.includes(
-        "oklab(",
-      ) &&
-      !resolvedColor.includes(
-        "lab(",
-      ) &&
-      !resolvedColor.includes(
-        "lch(",
-      )
+      !resolvedColor.includes("oklch(") &&
+      !resolvedColor.includes("oklab(") &&
+      !resolvedColor.includes("lab(") &&
+      !resolvedColor.includes("lch(")
     ) {
       return resolvedColor;
     }
@@ -269,39 +247,21 @@ function getSafeComputedValue(
  * we give the clone the final styles that Chrome has already
  * calculated.
  */
-function copyComputedStyles(
-  original: Element,
-  clone: Element,
-): void {
-  if (
-    !(
-      original instanceof HTMLElement ||
-      original instanceof SVGElement
-    )
-  ) {
+function copyComputedStyles(original: Element, clone: Element): void {
+  if (!(original instanceof HTMLElement || original instanceof SVGElement)) {
     return;
   }
 
-  if (
-    !(
-      clone instanceof HTMLElement ||
-      clone instanceof SVGElement
-    )
-  ) {
+  if (!(clone instanceof HTMLElement || clone instanceof SVGElement)) {
     return;
   }
 
-  const computed =
-    window.getComputedStyle(original);
+  const computed = window.getComputedStyle(original);
 
-  const cloneStyle =
-    clone instanceof HTMLElement
-      ? clone.style
-      : clone.style;
+  const cloneStyle = clone instanceof HTMLElement ? clone.style : clone.style;
 
   for (const property of COMPUTED_STYLE_PROPERTIES) {
-    const value =
-      computed.getPropertyValue(property);
+    const value = computed.getPropertyValue(property);
 
     if (!value) {
       continue;
@@ -328,61 +288,35 @@ function copyComputedStyles(
        * For solid color properties, ask the browser to resolve
        * the value.
        */
-      if (
-        property === "color" ||
-        property.includes("color")
-      ) {
-        const temporary =
-          document.createElement("div");
+      if (property === "color" || property.includes("color")) {
+        const temporary = document.createElement("div");
 
-        temporary.style.position =
-          "fixed";
+        temporary.style.position = "fixed";
 
-        temporary.style.left =
-          "-100000px";
+        temporary.style.left = "-100000px";
 
-        temporary.style.top =
-          "-100000px";
+        temporary.style.top = "-100000px";
 
-        document.body.appendChild(
-          temporary,
-        );
+        document.body.appendChild(temporary);
 
         if (property === "color") {
-          temporary.style.color =
-            value;
-        } else if (
-          property ===
-          "background-color"
-        ) {
-          temporary.style.backgroundColor =
-            value;
+          temporary.style.color = value;
+        } else if (property === "background-color") {
+          temporary.style.backgroundColor = value;
         } else {
-          temporary.style.color =
-            value;
+          temporary.style.color = value;
         }
 
-        const resolved =
-          window.getComputedStyle(
-            temporary,
-          ).color;
+        const resolved = window.getComputedStyle(temporary).color;
 
         temporary.remove();
 
         if (
           resolved &&
-          !resolved.includes(
-            "oklch(",
-          ) &&
-          !resolved.includes(
-            "oklab(",
-          ) &&
-          !resolved.includes(
-            "lab(",
-          ) &&
-          !resolved.includes(
-            "lch(",
-          )
+          !resolved.includes("oklch(") &&
+          !resolved.includes("oklab(") &&
+          !resolved.includes("lab(") &&
+          !resolved.includes("lch(")
         ) {
           safeValue = resolved;
         }
@@ -404,90 +338,46 @@ function copyComputedStyles(
       continue;
     }
 
-    cloneStyle.setProperty(
-      property,
-      safeValue,
-    );
+    cloneStyle.setProperty(property, safeValue);
   }
 
   /*
    * SVG attributes.
    */
-  if (
-    original instanceof SVGElement &&
-    clone instanceof SVGElement
-  ) {
-    const fill =
-      computed.getPropertyValue("fill");
+  if (original instanceof SVGElement && clone instanceof SVGElement) {
+    const fill = computed.getPropertyValue("fill");
 
-    const stroke =
-      computed.getPropertyValue("stroke");
+    const stroke = computed.getPropertyValue("stroke");
 
-    const strokeWidth =
-      computed.getPropertyValue(
-        "stroke-width",
-      );
+    const strokeWidth = computed.getPropertyValue("stroke-width");
 
-    if (
-      fill &&
-      !fill.includes("oklch(") &&
-      !fill.includes("oklab(")
-    ) {
-      clone.setAttribute(
-        "fill",
-        fill,
-      );
+    if (fill && !fill.includes("oklch(") && !fill.includes("oklab(")) {
+      clone.setAttribute("fill", fill);
     }
 
-    if (
-      stroke &&
-      !stroke.includes("oklch(") &&
-      !stroke.includes("oklab(")
-    ) {
-      clone.setAttribute(
-        "stroke",
-        stroke,
-      );
+    if (stroke && !stroke.includes("oklch(") && !stroke.includes("oklab(")) {
+      clone.setAttribute("stroke", stroke);
     }
 
     if (strokeWidth) {
-      clone.setAttribute(
-        "stroke-width",
-        strokeWidth,
-      );
+      clone.setAttribute("stroke-width", strokeWidth);
     }
   }
 
   /*
    * Recurse through children.
    */
-  const originalChildren =
-    Array.from(
-      original.children,
-    );
+  const originalChildren = Array.from(original.children);
 
-  const cloneChildren =
-    Array.from(clone.children);
+  const cloneChildren = Array.from(clone.children);
 
-  for (
-    let index = 0;
-    index < originalChildren.length;
-    index++
-  ) {
-    const originalChild =
-      originalChildren[index];
+  for (let index = 0; index < originalChildren.length; index++) {
+    const originalChild = originalChildren[index];
 
-    const cloneChild =
-      cloneChildren[index];
+    const cloneChild = cloneChildren[index];
 
-    if (
-      originalChild &&
-      cloneChild
-    ) {
-      copyComputedStyles(
-        originalChild,
-        cloneChild,
-      );
+    if (originalChild && cloneChild) {
+      copyComputedStyles(originalChild, cloneChild);
     }
   }
 }
@@ -499,10 +389,7 @@ function copyComputedStyles(
  * actual orange/amber shapes, but this makes the capture robust
  * for components elsewhere in the card.
  */
-function copyPseudoElementStyles(
-  original: Element,
-  clone: Element,
-): void {
+function copyPseudoElementStyles(original: Element, clone: Element): void {
   if (!(original instanceof HTMLElement)) {
     return;
   }
@@ -511,29 +398,14 @@ function copyPseudoElementStyles(
     return;
   }
 
-  for (
-    const pseudo of [
-      "::before",
-      "::after",
-    ]
-  ) {
-    const computed =
-      window.getComputedStyle(
-        original,
-        pseudo,
-      );
+  for (const pseudo of ["::before", "::after"]) {
+    const computed = window.getComputedStyle(original, pseudo);
 
-    if (
-      !computed ||
-      computed.content === "none"
-    ) {
+    if (!computed || computed.content === "none") {
       continue;
     }
 
-    const style =
-      document.createElement(
-        "style",
-      );
+    const style = document.createElement("style");
 
     /*
      * We deliberately avoid copying the complete stylesheet.
@@ -563,10 +435,7 @@ function copyPseudoElementStyles(
     let css = "";
 
     for (const property of properties) {
-      const value =
-        computed.getPropertyValue(
-          property,
-        );
+      const value = computed.getPropertyValue(property);
 
       if (!value) {
         continue;
@@ -590,14 +459,9 @@ function copyPseudoElementStyles(
       }
     `;
 
-    clone.setAttribute(
-      "data-html2canvas-pseudo",
-      "",
-    );
+    clone.setAttribute("data-html2canvas-pseudo", "");
 
-    clone.ownerDocument.head.appendChild(
-      style,
-    );
+    clone.ownerDocument.head.appendChild(style);
   }
 }
 
@@ -613,14 +477,11 @@ function prepareClone(
   /*
    * html2canvas clones the target element itself.
    */
-  const clonedRoot =
-    clonedDocument.querySelector(
-      "[data-id-card-capture-root]",
-    );
+  const clonedRoot = clonedDocument.querySelector(
+    "[data-id-card-capture-root]",
+  );
 
-  if (
-    !(clonedRoot instanceof HTMLElement)
-  ) {
+  if (!(clonedRoot instanceof HTMLElement)) {
     return null;
   }
 
@@ -630,47 +491,28 @@ function prepareClone(
    * We use the element itself rather than trying to reconstruct
    * the IdCard.
    */
-  copyComputedStyles(
-    originalRoot,
-    clonedRoot,
-  );
+  copyComputedStyles(originalRoot, clonedRoot);
 
   /*
    * Copy pseudo elements.
    */
   const originalElements = [
     originalRoot,
-    ...Array.from(
-      originalRoot.querySelectorAll("*"),
-    ),
+    ...Array.from(originalRoot.querySelectorAll("*")),
   ];
 
   const cloneElements = [
     clonedRoot,
-    ...Array.from(
-      clonedRoot.querySelectorAll("*"),
-    ),
+    ...Array.from(clonedRoot.querySelectorAll("*")),
   ];
 
-  for (
-    let index = 0;
-    index < originalElements.length;
-    index++
-  ) {
-    const original =
-      originalElements[index];
+  for (let index = 0; index < originalElements.length; index++) {
+    const original = originalElements[index];
 
-    const clone =
-      cloneElements[index];
+    const clone = cloneElements[index];
 
-    if (
-      original &&
-      clone
-    ) {
-      copyPseudoElementStyles(
-        original,
-        clone,
-      );
+    if (original && clone) {
+      copyPseudoElementStyles(original, clone);
     }
   }
 
@@ -684,10 +526,9 @@ function prepareClone(
    * The inline computed styles we copied above remain.
    * -----------------------------------------------------------
    */
-  const styles =
-    clonedDocument.querySelectorAll(
-      "style, link[rel='stylesheet']",
-    );
+  const styles = clonedDocument.querySelectorAll(
+    "style, link[rel='stylesheet']",
+  );
 
   styles.forEach((style) => {
     style.remove();
@@ -696,10 +537,7 @@ function prepareClone(
   /*
    * Remove animations/transitions.
    */
-  const freezeStyle =
-    clonedDocument.createElement(
-      "style",
-    );
+  const freezeStyle = clonedDocument.createElement("style");
 
   freezeStyle.textContent = `
     *,
@@ -714,15 +552,12 @@ function prepareClone(
     }
   `;
 
-  clonedDocument.head.appendChild(
-    freezeStyle,
-  );
+  clonedDocument.head.appendChild(freezeStyle);
 
   /*
    * Ensure the cloned root itself remains visible.
    */
-  clonedRoot.style.visibility =
-    "visible";
+  clonedRoot.style.visibility = "visible";
 
   clonedRoot.style.opacity = "1";
 
@@ -744,25 +579,19 @@ function downloadCanvasAsJpg(
   canvas.toBlob(
     (blob) => {
       if (!blob) {
-        console.error(
-          "Could not create JPG blob.",
-        );
+        console.error("Could not create JPG blob.");
 
         return;
       }
 
-      const url =
-        URL.createObjectURL(blob);
+      const url = URL.createObjectURL(blob);
 
-      const anchor =
-        document.createElement("a");
+      const anchor = document.createElement("a");
 
       anchor.href = url;
       anchor.download = filename;
 
-      document.body.appendChild(
-        anchor,
-      );
+      document.body.appendChild(anchor);
 
       anchor.click();
 
@@ -782,41 +611,25 @@ function downloadCanvasAsJpg(
 }
 
 function CustomerIdCardGenerator() {
-  const { setteledUserDetails } =
-    useLoaderData({
-      from: "/(authenticated)/agent/dashboard/$customerId/id-card/",
-    });
+  const { setteledUserDetails: userDetails } = useLoaderData({
+    from: "/(authenticated)/agent/dashboard/$customerId/id-card/",
+  });
 
-  const agreementRef =
-    useRef<HTMLDivElement | null>(
-      null,
-    );
+  const agreementRef = useRef<HTMLDivElement | null>(null);
 
-  const [isDownloading, setIsDownloading] =
-    useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
-  if (
-    setteledUserDetails.status ===
-    "rejected"
-  ) {
-    return <>Agreement Error</>;
-  }
-
-  const { value: userDetails } =
-    setteledUserDetails;
+  console.log(userDetails);
 
   if (!userDetails) {
     return <>No user details</>;
   }
 
   const downloadIdCard = async () => {
-    const element =
-      agreementRef.current;
+    const element = agreementRef.current;
 
     if (!element) {
-      console.error(
-        "ID card element not found.",
-      );
+      console.error("ID card element not found.");
 
       return;
     }
@@ -842,51 +655,29 @@ function CustomerIdCardGenerator() {
        * Wait for images.
        * -------------------------------------------------------
        */
-      const images =
-        Array.from(
-          element.querySelectorAll(
-            "img",
-          ),
-        );
+      const images = Array.from(element.querySelectorAll("img"));
 
       await Promise.all(
         images.map(
           (image) =>
-            new Promise<void>(
-              (resolve) => {
-                if (image.complete) {
-                  resolve();
-                  return;
-                }
+            new Promise<void>((resolve) => {
+              if (image.complete) {
+                resolve();
+                return;
+              }
 
-                const finish =
-                  () => {
-                    image.removeEventListener(
-                      "load",
-                      finish,
-                    );
+              const finish = () => {
+                image.removeEventListener("load", finish);
 
-                    image.removeEventListener(
-                      "error",
-                      finish,
-                    );
+                image.removeEventListener("error", finish);
 
-                    resolve();
-                  };
+                resolve();
+              };
 
-                image.addEventListener(
-                  "load",
-                  finish,
-                  { once: true },
-                );
+              image.addEventListener("load", finish, { once: true });
 
-                image.addEventListener(
-                  "error",
-                  finish,
-                  { once: true },
-                );
-              },
-            ),
+              image.addEventListener("error", finish, { once: true });
+            }),
         ),
       );
 
@@ -895,19 +686,13 @@ function CustomerIdCardGenerator() {
        * Wait for two browser paint cycles.
        * -------------------------------------------------------
        */
-      await new Promise<void>(
-        (resolve) => {
-          requestAnimationFrame(
-            () => {
-              requestAnimationFrame(
-                () => {
-                  resolve();
-                },
-              );
-            },
-          );
-        },
-      );
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            resolve();
+          });
+        });
+      });
 
       /*
        * -------------------------------------------------------
@@ -919,8 +704,7 @@ function CustomerIdCardGenerator() {
        * We don't resize the card to some arbitrary format.
        * -------------------------------------------------------
        */
-      const rect =
-        element.getBoundingClientRect();
+      const rect = element.getBoundingClientRect();
 
       /*
        * -------------------------------------------------------
@@ -934,88 +718,59 @@ function CustomerIdCardGenerator() {
        * internally by html2canvas.
        * -------------------------------------------------------
        */
-      const canvas =
-        await html2canvas(
-          element,
-          {
-            backgroundColor:
-              "#ffffff",
+      const canvas = await html2canvas(element, {
+        backgroundColor: "#ffffff",
 
-            /*
-             * 4x is intentionally used because this is an
-             * ID card and the physical dimensions are small.
-             *
-             * Text becomes significantly sharper in the JPG.
-             */
-            scale: 4,
+        /*
+         * 4x is intentionally used because this is an
+         * ID card and the physical dimensions are small.
+         *
+         * Text becomes significantly sharper in the JPG.
+         */
+        scale: 4,
 
-            width: Math.ceil(
-              rect.width,
-            ),
+        width: Math.ceil(rect.width),
 
-            height: Math.ceil(
-              rect.height,
-            ),
+        height: Math.ceil(rect.height),
 
-            x: 0,
-            y: 0,
+        x: 0,
+        y: 0,
 
-            useCORS: true,
+        useCORS: true,
 
-            allowTaint: false,
+        allowTaint: false,
 
-            imageTimeout: 30000,
+        imageTimeout: 30000,
 
-            logging: false,
+        logging: false,
 
-            /*
-             * This callback operates ONLY on html2canvas's
-             * temporary cloned document.
-             *
-             * Your actual UI/CSS is never changed.
-             */
-            onclone: (
-              clonedDocument,
-            ) => {
-              prepareClone(
-                element,
-                clonedDocument,
-              );
-            },
-          },
-        );
+        /*
+         * This callback operates ONLY on html2canvas's
+         * temporary cloned document.
+         *
+         * Your actual UI/CSS is never changed.
+         */
+        onclone: (clonedDocument) => {
+          prepareClone(element, clonedDocument);
+        },
+      });
 
       /*
        * -------------------------------------------------------
        * Generate filename.
        * -------------------------------------------------------
        */
-      const safeName =
-        String(
-          userDetails.name ??
-            "customer",
-        )
-          .trim()
-          .replace(
-            /[^a-zA-Z0-9-_ ]/g,
-            "",
-          )
-          .replace(
-            /\s+/g,
-            "-",
-          );
+      const safeName = String(userDetails.name ?? "customer")
+        .trim()
+        .replace(/[^a-zA-Z0-9-_ ]/g, "")
+        .replace(/\s+/g, "-");
 
       /*
        * -------------------------------------------------------
        * Download as JPG.
        * -------------------------------------------------------
        */
-      downloadCanvasAsJpg(
-        canvas,
-        `${
-          safeName || "customer"
-        }-id-card.jpg`,
-      );
+      downloadCanvasAsJpg(canvas, `${safeName || "customer"}-id-card.jpg`);
     } catch (error) {
       /*
        * There is intentionally NO second html2canvas fallback.
@@ -1023,10 +778,7 @@ function CustomerIdCardGenerator() {
        * If the first capture fails, calling the same parser again
        * only produces the same error.
        */
-      console.error(
-        "Failed to download ID card:",
-        error,
-      );
+      console.error("Failed to download ID card:", error);
     } finally {
       setIsDownloading(false);
     }
@@ -1045,38 +797,25 @@ function CustomerIdCardGenerator() {
        * The exact component the user sees is captured.
        * ---------------------------------------------------------
        */}
-      <div
-        ref={agreementRef}
-        data-id-card-capture-root
-      >
+      <div ref={agreementRef} data-id-card-capture-root>
         <IdCard
-          employeeId={
-            userDetails.employeeId
-          }
+          employeeId={userDetails.employeeId}
           name={userDetails.name}
           emergencyContact={
             userDetails.emergencyPhoneNumber
               ? userDetails.emergencyPhoneNumber
               : undefined
           }
-          joiningDate={
-            new Date(
-              userDetails.createdAt,
-            )
-          }
+          joiningDate={new Date(userDetails.createdAt)}
         />
       </div>
 
       <Button
-        className={cn(
-          "fixed right-10 top-30",
-        )}
+        className={cn("fixed right-10 top-30")}
         onClick={downloadIdCard}
         disabled={isDownloading}
       >
-        {isDownloading
-          ? "Preparing..."
-          : "Download ID Card"}
+        {isDownloading ? "Preparing..." : "Download ID Card"}
       </Button>
     </>
   );
