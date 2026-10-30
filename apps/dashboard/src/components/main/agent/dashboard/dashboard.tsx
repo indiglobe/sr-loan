@@ -9,7 +9,7 @@ import { platformEmployeeId } from "@repo/utils/id";
 import z from "zod";
 import { Button } from "@repo/ui/button";
 import { User } from "lucide-react";
-import { useReadAllUsers } from "@/integrations/tanstack/react-query/admin-dashboard.rq";
+import { useReadAllUsers } from "@/integrations/tanstack/react-query/agent-dashboard.rq";
 
 export function AgentDashboard() {
   return (
@@ -30,7 +30,7 @@ function CreateCustomer() {
 
   const {
     userDetailsAsCookie: { employeeId: adminEmployeeId },
-  } = useRouteContext({ from: "/(authenticated)/agent" });
+  } = useRouteContext({ from: "/(authenticated)/agent/dashboard/" });
 
   const { mutateAsync } = useCreateOneUser();
 

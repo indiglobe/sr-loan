@@ -20,7 +20,8 @@ export const serverFn__createOneUser = createServerFn()
     );
 
     if (passwordHasingError) {
-      console.log(`Error in passwordHasingError in serverFn__createOneUser`);
+      console.error(`Error in passwordHasingError in serverFn__createOneUser`);
+      console.error(passwordHasingError);
       throw passwordHasingError;
     }
 
@@ -31,7 +32,8 @@ export const serverFn__createOneUser = createServerFn()
     );
 
     if (serverFnError) {
-      console.log(`Error in serverFnError in serverFn__createOneUser`);
+      console.error(`Error in serverFnError in serverFn__createOneUser`);
+      console.error(serverFnError);
       throw serverFnError;
     }
 
@@ -44,10 +46,11 @@ export const serverFn__readOneUser = createServerFn()
     const [serverFnError, serverFnData] = await tryCatch(read__OneUser(data));
 
     if (serverFnError) {
-      console.log(`Error in serverFnError in serverFn__readOneUser`);
+      console.error(`Error in serverFnError in serverFn__readOneUser`);
+      console.error(serverFnError);
       throw serverFnError;
     }
-
+    
     return serverFnData;
   });
 
@@ -55,9 +58,10 @@ export const serverFn__readAllUsers = createServerFn()
   .validator(read__AllUsersSchema)
   .handler(async ({ data }) => {
     const [serverFnError, serverFnData] = await tryCatch(read__AllUsers(data));
-
+    
     if (serverFnError) {
-      console.log(`Error in serverFnError in serverFn__createOneAgent`);
+      console.error(`Error in serverFnError in serverFn__createOneAgent`);
+      console.error(serverFnError);
       throw serverFnError;
     }
 

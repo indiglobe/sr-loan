@@ -13,6 +13,7 @@
     "format": "turbo run format",
     "lint:staged": "turbo run lint:staged",
     "ui": "turbo devtools --port 8520",
+    "build:dev:apps": "turbo run build --filter=@repo/* && turbo run dev --filter=!@repo/*",
     "build:dev:apps:web": "turbo run build --filter=@repo/* && turbo run dev --filter=web",
     "build:dev:apps:dashboard": "turbo run build --filter=@repo/* && turbo run dev --filter=dashboard",
     "check-types": "turbo run check-types"

@@ -37,6 +37,5 @@ export function useReadAllUsers() {
         },
       }),
 
-    // enabled: Boolean(employeeId),
   });
 }
